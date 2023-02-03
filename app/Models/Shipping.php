@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Shipping extends Model
+{
+    use HasFactory,SoftDeletes;
+    protected $guarded = ['id'];
+    //protected $hidden = ['created_at','updated_at','deleted_at'];
+
+    public function shippingLogs(){
+        return $this->hasMany(ShippingLog::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class,'order_product','order_id','product_id','order_id');
+    }
+
+
+    public function toArray()
+    {
+        $attributes = parent::toArray();
+        
+        $attributes['deals'] = $this->order->deals;
+        return $attributes;
+    }
+
+}

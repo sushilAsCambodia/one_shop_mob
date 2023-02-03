@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Favorite;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+
+class FavoriteService
+{
+
+
+    public function list($request): JsonResponse
+    {
+
+        try {
+            $perPage = $request->rowsPerPage ?: 15;
+            $page = $request->page ?: 1;
+
+            $query = (new Favorite())->newQuery()->whereCustomerId(Auth::id());
+
+            $results = $query->select('favorites.*')->with('product')->paginate($perPage, ['*'], 'page', $page);
+
+            return response()->json($results, 200);
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
+
+    public function addToFavorites(array $data): JsonResponse
+    {
+        try {
+            $data['customer_id'] = auth()->user()->id;
+            if(Favorite::where('customer_id', auth()->user()->id)->where('product_id', $data['product_id'])->exists()){
+                return response()->json([
+                    'messages' => ['All Ready Exists'],
+                ], 201);
+            }
+            DB::transaction(function () use ($data) {
+                Favorite::create($data);
+            });
+
+            return response()->json([
+                'messages' => ['Product added to favorite successfully'],
+            ], 201);
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
+
+    public function removeFromFavorites(array $data): JsonResponse
+    {
+        try {
+            $data['customer_id'] = auth()->user()->id;
+            DB::transaction(function () use ($data) {
+                Favorite::where('product_id',$data['product_id'])->where('customer_id',$data['customer_id'])->delete();
+            });
+
+            return response()->json([
+                'messages' => ['Product Removed from favorite successfully'],
+            ], 201);
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
+
+}
