@@ -3,6 +3,7 @@
 use App\Models\Configure;
 use App\Models\Customer;
 use App\Models\Images;
+use App\Models\OntimePassword;
 use App\Models\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,7 +21,7 @@ if (! function_exists('getErrorMessages')) {
             }
         }
 
-        return $errorMessages;
+        return $errorMessages[0];
     }
 }
 
@@ -205,4 +206,74 @@ if (! function_exists('getCustomerData')) {
     }
 }
 
+if (!function_exists('sendOTP')) {
+    function sendOTP($idd = 0, $phoneNumber = 0, $type = 'register')
+    {
+
+        $otpValue = rand(100000, 999999);
+        $otpValue = 123456;
+        //save otp in table
+        $otp = OntimePassword::whereIdd($idd)->wherePhoneNumber($phoneNumber)->whereType($type)->whereValue($otpValue)->first();
+        if ($otp)
+            $otp->update(['value' => $otpValue]);
+        else {
+            OntimePassword::create([
+                'value' => $otpValue,
+                'phone_number' => $phoneNumber,
+                'idd' => $idd,
+                'type' => $type,
+            ]);
+        }
+    }
+}
+
+if (!function_exists('verifyOTP')) {
+    function verifyOTP($idd = 0, $phoneNumber = 0, $otpValue = 0, $type = 'register')
+    {
+        $otp = OntimePassword::whereIdd($idd)->whereValue($otpValue)->wherePhoneNumber($phoneNumber)->whereType($type)->first();
+
+        if ($otp) {
+            if ($otp->expire_at && strtotime($otp->expire_at) < strtotime(now()))
+                return ['status' => false, 'msg' => 'OTP expired'];
+
+            $otp->update(['is_verify' => true]);
+            return ['status' => true];
+        } else
+            return ['status' => false, 'msg' => 'OTP not matched'];
+    }
+}
             
+
+if (! function_exists('zeroappend')) {
+    function zeroappend($LastNumber)
+    {
+        $count = (int) log10(abs($LastNumber)) + 1;
+        if ($count == 1) {
+            return $append = '000000';
+        } elseif ($count == 2) {
+            return $append = '00000';
+        } elseif ($count == 3) {
+            return $append = '0000';
+        } elseif ($count == 4) {
+            return $append = '000';
+        } elseif ($count == 5) {
+            return $append = '00';
+        } elseif ($count == 6) {
+            return $append = '0';
+        } elseif ($count == 7) {
+            return $append = '';
+        } else {
+            return $append = '';
+        }
+    }
+}
+
+if (!function_exists('formatIdd')) {
+    function formatIdd($idd)
+    {
+        $idd = str_replace('+', '', $idd);
+        $idd = '+' . $idd;
+
+        return $idd;
+    }
+}

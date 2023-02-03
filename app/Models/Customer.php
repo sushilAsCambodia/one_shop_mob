@@ -7,12 +7,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Hash;
 
 class Customer extends Authenticatable implements Auditable
 {
-    use HasFactory, SoftDeletes, HasApiTokens, DateSerializable;
+    use HasRoles, HasFactory, SoftDeletes, HasApiTokens, DateSerializable, Notifiable;
     use \OwenIt\Auditing\Auditable;
 
     protected $guarded = ['id'];
@@ -31,4 +34,9 @@ class Customer extends Authenticatable implements Auditable
         })->sum('amount');
     }
 
+
+    protected function setPasswordAttribute($value)
+    {
+        return $this->attributes['password'] = Hash::make($value);
+    }
 }
