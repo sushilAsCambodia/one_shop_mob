@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\homePage;
@@ -27,9 +28,9 @@ class HomepageService
             // $data['category'] = Category::with('subCategories')->orderBy('name', 'asc')->get();
             // $data['languages'] = Language::orderBy('name', 'asc')->get();
             // $data['currency'] = Currency::orderBy('id', 'asc')->get();
-            $data=[];
+            $data = [];
             $promotions = Promotion::all();
-            foreach($promotions as $promotion){
+            foreach ($promotions as $promotion) {
                 $data[$promotion->slug] =     $this->getData($sortBy, $sortOrder, $promotion->slug);
             }
 
@@ -43,18 +44,18 @@ class HomepageService
     public function getData($sortBy, $sortOrder, $slug)
     {
         $products = Product::whereHas('promotion', function ($query) use ($slug) {
-                    $query->where('promotions.slug', $slug);
-                })
-                ->whereHas('deals',function ($query){
-                    $query->whereIn('status',['expired', 'active']);
-                });
-        if(Session::get("promotional_query_session")){
+            $query->where('promotions.slug', $slug);
+        })
+            ->whereHas('deals', function ($query) {
+                $query->whereIn('status', ['expired', 'active']);
+            });
+        if (Session::get("promotional_query_session")) {
             $products = $products->with([
-                'category', 
+                'category',
                 'subCategory',
                 'slot',
                 'image',
-                'translation', 
+                'translation',
                 'tags',
                 'deal',
                 'favouriteCount',
@@ -123,8 +124,8 @@ class HomepageService
                                 ->where('translation', 'like', "%$request->search_key%");
                         });
                     });
-                    $query->whereHas('deals',function ($query){
-                        $query->whereIn('status',['expired', 'active']);
+                    $query->whereHas('deals', function ($query) {
+                        $query->whereIn('status', ['expired', 'active']);
                     });
                     $data = $query->select('products.*')->get();
 
@@ -159,10 +160,10 @@ class HomepageService
             \Log::debug($e);
             return generalErrorResponse($e);
         }
-
     }
 
-    public function getPromotional($request){
+    public function getPromotional($request)
+    {
         try {
             Session::put("promotional_query_session", true);
 
@@ -178,19 +179,26 @@ class HomepageService
             //     return $item;
             // });
             $data = [];
-            foreach($promotions as $promotion){
+            foreach ($promotions as $promotion) {
                 $data[] = [
                     'name'      =>     $promotion->name,
                     'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
                     'slug'      =>     $promotion->slug,
                     'image'      =>     $promotion->image
                 ];
-
             }
             // $paginator = new LengthAwarePaginator($promotions->all(), $promotions->count(), $perPage);
 
+            $result['message'] = 'fetch_all_homePage_successfully';
+            $result['data'] = [
+                'languages' => Language::all(),
+                'banners' => Banner::where('type', 'homePage')->get(),
+                'categories' => Category::all(),
+                'promotional' => $data,
+            ];
+            $result['statusCode'] = 200;
 
-            return response()->json(['promotional' => $data], 200);
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);

@@ -99,7 +99,12 @@ class ProductService
                 $query->select('products.*');
 
             $data = $query->paginate($perPage, ['*'], 'page', $page);
-            return response()->json($data, 200);
+
+            $result['message'] = 'product_fetch_successfully';
+            $result['data'] = $data;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);

@@ -20,7 +20,10 @@ class BannerController extends Controller
 
     public function all(Request $request)
     {
-        return response()->json(Banner::where('type',$request->type)->get(), 200);
+        $result['message'] = 'banners_fetch_successfully';
+        $result['data'] = Banner::where('type', $request->type)->where('status', 'active')->get();
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 
     public function store(BannerFormRequest $request)

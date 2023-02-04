@@ -35,7 +35,10 @@ class LanguageController extends Controller
 
     public function all()
     {
-        return response()->json(Language::all(), 200);
+        $result['message'] = 'languages_fetch_successfully';
+        $result['data'] = ['languages' => Language::all()];
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 
     public function paginate(Request $request)

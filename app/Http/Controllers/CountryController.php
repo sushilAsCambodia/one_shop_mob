@@ -14,6 +14,9 @@ class CountryController extends Controller
 
     public function all()
     {
-        return response()->json(Country::where('status','active')->get(), 200);
+        $result['message'] = 'banner_fetch_successfully';
+        $result['data'] = Country::where('status', 'active')->get();
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 }

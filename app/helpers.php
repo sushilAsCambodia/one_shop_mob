@@ -64,7 +64,7 @@ if (! function_exists('generalErrorResponse')) {
     {
         \Log::debug($e);
         return response()->json([
-            'messages' => [$e->getMessage()],
+            'message' => [$e->getMessage()],
             'trace' => [$e->getTrace()],
         ], 400);
     }

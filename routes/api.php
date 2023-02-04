@@ -55,16 +55,20 @@ use App\Http\Controllers\WinningController;
 Route::group(['middleware' => ['lang_id']], function () {
     // Homepage
     Route::controller(HomepageController::class)->group(function () {
-        Route::get('homepage', 'index');
-        Route::get('search', 'getSearchResult');
-        Route::get('promotional', 'getPromotional');
+        // Route::get('homepage', 'index');
+        // Route::get('search', 'getSearchResult');
+        Route::get('get/homePageData', 'getPromotional');
     });
 
     Route::controller(ProductController::class)->group(function () {
-        Route::get('products/paginate/{params?}', 'paginate');
+        // Route::get('products/paginate/{params?}', 'paginate');
         Route::get('products/view-all', 'index');
-        Route::get('products/{product}', 'get')->where(['product' => '[0-9]+']);
-        Route::get('products/get-by-category-slug/{slug}', 'getByCategorySlug');
+        // Route::get('products/{product}', 'get')->where(['product' => '[0-9]+']);
+        // Route::get('products/get-by-category-slug/{slug}', 'getByCategorySlug');
+    });
+
+    Route::controller(LanguageController::class)->group(function () {
+        Route::get('languages/all', 'all')->name('Language: View Language');
     });
 
     // Country Routes
@@ -74,12 +78,16 @@ Route::group(['middleware' => ['lang_id']], function () {
 
     // State Routes
     Route::controller(StateController::class)->group(function () {
-        Route::get('states/getById/{counteyId}', 'getById');
+        // Route::get('states/getById/{counteyId}', 'getById');
     });
 
     // City Routes
     Route::controller(CityController::class)->group(function () {
-        Route::get('cities/getById/{stateId}', 'all');
+        // Route::get('cities/getById/{stateId}', 'all');
+    });
+    // Banner Routes
+    Route::controller(BannerController::class)->group(function () {
+        Route::get('banners/all', 'all');
     });
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,51 +96,51 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Add To cart
     Route::controller(AddToCartController::class)->group(function () {
-        Route::post('add-to-cart', 'addToCart');
+        // Route::post('add-to-cart', 'addToCart');
     });
 
     // Add To favorites
     Route::controller(FavoriteController::class)->group(function () {
-        Route::post('favorites/add-to-favorites', 'addToFavorites');
-        Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
-        Route::get('favorites/list', 'list');
+        // Route::post('favorites/add-to-favorites', 'addToFavorites');
+        // Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
+        // Route::get('favorites/list', 'list');
     });
 
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
-        Route::get('orders/paginate/{params?}', 'paginate');
-        Route::post('customer/orders', 'store');
-        Route::post('customer/orders-cancel', 'cancelOrder');
-        Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
-        Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
-        Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
+        // Route::get('orders/paginate/{params?}', 'paginate');
+        // Route::post('customer/orders', 'store');
+        // Route::post('customer/orders-cancel', 'cancelOrder');
+        // Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
+        // Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
+        // Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
 
         // Route::patch('orders/{orders}', 'update');
         // Route::delete('orders/{orders}', 'delete');
     });
 
     Route::controller(OrderController::class)->group(function () {
-        Route::get('customer/get-dashboard-counts', 'getDashboardCounts');
+        // Route::get('customer/get-dashboard-counts', 'getDashboardCounts');
     });
 
     Route::controller(ReferralController::class)->group(function () {
-        Route::get('customer/getReferral', 'getReferral');
+        // Route::get('customer/getReferral', 'getReferral');
     });
 
     Route::controller(WinningController::class)->group(function () {
-        Route::get('winner-list', 'paginate');
+        // Route::get('winner-list', 'paginate');
     });
     // Add To Payment
     Route::controller(PaymentController::class)->group(function () {
-        Route::post('customer/order-payment', 'store');
+        // Route::post('customer/order-payment', 'store');
     });
 
     //Price Claim Route
     Route::controller(PriceClaimController::class)->group(function () {
-        Route::get('prize-claim/paginate/{params?}', 'paginate');
-        Route::get('prize-claim/all', 'all');
-        Route::patch('prize-claim/{priceClaim}', 'update');
-        Route::get('prize-claim/{priceClaim}', 'get');
+        // Route::get('prize-claim/paginate/{params?}', 'paginate');
+        // Route::get('prize-claim/all', 'all');
+        // Route::patch('prize-claim/{priceClaim}', 'update');
+        // Route::get('prize-claim/{priceClaim}', 'get');
     });
 });
 
@@ -140,22 +148,22 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // login creadation
 // Customer routes
 Route::controller(CustomerController::class)->group(function () {
-    Route::get('customers-earning', 'getCalculations');
+    // Route::get('customers-earning', 'getCalculations');
     Route::post('customers/send-otp', 'sendOTP');
     Route::post('customers/verify-otp', 'verifyOTP');
     Route::post('customers/register', 'register');
     Route::post('customers/login', 'login');
-    Route::get('customers/{customer}', 'get')->where(['customer' => '[0-9]+']);
+    // Route::get('customers/{customer}', 'get')->where(['customer' => '[0-9]+']);
     Route::post('customers/forget-password', 'forgetPassword');
     Route::post('customers/set-new-password', 'setNewPassword');
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(CustomerController::class)->group(function () {
-        Route::get('customers/mlm-earning', 'getCalculationsCustomers');
-        Route::post('customers/update-account', 'updateAccount');
+        // Route::get('customers/mlm-earning', 'getCalculationsCustomers');
+        // Route::post('customers/update-account', 'updateAccount');
         Route::get('customers/user-details', 'userDetails');
-        Route::post('customers/create-bot-customer', 'createBotCustomer');
+        // Route::post('customers/create-bot-customer', 'createBotCustomer');
         Route::post('customers/logout', 'logout');
     });
 });
