@@ -46,18 +46,15 @@ class HomepageService
         $products = Product::whereHas('deals', function ($query) {
                 $query->whereIn('status', ['expired', 'active']);
             });
-        if (Session::get("promotional_query_session")) {
-            $products = $products->with([
-                // 'category',
-                // 'subCategory',
-                // 'slot',
-                'image',
-                'translation',
-                'tags',
-                'deal',
-                'favouriteCount',
-            ]);
-        }
+        
+        $products = $products->with([
+            'image',
+            'translation',
+            'tags',
+            'deal.slots',
+            'favouriteCount',
+        ]);
+
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
 
