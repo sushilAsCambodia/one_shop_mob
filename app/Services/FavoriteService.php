@@ -35,18 +35,20 @@ class FavoriteService
     {
         try {
             $data['customer_id'] = auth()->user()->id;
-            if(Favorite::where('customer_id', auth()->user()->id)->where('product_id', $data['product_id'])->exists()){
-                return response()->json([
-                    'messages' => ['All Ready Exists'],
-                ], 201);
+            if (Favorite::where('customer_id', auth()->user()->id)->where('product_id', $data['product_id'])->exists()) {
+                $result['message'] = 'All_Ready_Exists';
+                $result['statusCode'] = 400;
+
+                return getSuccessMessages($result, false);
             }
             DB::transaction(function () use ($data) {
                 Favorite::create($data);
             });
 
-            return response()->json([
-                'messages' => ['Product added to favorite successfully'],
-            ], 201);
+            $result['message'] = 'Product_added_to_favorite_successfully';
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
@@ -58,7 +60,7 @@ class FavoriteService
         try {
             $data['customer_id'] = auth()->user()->id;
             DB::transaction(function () use ($data) {
-                Favorite::where('product_id',$data['product_id'])->where('customer_id',$data['customer_id'])->delete();
+                Favorite::where('product_id', $data['product_id'])->where('customer_id', $data['customer_id'])->delete();
             });
 
             return response()->json([

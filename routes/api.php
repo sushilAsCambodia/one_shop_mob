@@ -108,9 +108,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Add To favorites
     Route::controller(FavoriteController::class)->group(function () {
-        // Route::post('favorites/add-to-favorites', 'addToFavorites');
-        // Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
-        // Route::get('favorites/list', 'list');
+        Route::post('favorites/add-to-favorites', 'addToFavorites');
+        Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
+        Route::get('favorites/list', 'list');
     });
 
     // Add To Dorder

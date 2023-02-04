@@ -4,9 +4,11 @@ namespace App\Http\Requests;
 
 use App\Models\Language;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\FailedValidation;
 
 class FavoriteFormRequest extends FormRequest
 {
+    use FailedValidation;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,10 +25,16 @@ class FavoriteFormRequest extends FormRequest
      */
     public function rules()
     {
-
-        $validation = [
+        return [
             'product_id' => 'required|exists:products,id',
         ];
         return $validation;
+    }
+    public function messages()
+    {
+        return [
+            'product_id.required' => 'product_id_is_required',
+            'product_id.exists' => 'product_id_not_exists',
+        ];
     }
 }
