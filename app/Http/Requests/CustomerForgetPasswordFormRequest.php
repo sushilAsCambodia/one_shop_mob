@@ -5,11 +5,12 @@ namespace App\Http\Requests;
 use App\Traits\PhoneNumberSerializable;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Traits\FailedValidation;
 
 class CustomerForgetPasswordFormRequest extends FormRequest
 {
 
-    use PhoneNumberSerializable;
+    use PhoneNumberSerializable, FailedValidation;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,6 +29,7 @@ class CustomerForgetPasswordFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'idd' => 'required',
             'phone_number' => ['required',
                 Rule::exists('customers')->where(function ($query) {
                     return $query->where('phone_number', $this->phone_number)
@@ -35,13 +37,14 @@ class CustomerForgetPasswordFormRequest extends FormRequest
                                 ->where('deleted_at', NULL);
                 }),
             ],
-            'idd' => 'required',
         ];
     }
     public function messages()
     {
         return [
-            'phone_number.exists' => 'Phone Number Not Registered',
+            'phone_number.exists' => 'Phone_Number_Not_Registered',
+            'idd.required' => 'idd_is_required',
+            'phone_number.required' => 'phone_number_is_required',
         ];
     }
 

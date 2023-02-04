@@ -47,10 +47,10 @@ class CustomerService
 
                 return getSuccessMessages($result);
             } else {
-                return response()->json([
-                    'status' => false,
-                    'messages' => [$verifyResult['msg']],
-                ], 400);
+                $result['message'] = $verifyResult['msg'];
+                $result['statusCode'] = 400;
+
+                return getSuccessMessages($result, false);
             }
         } catch (\Exception $e) {
             // \Log::debug($e);

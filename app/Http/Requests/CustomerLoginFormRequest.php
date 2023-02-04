@@ -4,10 +4,11 @@ namespace App\Http\Requests;
 
 use App\Traits\PhoneNumberSerializable;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\FailedValidation;
 
 class CustomerLoginFormRequest extends FormRequest
 {
-    use PhoneNumberSerializable;
+    use PhoneNumberSerializable, FailedValidation;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -27,10 +28,19 @@ class CustomerLoginFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required',
             'idd' => 'required',
+            'phone_number' => 'required',
             'password' => 'required',
         ];
 
+    }
+
+    public function messages()
+    {
+        return [
+            'idd.required' => 'idd_is_required',
+            'phone_number.required' => 'phone_number_is_required',
+            'password.required' => 'password_is_required',
+        ];
     }
 }

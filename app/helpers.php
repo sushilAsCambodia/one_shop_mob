@@ -234,12 +234,12 @@ if (!function_exists('verifyOTP')) {
 
         if ($otp) {
             if ($otp->expire_at && strtotime($otp->expire_at) < strtotime(now()))
-                return ['status' => false, 'msg' => 'OTP expired'];
+                return ['status' => false, 'msg' => 'OTP_expired'];
 
             $otp->update(['is_verify' => true]);
             return ['status' => true];
         } else
-            return ['status' => false, 'msg' => 'OTP not matched'];
+            return ['status' => false, 'msg' => 'OTP_not_matched'];
     }
 }
             
