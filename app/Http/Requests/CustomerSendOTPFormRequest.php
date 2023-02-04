@@ -41,7 +41,9 @@ class CustomerSendOTPFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'phone_number.unique' => 'Phone Number already registered',
+            'phone_number.unique' => 'Phone_Number_already_registered',
+            'idd.required' => 'idd_is_required',
+            'phone_number.required' => 'phone_number_is_required',
         ];
     }
 
