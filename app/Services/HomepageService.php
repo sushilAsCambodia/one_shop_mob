@@ -43,17 +43,14 @@ class HomepageService
 
     public function getData($sortBy, $sortOrder, $slug)
     {
-        $products = Product::whereHas('promotion', function ($query) use ($slug) {
-            $query->where('promotions.slug', $slug);
-        })
-            ->whereHas('deals', function ($query) {
+        $products = Product::whereHas('deals', function ($query) {
                 $query->whereIn('status', ['expired', 'active']);
             });
         if (Session::get("promotional_query_session")) {
             $products = $products->with([
-                'category',
-                'subCategory',
-                'slot',
+                // 'category',
+                // 'subCategory',
+                // 'slot',
                 'image',
                 'translation',
                 'tags',
@@ -181,6 +178,7 @@ class HomepageService
             $data = [];
             foreach ($promotions as $promotion) {
                 $data[] = [
+                    'id'        =>     $promotion->id,
                     'name'      =>     $promotion->name,
                     'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
                     'slug'      =>     $promotion->slug,
