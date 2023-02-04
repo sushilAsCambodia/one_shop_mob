@@ -25,6 +25,13 @@ class ProductService
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
             $isSortByPrice = false; 
             $query = Product::distinct('products.id');
+            $query = $query->with([
+                'image',
+                'translation',
+                'tags',
+                'deal.slots',
+                'favouriteCount',
+            ]);
             // $tag = null;
             // $promotion = null;
             // switch ($request->tag) {
