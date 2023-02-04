@@ -23,12 +23,19 @@ class CategoryController extends Controller
 
     public function all()
     {
-        return response()->json(Category::all(), 200);
+        $result['message'] = 'Categories_fetch_successfully';
+        $result['data'] = Category::all();
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 
     public function treeView()
     {
-        return response()->json(Category::with('subCategories')->get(), 200);
+        $result['message'] = 'Category_subCategory_fetch_successfully';
+        $result['data'] = Category::with('subCategories')->get();
+        $result['statusCode'] = 200;
+
+        return getSuccessMessages($result);
     }
 
     public function store(CategoryFormRequest $request)

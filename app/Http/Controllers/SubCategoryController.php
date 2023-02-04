@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SubCategoryFormRequest;
 use App\Models\SubCategory;
+use App\Models\Category;
 use App\Services\SubCategoryService;
 use Illuminate\Http\Request;
 
@@ -23,24 +24,17 @@ class SubCategoryController extends Controller
         return response()->json(SubCategory::all(), 200);
     }
 
-    public function store(SubCategoryFormRequest $request)
+    public function subCategoriesId($categoryId)
     {
-
-        return $this->subCategoryService->store($request->all());
+        $result['message'] = 'Categories_fetch_successfully';
+        $result['data'] = Category::with('subCategories')->where('id', $categoryId)->first();
+        // SubCategory::where('category_id', $categoryId)->get();
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 
-    public function get(Request $request, SubCategory $subCategory)
-    {
-        return response()->json(SubCategory::whereId($subCategory->id)->with('subCategories')->firstOrFail(), 200);
-    }
-
-    public function update(SubCategoryFormRequest $request, SubCategory $subCategory)
-    {
-        return $this->subCategoryService->update($subCategory, $request->all());
-    }
-
-    public function delete(SubCategory $subCategory)
-    {
-        return $this->subCategoryService->delete($subCategory);
-    }
+// public function get(Request $request, SubCategory $subCategory)
+// {
+//     return response()->json(SubCategory::whereId($subCategory->id)->with('subCategories')->firstOrFail(), 200);
+// }
 }

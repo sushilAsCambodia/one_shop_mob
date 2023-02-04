@@ -59,6 +59,13 @@ Route::group(['middleware' => ['lang_id']], function () {
         // Route::get('search', 'getSearchResult');
         Route::get('get/homePageData', 'getPromotional');
     });
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('categories/all', 'all');
+        Route::get('categories/treeView', 'treeView');
+    });
+    Route::controller(SubCategoryController::class)->group(function () {
+        Route::get('subCategories/{categoryId}', 'subCategoriesId');
+    });
 
     Route::controller(ProductController::class)->group(function () {
         // Route::get('products/paginate/{params?}', 'paginate');

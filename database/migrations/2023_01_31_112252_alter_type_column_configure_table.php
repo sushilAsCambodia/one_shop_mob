@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `configures` CHANGE COLUMN `type` ENUM('BOT','MLM','ORDER') NULL DEFAULT NULL");
+        // DB::statement("ALTER TABLE `configures` CHANGE COLUMN `type` ENUM('BOT','MLM','ORDER') NULL DEFAULT NULL");
     }
 
     /**
