@@ -51,7 +51,7 @@ class ProductController extends Controller
 
         $product->update(['views' => $product->views + 1]);
 
-        return response()->json($product, 200);
+        return $this->productService->get($product);
     }
     public function upload(ProductImportRequest $request)
     {

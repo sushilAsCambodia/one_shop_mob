@@ -117,6 +117,29 @@ class ProductService
             return generalErrorResponse($e);
         }
     }
+    public function get($product): JsonResponse
+    {
+        try {
+            $query = Product::distinct('products.id')->where('id', $product->id);
+            $query = $query->with([
+                'image',
+                'translation',
+                'tags',
+                'deal.slots',
+                'favouriteCount',
+            ]);
+            $data = $query->first();
+
+            $result['message'] = 'product_fetch_successfully';
+            $result['data'] = $data;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
     public function paginate($request): JsonResponse
     {
         try {

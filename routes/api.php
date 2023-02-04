@@ -70,7 +70,7 @@ Route::group(['middleware' => ['lang_id']], function () {
     Route::controller(ProductController::class)->group(function () {
         // Route::get('products/paginate/{params?}', 'paginate');
         Route::get('products/view-all', 'index');
-        // Route::get('products/{product}', 'get')->where(['product' => '[0-9]+']);
+        Route::get('products/{product}', 'get')->where(['product' => '[0-9]+']);
         // Route::get('products/get-by-category-slug/{slug}', 'getByCategorySlug');
     });
 
