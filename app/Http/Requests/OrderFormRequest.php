@@ -40,15 +40,15 @@ class OrderFormRequest extends FormRequest
     public function messages()
     {
         return [
-            "product_details.required" => "Cart is Empty",
-            'product_details.array' => 'The product details must be an array.',
-            'product_details.min' => 'The product details must have at least one item.',
-            'product_details.*.product_id.required' => 'The product ID field is required.',
-            'product_details.*.product_id.exists' => 'The selected product is invalid, or the deal of this product not available',
-            'product_details.*.amount.required' => 'The amount field is required.',
-            'product_details.*.amount.int' => 'The amount must be an integer.',
-            'product_details.*.slots.required' => 'The slots field is required.',
-            'product_details.*.slots.int' => 'The slots must be an integer.',
+            "product_details.required" => "Cart_is_Empty",
+            'product_details.array' => 'The_product_details_must_be_an_array',
+            'product_details.min' => 'The_product_details_must_have_at_least_one_item',
+            'product_details.*.product_id.required' => 'The_product_ID_field_is_required',
+            'product_details.*.product_id.exists' => 'The_selected_product_is_invalid_or_the_deal_of_this_product_not_available',
+            'product_details.*.amount.required' => 'The_amount_field_is_required',
+            'product_details.*.amount.int' => 'The_amount_must_be_an_integer',
+            'product_details.*.slots.required' => 'The_slots_field_is_required',
+            'product_details.*.slots.int' => 'The_slots_must_be_an_integer',
         ];
     }
 }

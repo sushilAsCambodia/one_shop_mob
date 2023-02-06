@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
         // Route::get('orders/paginate/{params?}', 'paginate');
-        // Route::post('customer/orders', 'store');
+        Route::post('customer/orders', 'store');
         // Route::post('customer/orders-cancel', 'cancelOrder');
         // Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
         // Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');

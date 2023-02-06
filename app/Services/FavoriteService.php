@@ -24,7 +24,11 @@ class FavoriteService
 
             $results = $query->select('favorites.*')->with('product')->paginate($perPage, ['*'], 'page', $page);
 
-            return response()->json($results, 200);
+            $result['message'] = 'favorite_fetch_successfully';
+            $result['message'] = $results;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
@@ -63,9 +67,10 @@ class FavoriteService
                 Favorite::where('product_id', $data['product_id'])->where('customer_id', $data['customer_id'])->delete();
             });
 
-            return response()->json([
-                'messages' => ['Product Removed from favorite successfully'],
-            ], 201);
+            $result['message'] = 'Product_Removed_from_favorite_successfully';
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);

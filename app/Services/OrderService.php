@@ -127,10 +127,10 @@ class OrderService
 
             // $result = Order::where('id', $orderId)->with(['orderProduct', 'orderProduct.product'])->first();
 
-            return response()->json([
-                'messages' => ['Order created successfully'],
-                // 'data'     => $result,
-            ], 201);
+            $result['message'] = 'Order_created_successfully';
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
