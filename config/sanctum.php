@@ -17,7 +17,7 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        '35.75.141.29:3000,35.75.141.29:8090,35.75.141.29:10000,the1shops.com:10000,the1shops.com:9000,35.75.141.29:8080,one-dollar-admin.kk-lotto.com:8080,localhost,localhost:3000,localhost:8080,127.0.0.1,127.0.0.1:8000,::1',
+        'the1shops.com:10000',
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
@@ -33,7 +33,8 @@ return [
     |
     */
 
-    'guard' => ['web'],
+    'guard' => ['web','customer'],
+    //'guard' => ['customer'],
 
     /*
     |--------------------------------------------------------------------------
