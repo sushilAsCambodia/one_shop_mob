@@ -24,6 +24,11 @@ class HomepageController extends Controller
         return $this->homepageService->getSearchResult($request);
     }
 
+    public function getHomePageData(Request $request)
+    {
+        return $this->homepageService->getHomePageData($request);
+    }
+
     public function getPromotional(Request $request)
     {
         return $this->homepageService->getPromotional($request);

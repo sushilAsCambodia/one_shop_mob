@@ -57,7 +57,8 @@ Route::group(['middleware' => ['lang_id']], function () {
     Route::controller(HomepageController::class)->group(function () {
         // Route::get('homepage', 'index');
         Route::get('search', 'getSearchResult');
-        Route::get('get/homePageData', 'getPromotional');
+        Route::get('get/homePageData', 'getHomePageData');
+        Route::get('get/promotional', 'getPromotional');
     });
     Route::controller(CategoryController::class)->group(function () {
         Route::get('categories/all', 'all');

@@ -136,7 +136,7 @@ class HomepageService
         }
     }
 
-    public function getPromotional($request)
+    public function getHomePageData($request)
     {
         try {
             Session::put("promotional_query_session", true);
@@ -169,6 +169,47 @@ class HomepageService
                 'languages' => Language::all(),
                 'banners' => Banner::where('type', 'homePage')->get(),
                 'categories' => Category::all(),
+                'promotional' => $data,
+            ];
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
+
+    public function getPromotional($request)
+    {
+        try {
+            Session::put("promotional_query_session", true);
+
+            $perPage = $request->rowsPerPage ?: 15;
+            $page = $request->page ?: 1;
+            $sortBy = $request->sortBy ?: 'created_at';
+            $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+
+            $promotions = Promotion::whereStatus('active')->paginate($perPage, ['*'], 'page', $page);
+            // $promotions->map(function ($item) use ($sortBy, $sortOrder){
+            //     // modify the item here
+            //     $item->products = $this->getData($sortBy, $sortOrder, $item->slug);
+            //     return $item;
+            // });
+            $data = [];
+            foreach ($promotions as $promotion) {
+                $data[] = [
+                    'id'        =>     $promotion->id,
+                    'name'      =>     $promotion->name,
+                    'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
+                    'slug'      =>     $promotion->slug,
+                    'image'      =>     $promotion->image
+                ];
+            }
+            // $paginator = new LengthAwarePaginator($promotions->all(), $promotions->count(), $perPage);
+
+            $result['message'] = 'fetch_all_homePage_successfully';
+            $result['data'] = [
                 'promotional' => $data,
             ];
             $result['statusCode'] = 200;
