@@ -213,7 +213,7 @@ class ProductSeeder extends Seeder
             ],
 
 
-        ];    
+        ];
         foreach ($products as $product) {
             // filters
             Product::updateOrcreate(['id' => $product['id']], $product);

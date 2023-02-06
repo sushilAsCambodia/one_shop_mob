@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `configures` CHANGE COLUMN `type` `type` ENUM('BOT','MLM','ORDER') NULL DEFAULT NULL");
+        DB::statement("ALTER TABLE `price_claims` CHANGE `status` `status` ENUM('pending','claimed','canceled','completed','shipping') NULL DEFAULT 'pending' ");
     }
 
     /**
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::statement("ALTER TABLE `configures`CHANGE COLUMN `type` `type` ENUM('BOT','MLM') NULL DEFAULT NULL");
+        DB::statement("ALTER TABLE `price_claims` CHANGE `status` `status` ENUM('pending','claimed','canceled','completed') NULL DEFAULT 'pending' ");
     }
 };
