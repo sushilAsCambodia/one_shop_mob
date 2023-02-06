@@ -51,6 +51,11 @@ class Product extends Model implements Auditable
         return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
     }
 
+    public function translates()
+    {
+        return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
