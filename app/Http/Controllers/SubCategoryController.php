@@ -24,12 +24,12 @@ class SubCategoryController extends Controller
         return response()->json(SubCategory::all(), 200);
     }
 
-    public function subCategoriesId($categoryId)
+    public function subCategoriesId(Request $request)
     {
         $result['message'] = 'Categories_fetch_successfully';
         $result['data'] = [
-            'category' => Category::where('id', $categoryId)->first(),
-            'subCategories' => SubCategory::with('products')->where('category_id', $categoryId)->get(),
+            'category' => Category::where('id', $request->categoryId)->first(),
+            'subCategories' => SubCategory::with('products')->where('category_id', $request->categoryId)->get(),
         ];
         // Category::with('subCategories')->where('id', $categoryId)->first();
         // SubCategory::where('category_id', $categoryId)->get();

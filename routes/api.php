@@ -65,7 +65,7 @@ Route::group(['middleware' => ['lang_id']], function () {
         Route::get('categories/treeView', 'treeView');
     });
     Route::controller(SubCategoryController::class)->group(function () {
-        Route::get('subCategories/{categoryId}', 'subCategoriesId');
+        Route::get('subCategories', 'subCategoriesId');
     });
 
     Route::controller(ProductController::class)->group(function () {
