@@ -83,34 +83,12 @@ class HomepageService
                                 });
                         });
                     });
-                    // $query->when($request->search_key, function ($q) use ($request) {
-                    //     $q->leftJoin('translations', 'translations.translationable_id', '=', 'categories.id')
-                    //         ->leftJoin('sub_categories', 'sub_categories.category_id', '=', 'categories.id')
-                    //         ->where(function ($q) {
-                    //             $q->where('translations.translationable_type', 'App\Models\Category')
-                    //                 ->orWhere('translations.translationable_type', 'App\Models\SubCategory');
-                    //         })
-                    //         ->where(function ($q) use ($request) {
-                    //             $q->orWhere('translations.translation', 'like', "%$request->search_key%")
-                    //                 ->orWhere('categories.name', 'like', "%$request->search_key%")
-                    //                 ->orWhere('categories.slug', 'like', "%$request->search_key%")
-                    //                 ->orWhere('categories.description', 'like', "%$request->search_key%");
-                    //         })->groupBy('categories.id');
-                    // });
                     $data = $query->with('subCategories')->select('categories.*')->get();
 
                     break;
 
                 case 'product':
                     $query = (new Product())->newQuery();
-                    // $query->when($request->search_key, function ($q) use ($request) {
-                    //     $q->leftJoin('translations', 'translations.translationable_id', '=', 'products.id')
-                    //         ->where('translations.translationable_type', 'App\Models\Product')
-                    //         ->where(function ($q) use ($request) {
-                    //             $q->orWhere('translations.translation', 'like', "%$request->search_key%")
-                    //                 ->orWhere('products.sku', 'like', "%$request->search_key%");
-                    //         })->groupBy('products.id');
-                    // });
 
                     $query->when($request->search_key, function ($q) use ($request) {
                         $q->whereHas('translation', function ($q) use ($request) {
@@ -124,32 +102,34 @@ class HomepageService
                     $data = $query->select('products.*')->get();
 
                     //query category and sub category
-                    if ($request->search_key) {
-                        $query = (new Category())->newQuery();
-                        $query->where(function ($q) use ($request) {
-                            $q->whereHas('translates', function ($q) use ($request) {
-                                $q->where('translation', 'like', "%$request->search_key%");
-                            });
-                        });
-                        $categories = $query->select('categories.*')->get()->toArray();
+                    // if ($request->search_key) {
+                    //     $query = (new Category())->newQuery();
+                    //     $query->where(function ($q) use ($request) {
+                    //         $q->whereHas('translates', function ($q) use ($request) {
+                    //             $q->where('translation', 'like', "%$request->search_key%");
+                    //         });
+                    //     });
+                    //     $categories = $query->select('categories.*')->get()->toArray();
 
-                        $query = (new SubCategory())->newQuery();
-                        $query->where(function ($q) use ($request) {
-                            $q->whereHas('translates', function ($q) use ($request) {
-                                $q->where('translation', 'like', "%$request->search_key%");
-                            });
-                        });
-                        $subCategories = $query->select('sub_categories.*')->get()->toArray();
-                        $categories = array_merge($categories, $subCategories);
-                    }
+                    //     $query = (new SubCategory())->newQuery();
+                    //     $query->where(function ($q) use ($request) {
+                    //         $q->whereHas('translates', function ($q) use ($request) {
+                    //             $q->where('translation', 'like', "%$request->search_key%");
+                    //         });
+                    //     });
+                    //     $subCategories = $query->select('sub_categories.*')->get()->toArray();
+                    //     $categories = array_merge($categories, $subCategories);
+                    // }
 
                     break;
             }
 
-            return response()->json([
-                'data' => $data,
-                'category_data' => $categories,
-            ], 200);
+            $result['message'] = 'fetch_search_data_successfully';
+            $result['data'] = $data;
+
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);            
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
