@@ -30,7 +30,7 @@ class SubCategory extends Model implements Auditable
     public function products(){
         return $this->hasMany(Product::class)->with([
             'image',
-            'translation',
+            'translates',
             'tags',
             'deal.slots',
             'favouriteCount',
