@@ -150,6 +150,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         // Route::patch('prize-claim/{priceClaim}', 'update');
         // Route::get('prize-claim/{priceClaim}', 'get');
     });
+
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('notifications/get-latest', 'getLatest');
+        Route::get('notifications/paginate/{params?}', 'paginate');
+        Route::patch('notifications/{notification}', 'update');
+    });
 });
 
 

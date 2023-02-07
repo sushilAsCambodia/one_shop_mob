@@ -62,8 +62,59 @@ class NotificationService
                 ]
             );
 
+            $result['message'] = 'fetch_Notification_data_successfully';
+            $result['data'] = $itemsTransformedAndPaginated;
 
-            return response()->json($itemsTransformedAndPaginated, 200);
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
+    public function getLatest($request): JsonResponse
+    {
+        try {
+            $query = (new Notification())->newQuery();
+
+            $query->when($request->dates, function ($query) use ($request) {
+                if ($request->dates[0] == $request->dates[1]) {
+                    $query->whereDate('created_at', Carbon::parse($request->dates[0])->format('Y-m-d'));
+                } else {
+                    $query->whereBetween('created_at', [
+                        Carbon::parse($request->dates[0])->startOfDay(),
+                        Carbon::parse($request->dates[1])->endOfDay(),
+                    ]);
+                }
+            });
+
+            $itemsPaginated = $query->where(['notifiable_id' => auth()->user()->id])
+                ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
+                ->latest()->first();
+
+            // $itemsTransformed = $itemsPaginated
+            //     ->getCollection()
+            //     ->map(function ($item) {
+            //         $datas = new stdClass();
+            //         if (!empty($item->data->data)) {
+            //             $datas = $item->data->data;
+            //             $datas->read_at = $item->read_at;
+            //             $datas->id = $item->id;
+            //             $datas->message = $item->data->message;
+            //             $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
+            //         }
+            //         return  $datas;
+            //     })->toArray();
+
+            $result['message'] = 'fetch_latest_Notification_data_successfully';
+            $result['data'] = $query;
+
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);

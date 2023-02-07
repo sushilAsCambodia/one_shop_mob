@@ -16,6 +16,12 @@ class NotificationController extends Controller
     {
         return $this->notificationService->paginate($request);
     }
+
+    public function getLatest(Request $request)
+    {
+        return $this->notificationService->getLatest($request);
+    }
+    
     public function update(Notification $notification,Request $request)
     {
         return $this->notificationService->update($notification,$request->all());
