@@ -71,12 +71,12 @@ class HomepageService
                     $query->when($request->search_key, function ($q) use ($request) {
                         $q->where(function ($q) use ($request) {
                             $q->where('slug', 'like', "%$request->search_key%")
-                                ->orWhereHas('translates', function ($q) use ($request) {
+                                ->orWhereHas('translation', function ($q) use ($request) {
                                     $q->where('translation', 'like', "%$request->search_key%");
                                 })
                                 ->orWhereHas('subCategories', function ($q) use ($request) {
                                     $q->where('slug', 'like', "%$request->search_key%")
-                                        ->orWhereHas('translates', function ($q) use ($request) {
+                                        ->orWhereHas('translation', function ($q) use ($request) {
                                             $q->where('translation', 'like', "%$request->search_key%");
                                         });
                                 });
@@ -126,7 +126,7 @@ class HomepageService
                     if ($request->search_key) {
                         $query = (new Category())->newQuery();
                         $query->where(function ($q) use ($request) {
-                            $q->whereHas('translates', function ($q) use ($request) {
+                            $q->whereHas('translation', function ($q) use ($request) {
                                 $q->where('translation', 'like', "%$request->search_key%");
                             });
                         });
@@ -134,7 +134,7 @@ class HomepageService
 
                         $query = (new SubCategory())->newQuery();
                         $query->where(function ($q) use ($request) {
-                            $q->whereHas('translates', function ($q) use ($request) {
+                            $q->whereHas('translation', function ($q) use ($request) {
                                 $q->where('translation', 'like', "%$request->search_key%");
                             });
                         });

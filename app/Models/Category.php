@@ -14,7 +14,7 @@ class Category extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $guarded = ['id'];
-    protected $with = ['image', 'translates'];
+    protected $with = ['image', 'translation'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'description'];
 
     public function products(){
@@ -30,7 +30,7 @@ class Category extends Model implements Auditable
         return $this->morphOne(File::class, 'fileable');
     }
 
-    public function translates()
+    public function translation()
     {
         return $this->morphOne(Translation::class, 'translationable')->where('language_id', request()->lang_id);
     }
@@ -40,7 +40,7 @@ class Category extends Model implements Auditable
         $attributes = parent::toArray();
         $translateData = array();
         Language::all()->each(function ($language) use (&$translateData) {
-            $tran = $this->translates()->whereLanguageId($language->id)->get();
+            $tran = $this->translation()->whereLanguageId($language->id)->get();
             $oneLanguageData = array();
             $tran->each(function ($t) use (&$oneLanguageData, &$language){
                 $oneLanguageData[$t->field_name] = $t->translation;
@@ -49,7 +49,7 @@ class Category extends Model implements Auditable
                 $translateData = $oneLanguageData;
 
         });
-        $attributes['translates'] = $translateData;
+        $attributes['translation'] = $translateData;
         return $attributes;
     }
 }

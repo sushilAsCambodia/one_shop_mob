@@ -19,7 +19,8 @@ class Banner extends Model
     {
         return $this->morphOne(File::class, 'fileable');
     }
-    public function translates()
+    
+    public function translation()
     {
         return $this->morphMany(Translation::class, 'translationable');
     }
@@ -29,7 +30,7 @@ class Banner extends Model
         $attributes = parent::toArray();
         $translateData = array();
         Language::all()->each(function ($language) use (&$translateData) {
-            $tran = $this->translates()->whereLanguageId($language->id)->get();
+            $tran = $this->translation()->whereLanguageId($language->id)->get();
             $oneLanguageData = array();
             $tran->each(function ($t) use (&$oneLanguageData, &$language){
                 $oneLanguageData[$t->field_name] = $t->translation;
@@ -38,7 +39,7 @@ class Banner extends Model
                 $translateData = $oneLanguageData;
 
         });
-        $attributes['translates'] = $translateData;
+        $attributes['translation'] = $translateData;
         return $attributes;
     }
 }
