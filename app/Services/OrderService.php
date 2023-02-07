@@ -53,7 +53,12 @@ class OrderService
                 ->where('orders.status', $slug)->latest('created_at')->get();
             // dd($resultData); die;
             if (!$resultData && empty($resultData)) {
-                return response()->json(['messages' => ['Data Not Found'],], 400);
+                $result['message'] = 'Data_Not_Found';
+                $result['data'] = $resultData;
+                $result['statusCode'] = 201;
+    
+                return getSuccessMessages($result);
+                return response()->json(['messages' => [''],], );
             }
             // if ($slug == 'reserved') {
             //     $slug = 'reserved';
