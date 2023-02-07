@@ -43,6 +43,15 @@ class HomepageService
 
     public function getData($sortBy, $sortOrder, $slug)
     {
+        Session::put("query_promotions_session",true);
+        $products =  Product::whereHas('promotion', function ($query) use ($slug) {
+                    $query->where('promotions.slug', $slug);
+                })
+                ->whereHas('deals',function ($query){
+                    $query->whereIn('status',['expired', 'active']);
+                })
+                ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+
         $products = Product::whereHas('deals', function ($query) {
             $query->whereIn('status', ['expired', 'active']);
         });
