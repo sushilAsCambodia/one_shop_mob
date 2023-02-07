@@ -128,7 +128,7 @@ class NotificationService
             );
 
             $result['message'] = 'fetch_latest_Notification_data_successfully';
-            $result['data'] = $itemsTransformedAndPaginated;
+            $result['data'] = $itemsPaginated;
 
             $result['statusCode'] = 200;
 
