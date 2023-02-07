@@ -97,7 +97,7 @@ class NotificationService
 
             $itemsPaginated = $query->where(['notifiable_id' => auth()->user()->id])
                 ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
-                ->get();
+                ->first();
 
             // $itemsTransformed = $itemsPaginated
             //     ->getCollection()
