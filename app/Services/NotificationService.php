@@ -74,26 +74,15 @@ class NotificationService
             return generalErrorResponse($e);
         }
     }
-    public function getLatest($request): JsonResponse
+    public function getLatest(): JsonResponse
     {
         try {
             $query = (new Notification())->newQuery();
 
-            $query->when($request->dates, function ($query) use ($request) {
-                if ($request->dates[0] == $request->dates[1]) {
-                    $query->whereDate('created_at', Carbon::parse($request->dates[0])->format('Y-m-d'));
-                } else {
-                    $query->whereBetween('created_at', [
-                        Carbon::parse($request->dates[0])->startOfDay(),
-                        Carbon::parse($request->dates[1])->endOfDay(),
-                    ]);
-                }
-            });
-
             $itemsPaginated = $query->where(['notifiable_id' => auth()->user()->id])
                 ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
                 ->latest()->first();
-
+            print_r($itemsPaginated); die;
             // $itemsTransformed = $itemsPaginated
             //     ->getCollection()
             //     ->map(function ($item) {
@@ -109,7 +98,7 @@ class NotificationService
             //     })->toArray();
 
             $result['message'] = 'fetch_latest_Notification_data_successfully';
-            $result['data'] = $query;
+            $result['data'] = $itemsPaginated;
 
             $result['statusCode'] = 200;
 
