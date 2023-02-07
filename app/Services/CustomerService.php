@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\Configure;
 use App\Models\Customer;
 use App\Models\Favorite;
+use App\Models\Notification;
 use App\Models\OntimePassword;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -289,20 +290,9 @@ class CustomerService
             $result['customer'] = Auth()->user();
 
             // notification start
-            $sortBy = $request->sortBy ?: 'created_at';
-            $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+            $sortBy = 'created_at';
+            $sortOrder = 'desc';
             $query = (new Notification())->newQuery()->orderBy($sortBy, $sortOrder);
-
-            $query->when($request->dates, function ($query) use ($request) {
-                if ($request->dates[0] == $request->dates[1]) {
-                    $query->whereDate('created_at', Carbon::parse($request->dates[0])->format('Y-m-d'));
-                } else {
-                    $query->whereBetween('created_at', [
-                        Carbon::parse($request->dates[0])->startOfDay(),
-                        Carbon::parse($request->dates[1])->endOfDay(),
-                    ]);
-                }
-            });
 
             $result['latest_notification'] = $query->where(['notifiable_id' => auth()->user()->id])
                 ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
