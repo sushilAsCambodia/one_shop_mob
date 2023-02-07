@@ -17,8 +17,13 @@ class OrderProduct extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class)->with(['image','deal']);
+        return $this->belongsTo(Product::class);
     }
 
+    public function products()
+    {
+        return $this->belongsTo(Product::class)->with(['image','deal']);
+    }
+    
 
 }

@@ -144,9 +144,11 @@ class Product extends Model implements Auditable
                 $translateData = $oneLanguageData;
         });
         if (array_key_exists('deal', $attributes)) {
-            $deal = (array) $attributes['deal'];
-            if ($deal) {
-                $attributes['slot'] = $deal['slots'];
+            if (sizeof($attributes['slot']) > 0) {
+                $deal = (array) $attributes['deal'];
+                if ($deal) {
+                    $attributes['slot'] = $deal['slots'];
+                }
             }
         }
 
