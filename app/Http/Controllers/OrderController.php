@@ -27,10 +27,6 @@ class OrderController extends Controller
     {
         return $this->orderService->store($request->all());
     }
-    public function getDashboardCounts()
-    {
-        return $this->orderService->getDashboardCounts();
-    }
 
     public function orderGetById($orderId)
     {

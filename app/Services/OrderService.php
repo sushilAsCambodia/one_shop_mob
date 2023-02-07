@@ -60,11 +60,11 @@ class OrderService
             // }
             foreach ($resultData as $key1 => $result) {
                 // dd($result);
-                $orderProductData = OrderProduct::with('product.deal','product.slotDeals')->where('order_id', $result->id)->where('status', $slug)
+                $orderProductData = OrderProduct::with('product.deal', 'product.slotDeals')->where('order_id', $result->id)->where('status', $slug)
                     ->with(['product'])->latest('created_at')->get();
 
                 foreach ($orderProductData as $key => $orderProduct) {
-                    $deal = Deal::whereProductId($orderProduct->product_id)->where('deals.status','active')->orderBy('created_at', 'desc')->first();
+                    $deal = Deal::whereProductId($orderProduct->product_id)->where('deals.status', 'active')->orderBy('created_at', 'desc')->first();
                     if (!empty($deal) && $deal) {
                         $slotsId = $deal->slots()->first()->id;
                         $orderProductData[$key]->slots_deals = SlotDeal::where('order_id', $result->id)
@@ -74,9 +74,13 @@ class OrderService
 
                 $resultData[$key1]->order_product = $orderProductData;
             }
-            return response()->json([
-                'order' => $resultData,
-            ], 200);
+
+            $result['message'] = 'Orders_fetch_successfully';
+            $result['data'] = $resultData;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+            
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
@@ -97,9 +101,11 @@ class OrderService
                 $slots = $deal->slots()->first();
 
                 if ($slots->total_slots < $slots->booked_slots + $pData['slots']) {
+
                     $result['message'] = 'Insufficient_Slots';
                     $result['data'] = ['product_id' => $pData['product_id'], 'available_slots' => $slots->total_slots - $slots->booked_slots,];
                     $result['statusCode'] = 200;
+
                     return getSuccessMessages($result, false);
                 } else if ($slots->booked_slots == 0 && $slots->total_slots != $pData['slots']) {
                     // Bot Setting..
@@ -131,31 +137,6 @@ class OrderService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-        } catch (\Exception $e) {
-            \Log::debug($e);
-            return generalErrorResponse($e);
-        }
-    }
-
-    public function getDashboardCounts(): JsonResponse
-    {
-        try {
-            $result['orderCount']   = Order::where('customer_id', Auth()->user()->id)->where('status', 'confirmed')->count();
-
-            $query =  (new Address())->newQuery();
-            $modelData = Auth::user();
-            $query->when($modelData, function ($query) use ($modelData) {
-                $query->whereAddressableType(Customer::class)
-                    ->whereAddressableId($modelData->id);
-            });
-            $result['addressCount'] = $query->count();
-
-            $result['whishlistCount'] = Favorite::where('customer_id', Auth()->user()->id)->count();
-
-            return response()->json([
-                'messages' => ['Dashboard Count Data'],
-                'data'     => $result,
-            ], 201);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
@@ -227,10 +208,10 @@ class OrderService
     public function orderCompleted($request): JsonResponse
     {
         try {
-            $resultData = Order::with(['products','delivered_products',])
-                                ->where('customer_id', Auth()->user()->id)
-                                ->whereIn('status',['loser','completed'])
-                                ->get();
+            $resultData = Order::with(['products', 'delivered_products',])
+                ->where('customer_id', Auth()->user()->id)
+                ->whereIn('status', ['loser', 'completed'])
+                ->get();
             // dd($resultData); die;
             if (!$resultData && empty($resultData)) {
                 return response()->json(['messages' => ['Data Not Found'],], 400);
@@ -241,8 +222,8 @@ class OrderService
             foreach ($resultData as $key1 => $result) {
                 // dd($result);
                 $orderProductData = OrderProduct::where('order_id', $result->id)
-                                                // ->whereIn('status',['loser','completed'])
-                                                ->with(['product', 'product.deal','product.slotDeals'])->get();
+                    // ->whereIn('status',['loser','completed'])
+                    ->with(['product', 'product.deal', 'product.slotDeals'])->get();
 
                 foreach ($orderProductData as $key => $orderProduct) {
                     $deal = Deal::whereProductId($orderProduct->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
@@ -263,5 +244,4 @@ class OrderService
             return generalErrorResponse($e);
         }
     }
-
 }
