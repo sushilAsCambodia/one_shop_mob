@@ -43,19 +43,32 @@ class HomepageService
 
     public function getData($sortBy, $sortOrder, $slug)
     {
-        $products = Product::whereHas('deals', function ($query) {
-            $query->whereIn('status', ['expired', 'active']);
-        });
+        Session::put("query_promotions_session",true);
+        $products =  Product::whereHas('promotion', function ($query) use ($slug) {
+                    $query->where('promotions.slug', $slug);
+                })
+                ->whereHas('deals',function ($query){
+                    $query->whereIn('status',['expired', 'active']);
+                })
+                ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+        $promotionalQuery = Session::get("promotional_query_session");        
+        if($promotionalQuery)
+            $products->makeHidden(['deleted_at',"category","category_id","subCategory","sub_category_id",'favourite_count','promotion','favouriteCount',"translation.description"]);
+        return $products;
 
-        $products = $products->with([
-            'image',
-            'translation',
-            'tags',
-            'deal.slots',
-            'favouriteCount',
-        ]);
+        // $products = Product::whereHas('deals', function ($query) {
+        //     $query->whereIn('status', ['expired', 'active']);
+        // });
 
-        return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+        // $products = $products->with([
+        //     'image',
+        //     'translation',
+        //     'tags',
+        //     'deal.slots',
+        //     'favouriteCount',
+        // ]);
+
+        // return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
     public function getSearchResult($request): JsonResponse
     {
