@@ -102,24 +102,24 @@ class HomepageService
                     $data = $query->select('products.*')->get();
 
                     //query category and sub category
-                    // if ($request->search_key) {
-                    //     $query = (new Category())->newQuery();
-                    //     $query->where(function ($q) use ($request) {
-                    //         $q->whereHas('translates', function ($q) use ($request) {
-                    //             $q->where('translation', 'like', "%$request->search_key%");
-                    //         });
-                    //     });
-                    //     $categories = $query->select('categories.*')->get()->toArray();
+                    if ($request->search_key) {
+                        $query = (new Category())->newQuery();
+                        $query->where(function ($q) use ($request) {
+                            $q->whereHas('translates', function ($q) use ($request) {
+                                $q->where('translation', 'like', "%$request->search_key%");
+                            });
+                        });
+                        $categories = $query->select('categories.*')->get()->toArray();
 
-                    //     $query = (new SubCategory())->newQuery();
-                    //     $query->where(function ($q) use ($request) {
-                    //         $q->whereHas('translates', function ($q) use ($request) {
-                    //             $q->where('translation', 'like', "%$request->search_key%");
-                    //         });
-                    //     });
-                    //     $subCategories = $query->select('sub_categories.*')->get()->toArray();
-                    //     $categories = array_merge($categories, $subCategories);
-                    // }
+                        $query = (new SubCategory())->newQuery();
+                        $query->where(function ($q) use ($request) {
+                            $q->whereHas('translates', function ($q) use ($request) {
+                                $q->where('translation', 'like', "%$request->search_key%");
+                            });
+                        });
+                        $subCategories = $query->select('sub_categories.*')->get()->toArray();
+                        $categories = array_merge($categories, $subCategories);
+                    }
 
                     break;
             }
