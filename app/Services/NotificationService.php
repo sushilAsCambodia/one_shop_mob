@@ -99,33 +99,33 @@ class NotificationService
                 ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
                 ->get();
 
-            $itemsTransformed = $itemsPaginated
-                ->getCollection()
-                ->map(function ($item) {
-                    $datas = new stdClass();
-                    if (!empty($item->data->data)) {
-                        $datas = $item->data->data;
-                        $datas->read_at = $item->read_at;
-                        $datas->id = $item->id;
-                        $datas->message = $item->data->message;
-                        $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
-                    }
-                    return  $datas;
-                })->toArray();
+            // $itemsTransformed = $itemsPaginated
+            //     ->getCollection()
+            //     ->map(function ($item) {
+            //         $datas = new stdClass();
+            //         if (!empty($item->data->data)) {
+            //             $datas = $item->data->data;
+            //             $datas->read_at = $item->read_at;
+            //             $datas->id = $item->id;
+            //             $datas->message = $item->data->message;
+            //             $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
+            //         }
+            //         return  $datas;
+            //     })->toArray();
 
 
-            $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-                $itemsTransformed,
-                $itemsPaginated->total(),
-                $itemsPaginated->perPage(),
-                $itemsPaginated->currentPage(),
-                [
-                    'path' => \Request::url(),
-                    'query' => [
-                        'page' => $itemsPaginated->currentPage()
-                    ]
-                ]
-            );
+            // $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            //     $itemsTransformed,
+            //     $itemsPaginated->total(),
+            //     $itemsPaginated->perPage(),
+            //     $itemsPaginated->currentPage(),
+            //     [
+            //         'path' => \Request::url(),
+            //         'query' => [
+            //             'page' => $itemsPaginated->currentPage()
+            //         ]
+            //     ]
+            // );
 
             $result['message'] = 'fetch_latest_Notification_data_successfully';
             $result['data'] = $itemsPaginated;
