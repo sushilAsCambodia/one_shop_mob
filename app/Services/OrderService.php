@@ -97,10 +97,10 @@ class OrderService
                 $slots = $deal->slots()->first();
 
                 if ($slots->total_slots < $slots->booked_slots + $pData['slots']) {
-                    return response()->json([
-                        'data'     => ['product_id' => $pData['product_id'], 'available_slots' => $slots->total_slots - $slots->booked_slots,],
-                        'messages' => ['Insufficient Slots'],
-                    ], 400);
+                    $result['message'] = 'Insufficient_Slots';
+                    $result['data'] = ['product_id' => $pData['product_id'], 'available_slots' => $slots->total_slots - $slots->booked_slots,];
+                    $result['statusCode'] = 200;
+                    return getSuccessMessages($result, false);
                 } else if ($slots->booked_slots == 0 && $slots->total_slots != $pData['slots']) {
                     // Bot Setting..
                     $custmerIdBot = 6;
