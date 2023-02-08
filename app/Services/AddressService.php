@@ -67,9 +67,9 @@ class AddressService
                 $address->update($data);
             });
 
-            return response()->json([
-                'messages' => ['Address updated successfully'],
-            ], 200);
+            $result['message'] = 'Address_updated_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
@@ -80,9 +80,9 @@ class AddressService
         try {
             $address->delete();
 
-            return response()->json([
-                'messages' => ['Address deleted successfully'],
-            ], 200);
+            $result['message'] = 'Address_deleted_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
