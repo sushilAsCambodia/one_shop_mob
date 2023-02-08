@@ -16,7 +16,13 @@ class Favorite extends Model implements Auditable
     protected $guarded = ['id'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
-    public function product(){
-        return $this->belongsTo(Product::class);
+    public function products(){
+        return $this->belongsTo(Product::class)->with([
+            'image',
+            'translation',
+            'tags',
+            'deal.slots',
+            'favouriteCount',
+        ]);
     }
 }
