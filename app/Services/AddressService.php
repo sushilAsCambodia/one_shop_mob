@@ -32,7 +32,6 @@ class AddressService
                 'addresses.city_id'
             )->get();
 
-
             $result['message'] = 'Address_fetch_successfully';
             $result['data'] = $results;
             $result['statusCode'] = 200;
@@ -45,15 +44,16 @@ class AddressService
     public function store(array $data): JsonResponse
     {
         try {
+            $data['type'] = 'shipping';
             DB::transaction(function () use ($data) {
                 $address = new Address($data);
 
                 Auth::user()->addresses()->save($address);
             });
 
-            return response()->json([
-                'messages' => ['Address created successfully'],
-            ], 201);
+            $result['message'] = 'Address_created_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
