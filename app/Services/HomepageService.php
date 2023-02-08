@@ -200,7 +200,7 @@ class HomepageService
                 ];
             }
             // $paginator = new LengthAwarePaginator($promotions->all(), $promotions->count(), $perPage);
-            $userData = [];
+            $userData = null;
             if (Auth() && Auth()->user() && Auth()->user()->id) {
                 $response = $this->customerService->userDetails();
                 $userData = $response->original['data'];

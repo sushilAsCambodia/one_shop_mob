@@ -22,6 +22,8 @@ use App\Http\Controllers\SlotDealController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
 
+use App\Http\Controllers\AddressController;
+
 use App\Http\Middleware\LanguageCurrencyMiddleware;
 
 use App\Http\Controllers\AddToCartController;
@@ -183,5 +185,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('customers/user-details', 'userDetails');
         // Route::post('customers/create-bot-customer', 'createBotCustomer');
         Route::post('customers/logout', 'logout');
+    });
+
+    // Address routes
+    Route::controller(AddressController::class)->group(function () {
+        Route::get('addresses/all', 'all')->name('Address: View Address');
+        Route::get('addresses/{address}', 'get')->name('Address: View Address')->where(['address' => '[0-9]+']);
+        Route::post('addresses', 'store')->name('Address: Create Address');
+        Route::patch('addresses/{address}', 'update')->name('Address: Edit/Update Address')->where(['address' => '[0-9]+']);
+        Route::delete('addresses/{address}', 'delete')->name('Address: Delete Address')->where(['address' => '[0-9]+']);
     });
 });
