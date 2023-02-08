@@ -179,7 +179,7 @@ Route::controller(CustomerController::class)->group(function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(CustomerController::class)->group(function () {
         // Route::get('customers/mlm-earning', 'getCalculationsCustomers');
-        // Route::post('customers/update-account', 'updateAccount');
+        Route::post('customers/update-account', 'updateAccount');
         Route::get('customers/user-details', 'userDetails');
         // Route::post('customers/create-bot-customer', 'createBotCustomer');
         Route::post('customers/logout', 'logout');

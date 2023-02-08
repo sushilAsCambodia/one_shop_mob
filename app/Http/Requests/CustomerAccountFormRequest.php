@@ -31,9 +31,9 @@ class CustomerAccountFormRequest extends FormRequest
             'last_name' => 'nullable',
             'display_name' => 'nullable',
             'email' => 'nullable',
-            'current_password' => 'required_with:new_password',
-            'new_password' => 'nullable',
-            'new_password_confirmation' => 'required_with:new_password|same:new_password',
+            // 'current_password' => 'required_with:new_password',
+            // 'new_password' => 'nullable',
+            // 'new_password_confirmation' => 'required_with:new_password|same:new_password',
         ];
     }
 }

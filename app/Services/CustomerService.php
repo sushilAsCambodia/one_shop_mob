@@ -236,27 +236,26 @@ class CustomerService
             $customerData = [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
-                'email' => $request->email,
                 'display_name' => $request->display_name,
+                'email' => $request->email,
             ];
-            if ($request->current_password) {
-                if (Hash::check($request->current_password, Auth::user()->password)) {
-                    $customerData['password'] = $request->new_password;
-                } else {
-                    return response()->json([
-                        'status' => false,
-                        'messages' => ['Current password not correct'],
+            // if ($request->current_password) {
+            //     if (Hash::check($request->current_password, Auth::user()->password)) {
+            //         $customerData['password'] = $request->new_password;
+            //     } else {
+            //         return response()->json([
+            //             'status' => false,
+            //             'messages' => ['Current password not correct'],
 
-                    ], 200);
-                }
-            }
+            //         ], 200);
+            //     }
+            // }
             Auth::user()->update($customerData);
 
-            return response()->json([
-                'status' => true,
-                'messages' => ['Account has been saved successfully'],
+            $result['message'] = 'Account_has_been_saved_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
 
-            ], 200);
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
