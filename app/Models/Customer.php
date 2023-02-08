@@ -23,6 +23,13 @@ class Customer extends Authenticatable implements Auditable
     protected $hidden = [
         'password', 'created_at', 'updated_at', 'deleted_at',
     ];
+    
+    public $relationsToCascade = ['addresses','orders','invoice'];
+
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
 
     public function orders() {
         return $this->hasMany(Order::class);

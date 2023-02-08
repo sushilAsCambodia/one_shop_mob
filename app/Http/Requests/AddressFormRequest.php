@@ -39,7 +39,6 @@ class AddressFormRequest extends FormRequest
     {
         return [
             'street_address_1.required' => 'address_line_1_is_required',
-            'street_address_2.required' => 'address_line_2_is_required',
             'country_id.required' => 'country_id_is_required',
             'country_id.exists' => 'country_id_is_not_exists',
             'state_id.required' => 'state_id_is_required',
