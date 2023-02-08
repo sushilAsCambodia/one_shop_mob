@@ -14,6 +14,9 @@ class CityController extends Controller
 
     public function all($stateId)
     {
-        return response()->json(City::where('state_id', $stateId)->where('status','active')->get(), 200);
+        $result['message'] = 'City_fetch_successfully';
+        $result['data'] = City::where('state_id', $stateId)->where('status', 'active')->get();
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 }

@@ -86,12 +86,12 @@ Route::group(['middleware' => ['lang_id']], function () {
 
     // State Routes
     Route::controller(StateController::class)->group(function () {
-        // Route::get('states/getById/{counteyId}', 'getById');
+        Route::get('states/getById/{counteyId}', 'getById');
     });
 
     // City Routes
     Route::controller(CityController::class)->group(function () {
-        // Route::get('cities/getById/{stateId}', 'all');
+        Route::get('cities/getById/{stateId}', 'all');
     });
     // Banner Routes
     Route::controller(BannerController::class)->group(function () {

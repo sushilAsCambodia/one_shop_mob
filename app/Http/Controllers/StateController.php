@@ -19,6 +19,9 @@ class StateController extends Controller
 
     public function getById($counteyId)
     {
-        return response()->json(State::where('country_id', $counteyId)->where('status','active')->get(), 200);
+        $result['message'] = 'State_fetch_successfully';
+        $result['data'] = State::where('country_id', $counteyId)->where('status', 'active')->get();
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 }
