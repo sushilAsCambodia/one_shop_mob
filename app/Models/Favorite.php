@@ -17,7 +17,7 @@ class Favorite extends Model implements Auditable
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
     public function products(){
-        return $this->hasMany(Product::class, 'id', 'product_id')->with([
+        return $this->hasOne(Product::class, 'id', 'product_id')->with([
             'image',
             'translation',
             'tags',
