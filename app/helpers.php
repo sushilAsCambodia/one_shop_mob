@@ -277,3 +277,55 @@ if (!function_exists('formatIdd')) {
         return $idd;
     }
 }
+
+/**
+ * @desc soft delete relationship
+ * @param $resource
+ * @param $relations_to_cascade
+ * @return mixed
+ * @date 08 Feb 2023
+ * @author Suhsil Gupta
+ */
+if (!function_exists('softDeleteRelations')) {
+    function softDeleteRelations($resource, $relations_to_cascade)
+    {
+        if ($relations_to_cascade && is_array($relations_to_cascade)) {
+            foreach ($relations_to_cascade as $relation) {
+                if ($resource->{$relation}) {
+                    if ($relation == 'file' or $relation == 'files' or $relation == 'image' or $relation == 'images') {
+                        try {
+                            foreach ($resource->{$relation}()->get() as $item) {
+                                $data = $item->storage_path;
+                                $trash_data = TRASH_FOLDER . $data;
+                                //if is file, will move file to trash folder (safe delete can restore file later)
+                                Storage::move($data, $trash_data);
+                                $item->delete();
+                            }
+                        } catch (\Exception $e) {
+                            Log::error("Delete relationship of table " . $resource->getTable() . " error: for relation name: " . $relation);
+                            Log::error($e->getMessage());
+                        }
+                    } else {
+                        try {
+                            foreach ($resource->{$relation}()->get() as $item) {
+                                $item->delete();
+                                Log::debug("Deleted: " . $item->getTable());
+                            }
+                        } catch (\Exception $e) {
+                            Log::error("Delete relationship of table " . $resource->getTable() . " error: for relation name: " . $relation);
+                            Log::error($e->getMessage());
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+/**
+ * @desc restore soft delete relationship
+ * @param $resource
+ * @param $relations_to_cascade
+ * @return mixed
+ * @date 08 Feb 2023
+ * @author Suhsil Gupta
+ */
