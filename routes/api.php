@@ -102,6 +102,11 @@ Route::group(['middleware' => ['lang_id']], function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
+    Route::controller(HomepageController::class)->group(function () {
+        // Route::get('homepage', 'index');
+        Route::get('get/newHomePageData', 'getHomePageData');
+    });
+
     // Add To cart
     Route::controller(AddToCartController::class)->group(function () {
         // Route::post('add-to-cart', 'addToCart');

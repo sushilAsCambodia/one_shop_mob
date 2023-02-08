@@ -25,7 +25,7 @@ class FavoriteService
             $results = $query->select('favorites.*')->with('product')->paginate($perPage, ['*'], 'page', $page);
 
             $result['message'] = 'favorite_fetch_successfully';
-            $result['message'] = $results;
+            $result['data'] = $results;
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
