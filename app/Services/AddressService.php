@@ -21,13 +21,17 @@ class AddressService
 
             $query->when($modelData, function ($query) use ($modelData) {
                 $query->whereAddressableType(Customer::class)
-                        ->whereAddressableId($modelData->id);
-
+                    ->whereAddressableId($modelData->id);
             });
             $results = $query->get();
 
-            return response()->json($results, 200);
-        } catch (\Exception$e) {
+
+            $result['message'] = 'Address_fetch_successfully';
+            $result['data'] = $results;
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
+
+        } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
     }
@@ -44,7 +48,7 @@ class AddressService
             return response()->json([
                 'messages' => ['Address created successfully'],
             ], 201);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
     }
@@ -59,7 +63,7 @@ class AddressService
             return response()->json([
                 'messages' => ['Address updated successfully'],
             ], 200);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
     }
@@ -72,9 +76,8 @@ class AddressService
             return response()->json([
                 'messages' => ['Address deleted successfully'],
             ], 200);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
     }
-
 }

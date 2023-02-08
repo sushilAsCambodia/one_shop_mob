@@ -189,10 +189,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Address routes
     Route::controller(AddressController::class)->group(function () {
-        Route::get('addresses/all', 'all')->name('Address: View Address');
-        Route::get('addresses/{address}', 'get')->name('Address: View Address')->where(['address' => '[0-9]+']);
-        Route::post('addresses', 'store')->name('Address: Create Address');
-        Route::patch('addresses/{address}', 'update')->name('Address: Edit/Update Address')->where(['address' => '[0-9]+']);
-        Route::delete('addresses/{address}', 'delete')->name('Address: Delete Address')->where(['address' => '[0-9]+']);
+        Route::get('addresses/all', 'all');
+        Route::get('addresses/{address}', 'get')->where(['address' => '[0-9]+']);
+        Route::post('addresses', 'store');
+        Route::patch('addresses/{address}', 'update')->where(['address' => '[0-9]+']);
+        Route::delete('addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
     });
 });
