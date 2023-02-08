@@ -24,6 +24,7 @@ class AddressService
                     ->whereAddressableId($modelData->id);
             });
             $results = $query->select(
+                'addresses.id',
                 'addresses.street_address_1',
                 'addresses.street_address_2',
                 'addresses.pincode',
