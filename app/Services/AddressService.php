@@ -23,14 +23,20 @@ class AddressService
                 $query->whereAddressableType(Customer::class)
                     ->whereAddressableId($modelData->id);
             });
-            $results = $query->get();
+            $results = $query->select(
+                'addresses.street_address_1',
+                'addresses.street_address_2',
+                'addresses.pincode',
+                'addresses.country_id',
+                'addresses.state_id',
+                'addresses.city_id'
+            )->get();
 
 
             $result['message'] = 'Address_fetch_successfully';
             $result['data'] = $results;
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
-
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
