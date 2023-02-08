@@ -104,7 +104,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::controller(HomepageController::class)->group(function () {
         // Route::get('homepage', 'index');
-        Route::get('get/newHomePageData', 'getHomePageData');
+        Route::get('get/newHomePageData', 'getHomePageData')->middleware('lang_id');;
     });
 
     // Add To cart
