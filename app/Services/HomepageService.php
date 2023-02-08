@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Session;
 
 class HomepageService
 {
+    public function __construct(private CustomerService $customerService)
+    {
+    }
+
     public function index($request): JsonResponse
     {
         try {
@@ -43,14 +47,14 @@ class HomepageService
 
     public function getData($sortBy, $sortOrder, $slug)
     {
-        Session::put("query_promotions_session",true);
+        Session::put("query_promotions_session", true);
         $products =  Product::whereHas('promotion', function ($query) use ($slug) {
-                    $query->where('promotions.slug', $slug);
-                })
-                ->whereHas('deals',function ($query){
-                    $query->whereIn('status',['expired', 'active']);
-                })
-                ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+            $query->where('promotions.slug', $slug);
+        })
+            ->whereHas('deals', function ($query) {
+                $query->whereIn('status', ['expired', 'active']);
+            })
+            ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
 
         $products = Product::whereHas('deals', function ($query) {
             $query->whereIn('status', ['expired', 'active']);
@@ -196,6 +200,11 @@ class HomepageService
                 ];
             }
             // $paginator = new LengthAwarePaginator($promotions->all(), $promotions->count(), $perPage);
+            $userData = [];
+            if (Auth() && Auth()->user() && Auth()->user()->id) {
+                $response = $this->customerService->userDetails();
+                $userData = $response->original['data'];
+            }
 
             $result['message'] = 'fetch_all_homePage_successfully';
             $result['data'] = [
@@ -203,6 +212,7 @@ class HomepageService
                 'banners' => Banner::where('type', 'homePage')->get(),
                 'categories' => Category::all(),
                 'promotional' => $data,
+                'user_data' => $userData,
             ];
             $result['statusCode'] = 200;
 
