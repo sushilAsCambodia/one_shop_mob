@@ -35,7 +35,8 @@ class PriceClaimController extends Controller
 
     public function prizeClaimByOrderId(Request $request)
     {
-        $priceClaim = PriceClaim::where('order_id', $request->orderId)->first();
+        $priceClaim = PriceClaim::where('order_id','=' , $request->orderId)->first();
+        print_r($priceClaim); die;
         $result['message'] = 'fetch_price_claim_successfully';
         $result['data'] = $priceClaim;
         $result['statusCode'] = 200;
