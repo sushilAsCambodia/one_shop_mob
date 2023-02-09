@@ -47,7 +47,7 @@ class HomepageService
 
     public function getData($sortBy, $sortOrder, $slug)
     {
-        Session::put("query_promotions_session", true);
+        // Session::put("query_promotions_session", true);
         $products =  Product::whereHas('promotion', function ($query) use ($slug) {
             $query->where('promotions.slug', $slug);
         })
@@ -67,8 +67,9 @@ class HomepageService
             'deal.slots',
             'favouriteCount',
         ]);
-
-        return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+        $productData = $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+        dd($productData);
+        return $productData;
     }
     public function getSearchResult($request): JsonResponse
     {
