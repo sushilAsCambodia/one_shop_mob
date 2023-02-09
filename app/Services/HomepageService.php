@@ -64,9 +64,9 @@ class HomepageService
             'favouriteCount',
         ]);
 
-        $products = $products->whereHas('deal', function ($query) {
-            $query->whereIn('status', ['expired', 'active']);
-        });
+        // $products = $products->whereHas('deal', function ($query) {
+        //     $query->whereIn('status', ['expired', 'active']);
+        // });
         
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
