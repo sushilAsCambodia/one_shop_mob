@@ -166,7 +166,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 });
 
+Route::controller(PriceClaimController::class)->group(function () {
+    Route::get('prize-claim/paginate/{params?}', 'paginate');
+    // Route::get('prize-claim/all', 'all');
+    // Route::patch('prize-claim/{priceClaim}', 'update');
+    Route::get('prize-claim-byOrderId', 'prizeClaimByOrderId');
 
+    Route::get('prize-claim/{priceClaim}', 'get');
+});
 // login creadation
 // Customer routes
 Route::controller(CustomerController::class)->group(function () {
