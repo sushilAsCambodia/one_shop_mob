@@ -64,9 +64,9 @@ class HomepageService
             'favouriteCount',
         ]);
 
-        // $products = $products->whereHas('deal', function ($query) {
-        //     $query->whereIn('status', ['expired', 'active']);
-        // });
+        $products = $products->whereHas('deal', function ($query) {
+            $query->whereIn('status', ['expired', 'active']);
+        });
         
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
@@ -176,7 +176,7 @@ class HomepageService
     public function getHomePageData($request)
     {
         try {
-            Session::put("promotional_query_session", true);
+            // Session::put("promotional_query_session", true);
 
             $perPage = $request->rowsPerPage ?: 15;
             $page = $request->page ?: 1;
@@ -194,7 +194,7 @@ class HomepageService
                 $data[] = [
                     'id'        =>     $promotion->id,
                     'name'      =>     $promotion->name,
-                    'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
+                    'products'  =>     null,
                     'slug'      =>     $promotion->slug,
                     'image'      =>     $promotion->image
                 ];
