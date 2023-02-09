@@ -129,10 +129,10 @@ class ProductService
                 'favouriteCount',
             ]);
 
-            // $query = $query->whereHas('deal', function ($query) {
-            //     $query->whereIn('status', ['expired', 'active']);
-            // });
-
+            $query = $query->whereHas('deal', function ($query) {
+                $query->whereIn('status', ['expired', 'active']);
+            });
+            
             $data = $query->first();
 
             $result['message'] = 'product_fetch_successfully';
