@@ -97,18 +97,14 @@ class ProductService
                         $query->where('deals.deal_price','<=',(int)$request->priceMax);
                 });
             });
-            $query->whereHas('deals',function ($query){
+            $query->whereHas('deal',function ($query){
                 $query->whereIn('status',['expired', 'active']);
             });
-            if($isSortByPrice)
+            if($isSortByPrice){
                 $query->select('products.*','deals.deal_price');
-            else
+            }else{
                 $query->select('products.*');
-
-                
-            $query = $query->whereHas('deal', function ($query) {
-                $query->whereIn('status', ['expired', 'active']);
-            });
+            }
 
             $data = $query->paginate($perPage, ['*'], 'page', $page);
 

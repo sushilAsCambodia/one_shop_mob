@@ -130,7 +130,7 @@ class HomepageService
                                 ->where('translation', 'like', "%$request->search_key%");
                         });
                     });
-                    $query->whereHas('deals', function ($query) {
+                    $query->whereHas('deal', function ($query) {
                         $query->whereIn('status', ['expired', 'active']);
                     });
                     $data = $query->select('products.*')->get();

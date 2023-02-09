@@ -115,18 +115,19 @@ class OrderService
                     $result['statusCode'] = 200;
 
                     return getSuccessMessages($result, false);
-                } else if ($slots->booked_slots == 0 && $slots->total_slots != $pData['slots']) {
-                    // Bot Setting..
-                    $custmerIdBot = 6;
-                    $dataBot      = array();
-                    $dataBot      = ["total_amount"   => 1, "total_slots"    => 1, "total_products" => 1, "total_quantity" => 1];
-                    $dataBot['product_details'] = [["product_id" => $pData['product_id'], "amount"     => 1, "slots"      => 1,],];
-
-                    $orderIdBot = Order::create(
-                        array_merge($dataBot, array('customer_id' => $custmerIdBot, 'order_id' => getRandomIdGenerate('BD'), 'status' => 'confirmed'))
-                    )->id;
-                    $this->orderProductService->store($dataBot['product_details'], $custmerIdBot, $orderIdBot, 1);
                 }
+                // else if ($slots->booked_slots == 0 && $slots->total_slots != $pData['slots']) {
+                //     // Bot Setting..
+                //     $custmerIdBot = 6;
+                //     $dataBot      = array();
+                //     $dataBot      = ["total_amount"   => 1, "total_slots"    => 1, "total_products" => 1, "total_quantity" => 1];
+                //     $dataBot['product_details'] = [["product_id" => $pData['product_id'], "amount"     => 1, "slots"      => 1,],];
+
+                //     $orderIdBot = Order::create(
+                //         array_merge($dataBot, array('customer_id' => $custmerIdBot, 'order_id' => getRandomIdGenerate('BD'), 'status' => 'confirmed'))
+                //     )->id;
+                //     $this->orderProductService->store($dataBot['product_details'], $custmerIdBot, $orderIdBot, 1);
+                // }
 
                 $data["total_amount"]   += (int) $pData['amount'];
                 $data["total_slots"]    += (int) $pData['slots'];
