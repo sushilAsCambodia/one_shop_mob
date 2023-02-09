@@ -56,7 +56,7 @@ class HomepageService
             })
             ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
 
-        $products = Product::whereHas('deals', function ($query) {
+        $products = Product::whereHas('deal', function ($query) {
             $query->whereIn('status', ['expired', 'active']);
         });
 
