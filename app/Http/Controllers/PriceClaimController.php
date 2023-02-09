@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\PriceClaimFormRequest;
 use App\Models\PriceClaim;
 use App\Services\PriceClaimService;
@@ -32,5 +33,11 @@ class PriceClaimController extends Controller
         return response()->json($priceClaim, 200);
     }
 
-
+    public function prizeClaimByOrderId(Request $request)
+    {
+        $priceClaim = PriceClaim::where('orderId', $request->orderId)->first();
+        $result['message'] = 'fetch_price_claim_successfully';
+        $result['data'] = $priceClaim;
+        $result['statusCode'] = 200;
+    }
 }
