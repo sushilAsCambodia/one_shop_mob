@@ -135,7 +135,7 @@ class OrderService
             $custmerId = Auth()->user()->id;
             $orderId = Order::create(
                 array_merge($data, array('customer_id' => $custmerId, 'order_id' => getRandomIdGenerate('BD'), 'status' => 'reserved'))
-            )->fisrt();
+            );
 
             $this->orderProductService->store($data['product_details'], $custmerId, $orderId->id, 0);
 
