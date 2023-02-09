@@ -84,7 +84,7 @@ class PriceClaimService
             // });
 
             $results = $query->select('price_claims.*')->where('booking_id', '=', $request->orderId)
-                            ->with(['product' , 'product.slotDeals', 'order'])->first();
+                            ->with(['product' , 'order'])->first();
 
             
             $result['message'] = 'fetch_price_claim_successfully';
