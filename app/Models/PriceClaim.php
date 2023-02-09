@@ -44,9 +44,8 @@ class PriceClaim extends Model
             $productData['product_id'] = $product->id;
             $productData['slug'] = $product->slug;
             $productData['deal'] = $this->product->deals;
-            // $order = (array) $attributes['order'];
-            $order = (array) $this->order();
-            // Session::put('product_order_id', $order['id']);
+            $order = (array) $attributes['order'];
+            Session::put('product_order_id', $order['order_id']);
             $slotDeals = [];
             if(array_key_exists('order_products', $order)) {
                 foreach ($order['order_products'] as $p) {
