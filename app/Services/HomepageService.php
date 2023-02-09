@@ -56,10 +56,6 @@ class HomepageService
             })
             ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
 
-        $products = Product::whereHas('deals', function ($query) {
-            $query->whereIn('status', ['expired', 'active']);
-        });
-
         $products = $products->with([
             'image',
             'translation',
@@ -67,9 +63,12 @@ class HomepageService
             'deal.slots',
             'favouriteCount',
         ]);
-        $productData = $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
-        dd($productData);
-        return $productData;
+
+        $products = $products->whereHas('deal', function ($query) {
+            $query->whereIn('status', ['expired', 'active']);
+        });
+        
+        return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
     public function getSearchResult($request): JsonResponse
     {
