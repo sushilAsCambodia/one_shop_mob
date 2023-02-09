@@ -297,10 +297,11 @@ class CustomerService
                 ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
                 ->first();
 
-            return response()->json([
-                'status' => true,
-                'data' => $result,
-            ], 200);
+            $results['message'] = 'fetch_user_details_successfully';
+            $results['message'] = $result;
+            $results['statusCode'] = 200;
+
+            return getSuccessMessages($results);
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);

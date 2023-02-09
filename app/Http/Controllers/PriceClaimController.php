@@ -39,5 +39,6 @@ class PriceClaimController extends Controller
         $result['message'] = 'fetch_price_claim_successfully';
         $result['data'] = $priceClaim;
         $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 }
