@@ -126,7 +126,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('orders/paginate/{params?}', 'paginate');
         Route::post('customer/orders', 'store');
         // Route::post('customer/orders-cancel', 'cancelOrder');
-        // Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
+        Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
         Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
         // Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
 
@@ -152,7 +152,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //Price Claim Route
     Route::controller(PriceClaimController::class)->group(function () {
-        // Route::get('prize-claim/paginate/{params?}', 'paginate');
+        Route::get('prize-claim/paginate/{params?}', 'paginate');
         // Route::get('prize-claim/all', 'all');
         // Route::patch('prize-claim/{priceClaim}', 'update');
         // Route::get('prize-claim/{priceClaim}', 'get');

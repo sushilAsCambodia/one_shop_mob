@@ -39,7 +39,11 @@ class OrderService
 
             // $results = $query->select('orders.*')->paginate($perPage, ['*'], 'page', $page);
 
-            return response()->json($results, 200);
+            $result['message'] = 'Orders_fetch_successfully';
+            $result['data'] = $results;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
