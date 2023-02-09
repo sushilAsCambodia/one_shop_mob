@@ -36,15 +36,6 @@ class PriceClaimController extends Controller
 
     public function prizeClaimByOrderId(Request $request)
     {
-        // dd($request->orderId);
-        $priceClaimId = DB::table('price_claims')->where('booking_id', '=', $request->orderId)->first();
-        // dd($priceClaimId);
-        $priceClaim = PriceClaim::find($priceClaimId->id);
-        // print_r($priceClaim); die;
-        return response()->json($priceClaim, 200);
-        // $result['message'] = 'fetch_price_claim_successfully';
-        // $result['data'] = $priceClaim;
-        // $result['statusCode'] = 200;
-        // return getSuccessMessages($result);
+        return $this->priceClaimService->prizeClaimByOrderId($request);
     }
 }
