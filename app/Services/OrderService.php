@@ -56,9 +56,9 @@ class OrderService
                 $result['message'] = 'Data_Not_Found';
                 $result['data'] = $resultData;
                 $result['statusCode'] = 201;
-    
+
                 return getSuccessMessages($result);
-                return response()->json(['messages' => [''],], );
+                return response()->json(['messages' => [''],],);
             }
             // if ($slug == 'reserved') {
             //     $slug = 'reserved';
@@ -85,7 +85,6 @@ class OrderService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-            
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
@@ -152,19 +151,21 @@ class OrderService
     {
         try {
 
-            $result = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.products'])->first();
-            foreach ($result->orderProducts as $key => $orderProduct) {
+            $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.products'])->first();
+            foreach ($results->orderProducts as $key => $orderProduct) {
                 $deal = Deal::whereProductId($orderProduct->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
                 if (!empty($deal) && $deal) {
                     $slotsId = $deal->slots()->first()->id;
-                    $result->orderProducts[$key]->slots_deals = SlotDeal::where('order_id', $result->id)
+                    $results->orderProducts[$key]->slots_deals = SlotDeal::where('order_id', $results->id)
                         ->where('slot_id', $slotsId)->where('is_bot', 0)->get();
                 }
             }
-            return response()->json([
-                'messages' => ['Order Data By Order ID'],
-                'data'     => $result,
-            ], 201);
+
+            $result['message'] = 'Order Data By Order ID';
+            $result['data'] = $results;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
