@@ -298,7 +298,7 @@ class CustomerService
                 ->first();
 
             $results['message'] = 'fetch_user_details_successfully';
-            $results['message'] = $result;
+            $results['data'] = $result;
             $results['statusCode'] = 200;
 
             return getSuccessMessages($results);
