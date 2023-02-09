@@ -135,14 +135,14 @@ class OrderService
             $custmerId = Auth()->user()->id;
             $orderId = Order::create(
                 array_merge($data, array('customer_id' => $custmerId, 'order_id' => getRandomIdGenerate('BD'), 'status' => 'reserved'))
-            );
+            )->id;
 
-            $this->orderProductService->store($data['product_details'], $custmerId, $orderId->id, 0);
+            $this->orderProductService->store($data['product_details'], $custmerId, $orderId, 0);
 
             // $result = Order::where('id', $orderId)->with(['orderProduct', 'orderProduct.product'])->first();
 
             $result['message'] = 'Order_created_successfully';
-            $result['data'] = ['order_id' => $orderId->order_id];
+            $result['data'] = $orderId;
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
