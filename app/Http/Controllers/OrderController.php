@@ -23,8 +23,9 @@ class OrderController extends Controller
         return $this->orderService->order($slug);
     }
 
-    public function store(OrderFormRequest $request)
+    public function store(Request $request)
     {
+        return $request->all();
         return $this->orderService->store($request->all());
     }
 

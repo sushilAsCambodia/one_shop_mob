@@ -105,6 +105,11 @@ class ProductService
             else
                 $query->select('products.*');
 
+                
+            $query = $query->whereHas('deal', function ($query) {
+                $query->whereIn('status', ['expired', 'active']);
+            });
+
             $data = $query->paginate($perPage, ['*'], 'page', $page);
 
             $result['message'] = 'product_fetch_successfully';
@@ -129,7 +134,7 @@ class ProductService
                 'favouriteCount',
             ]);
 
-            $query = $query->whereHas('deals', function ($query) {
+            $query = $query->whereHas('deal', function ($query) {
                 $query->whereIn('status', ['expired', 'active']);
             });
             
