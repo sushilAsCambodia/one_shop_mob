@@ -39,7 +39,7 @@ class PriceClaimController extends Controller
         // dd($request->orderId);
         $priceClaimId = DB::table('price_claims')->where('booking_id', '=', $request->orderId)->first();
         // dd($priceClaimId);
-        $priceClaim = PriceClaim::where('id', $priceClaimId->id)->first();
+        $priceClaim = PriceClaim::find($priceClaimId->id);
         // print_r($priceClaim); die;
         return response()->json($priceClaim, 200);
         // $result['message'] = 'fetch_price_claim_successfully';
