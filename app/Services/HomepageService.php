@@ -175,7 +175,7 @@ class HomepageService
 
     public function getHomePageData($request)
     {
-        try {
+        // try {
             // Session::put("promotional_query_session", true);
 
             $perPage = $request->rowsPerPage ?: 15;
@@ -194,7 +194,7 @@ class HomepageService
                 $data[] = [
                     'id'        =>     $promotion->id,
                     'name'      =>     $promotion->name,
-                    'products'  =>     null,
+                    'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
                     'slug'      =>     $promotion->slug,
                     'image'      =>     $promotion->image
                 ];
@@ -217,10 +217,10 @@ class HomepageService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-        } catch (\Exception $e) {
-            \Log::debug($e);
-            return generalErrorResponse($e);
-        }
+        // } catch (\Exception $e) {
+        //     \Log::debug($e);
+        //     return generalErrorResponse($e);
+        // }
     }
 
     public function getPromotional($request)
