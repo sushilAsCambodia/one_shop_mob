@@ -142,7 +142,7 @@ class OrderService
             // $result = Order::where('id', $orderId)->with(['orderProduct', 'orderProduct.product'])->first();
 
             $result['message'] = 'Order_created_successfully';
-            $result['data'] = $orderId;
+            $result['data'] = ['order_id' => $orderId->order_id];
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
