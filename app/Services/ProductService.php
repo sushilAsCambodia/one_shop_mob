@@ -129,7 +129,7 @@ class ProductService
                 'favouriteCount',
             ]);
 
-            $query = $query->whereHas('deal', function ($query) {
+            $query = $query->whereHas('deals', function ($query) {
                 $query->whereIn('status', ['expired', 'active']);
             });
             
