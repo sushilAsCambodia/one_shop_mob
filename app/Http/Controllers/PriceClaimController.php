@@ -6,6 +6,7 @@ use App\Http\Requests\PriceClaimFormRequest;
 use App\Models\PriceClaim;
 use App\Services\PriceClaimService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PriceClaimController extends Controller
 {
@@ -36,7 +37,8 @@ class PriceClaimController extends Controller
     public function prizeClaimByOrderId(Request $request)
     {
         // dd($request->orderId);
-        $priceClaim = PriceClaim::where('booking_id', $request->orderId)->first();
+        $priceClaimId = DB::table('price_claims')->where('booking_id', '=', $request->orderId)->get();
+        $priceClaim = PriceClaim::where('id', $priceClaimId->id)->first();
         // print_r($priceClaim); die;
         return response()->json($priceClaim, 200);
         // $result['message'] = 'fetch_price_claim_successfully';
