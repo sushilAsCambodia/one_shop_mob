@@ -152,7 +152,7 @@ class OrderService
     {
         try {
 
-            $result = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.product'])->first();
+            $result = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.products'])->first();
             foreach ($result->orderProducts as $key => $orderProduct) {
                 $deal = Deal::whereProductId($orderProduct->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
                 if (!empty($deal) && $deal) {
