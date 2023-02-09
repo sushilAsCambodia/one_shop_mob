@@ -56,7 +56,7 @@ class HomepageService
             })
             ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
 
-        $products = $products->whereHas('deal', function ($query) {
+        $products = Product::whereHas('deals', function ($query) {
             $query->whereIn('status', ['expired', 'active']);
         });
 
@@ -67,7 +67,7 @@ class HomepageService
             'deal.slots',
             'favouriteCount',
         ]);
-        
+
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
     public function getSearchResult($request): JsonResponse
@@ -175,8 +175,8 @@ class HomepageService
 
     public function getHomePageData($request)
     {
-        // try {
-            // Session::put("promotional_query_session", true);
+        try {
+            Session::put("promotional_query_session", true);
 
             $perPage = $request->rowsPerPage ?: 15;
             $page = $request->page ?: 1;
@@ -217,10 +217,10 @@ class HomepageService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-        // } catch (\Exception $e) {
-        //     \Log::debug($e);
-        //     return generalErrorResponse($e);
-        // }
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
     }
 
     public function getPromotional($request)
