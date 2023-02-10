@@ -58,13 +58,13 @@ Route::group(['middleware' => ['lang_id']], function () {
     // Homepage
     Route::controller(HomepageController::class)->group(function () {
         // Route::get('homepage', 'index');
-        Route::get('search', 'getSearchResult');
-        Route::get('get/homePageData', 'getHomePageData');
-        Route::get('get/promotional', 'getPromotional');
+        Route::get('search', 'getSearchResult');   //done
+        Route::get('get/homePageData', 'getHomePageData');   //done
+        Route::get('get/promotional', 'getPromotional');  //done
     });
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('categories/all', 'all');
-        Route::get('categories/treeView', 'treeView');
+        Route::get('categories/all', 'all');  //done
+        Route::get('categories/treeView', 'treeView'); //done
     });
     Route::controller(SubCategoryController::class)->group(function () {
         Route::get('subCategories', 'subCategoriesId');
@@ -106,7 +106,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::controller(HomepageController::class)->group(function () {
         // Route::get('homepage', 'index');
-        Route::get('get/newHomePageData', 'getHomePageData')->middleware('lang_id');;
+        Route::get('get/newHomePageData', 'getHomePageData')->middleware('lang_id');    //done
     });
 
     // Add To cart

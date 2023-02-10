@@ -29,7 +29,8 @@ class SubCategoryController extends Controller
         $result['message'] = 'Categories_fetch_successfully';
         $result['data'] = [
             'category' => Category::where('id', $request->categoryId)->first(),
-            'subCategories' => SubCategory::with('products')->where('category_id', $request->categoryId)->get(),
+            'subCategories' => SubCategory::with('product')
+                               ->where('category_id', $request->categoryId)->get(),
         ];
         // Category::with('subCategories')->where('id', $categoryId)->first();
         // SubCategory::where('category_id', $categoryId)->get();
