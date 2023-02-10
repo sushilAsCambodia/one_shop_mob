@@ -7,6 +7,7 @@ use App\Models\PriceClaim;
 use App\Models\Shipping;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PriceClaimService
