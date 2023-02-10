@@ -24,28 +24,28 @@ class OrderService
     public function paginate($request): JsonResponse
     {
         // try {
-            // die('use another API');
-            $perPage = $request->rowsPerPage ?: 20;
-            $page = $request->page ?: 1;
-            $sortBy = $request->sortBy ?: 'created_at';
-            $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+        // die('use another API');
+        $perPage = $request->rowsPerPage ?: 20;
+        $page = $request->page ?: 1;
+        $sortBy = $request->sortBy ?: 'created_at';
+        $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
 
-            $results = Order::where('customer_id', Auth()->user()->id)->with(['orderProducts', 'orderProducts.product'])
-                ->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+        $results = Order::where('customer_id', Auth()->user()->id)->with(['orderProducts', 'orderProducts.product'])
+            ->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
 
-            // , 'orderProducts.products'
+        // , 'orderProducts.products'
 
-            // $query->when($request->name, function ($query) use ($request) {
-            //     $query->where('name', 'like', "%$request->name%");
-            // });
+        // $query->when($request->name, function ($query) use ($request) {
+        //     $query->where('name', 'like', "%$request->name%");
+        // });
 
-            // $results = $query->select('orders.*')->paginate($perPage, ['*'], 'page', $page);
+        // $results = $query->select('orders.*')->paginate($perPage, ['*'], 'page', $page);
 
-            $result['message'] = 'Orders_fetch_successfully';
-            $result['data'] = $results;
-            $result['statusCode'] = 200;
+        $result['message'] = 'Orders_fetch_successfully';
+        $result['data'] = $results;
+        $result['statusCode'] = 200;
 
-            return getSuccessMessages($result);
+        return getSuccessMessages($result);
         // } catch (\Exception $e) {
         //     \Log::debug($e);
         //     return generalErrorResponse($e);
@@ -64,7 +64,7 @@ class OrderService
                 $result['statusCode'] = 201;
 
                 return getSuccessMessages($result);
-                return response()->json(['messages' => [''],],);
+                return response()->json(['messages' => [''],], );
             }
             // if ($slug == 'reserved') {
             //     $slug = 'reserved';
@@ -131,8 +131,8 @@ class OrderService
                 //     $this->orderProductService->store($dataBot['product_details'], $custmerIdBot, $orderIdBot, 1);
                 // }
 
-                $data["total_amount"]   += (int) $pData['amount'];
-                $data["total_slots"]    += (int) $pData['slots'];
+                $data["total_amount"] += (int) $pData['amount'];
+                $data["total_slots"] += (int) $pData['slots'];
             }
 
             $custmerId = Auth()->user()->id;
@@ -159,7 +159,7 @@ class OrderService
     {
         try {
 
-            $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.products'])->first();
+            $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.product'])->first();
 
             // foreach ($results->orderProducts as $key => $orderProduct) {
             //     $deal = Deal::whereProductId($orderProduct->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
@@ -195,7 +195,7 @@ class OrderService
                     $deal = Deal::whereProductId($orderProductData->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
                     $slotId = $deal->slots()->first();
 
-                    $slotId->update(['booked_slots' => (int)$slotId->booked_slots - (int)$orderProductData->slots]);
+                    $slotId->update(['booked_slots' => (int) $slotId->booked_slots - (int) $orderProductData->slots]);
                     SlotDeal::where('order_id', $order->id)->where('slot_id', $slotId->id)->update(['status' => 'canceled']);
                     SlotDeal::where('order_id', $order->id)->where('slot_id', $slotId->id)->delete();
                 }

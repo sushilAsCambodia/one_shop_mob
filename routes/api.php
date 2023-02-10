@@ -119,7 +119,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('orders/paginate/{params?}', 'paginate');
         Route::post('customer/orders', 'store');   //done
         // Route::post('customer/orders-cancel', 'cancelOrder');
-        Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
+        // Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
         Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
         // Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
         // Route::patch('orders/{orders}', 'update');
