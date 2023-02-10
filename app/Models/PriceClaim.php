@@ -16,7 +16,7 @@ class PriceClaim extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class)->with(['image', 'translation']);
+        return $this->belongsTo(Product::class)->with(['image', 'translation', 'deal.slots']);
     }
 
 
@@ -50,7 +50,7 @@ class PriceClaim extends Model
             if(array_key_exists('order_products', $order)) {
                 $attributes['order_products'] = $order['order_products'];
                 foreach ($order['order_products'] as $p) {
-                    if ($p->deal->product_id === $this->deal_id)
+                    // if ($p->deal->product_id === $this->deal_id)
                         array_push($slotDeals, $p);
                 }
             }
