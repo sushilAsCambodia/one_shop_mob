@@ -25,11 +25,11 @@ class OrderProduct extends Model
         return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deals.slots']);
     }
 
-    // public function toArray()
-    // {
-    //     $attributes = parent::toArray();
-    //     if (array_key_exists('ordet', $attributes)) {
-    //         $attributes['dealSlotCounts'] = 25;
-    //     }
-    // }
+    public function toArray()
+    {
+        $attributes = parent::toArray();
+        if (array_key_exists('ordet', $attributes)) {
+            $attributes['dealSlotCounts'] = 25;
+        }
+    }
 }
