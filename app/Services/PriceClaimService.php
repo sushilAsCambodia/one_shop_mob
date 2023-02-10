@@ -56,7 +56,7 @@ class PriceClaimService
 
     public function prizeClaimByBookingId($request): JsonResponse
     {
-        try {
+        // try {
             $query = (new PriceClaim())->newQuery();
 
             // $query->when($request->dates, function ($query) use ($request) {
@@ -108,10 +108,10 @@ class PriceClaimService
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
 
-        } catch (\Exception $e) {
-            \Log::debug($e);
-            return generalErrorResponse($e);
-        }
+        // } catch (\Exception $e) {
+        //     \Log::debug($e);
+        //     return generalErrorResponse($e);
+        // }
     }
     
     public function update($priceClaim, array $data): JsonResponse
