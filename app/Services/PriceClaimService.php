@@ -105,15 +105,15 @@ class PriceClaimService
             //     $results[$key1]->order_product = $orderProductData;
             // }
             
-            $query =  (new Address())->newQuery();
+            $query2 =  (new Address())->newQuery();
 
             $modelData = Auth::user();
 
-            $query->when($modelData, function ($query) use ($modelData) {
-                $query->whereAddressableType(Customer::class)
+            $query2->when($modelData, function ($query2) use ($modelData) {
+                $query2->whereAddressableType(Customer::class)
                     ->whereAddressableId($modelData->id);
             });
-            $results['addresses'] = $query->select(
+            $results['addresses'] = $query2->select(
                 'addresses.id',
                 'addresses.street_address_1',
                 'addresses.street_address_2',
