@@ -30,9 +30,10 @@ class DealService
             $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id',$deal->id)->get();
 
 
-            return response()->json([
-                'slot_deals' => $slotDeals,
-            ], 200);
+            $result['message'] = 'slotDeals_fetch_successfully';
+            $result['data'] = $slotDeals;
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);

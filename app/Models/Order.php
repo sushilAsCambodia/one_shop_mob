@@ -29,7 +29,7 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'order_product')->with(['image']);
+        return $this->belongsToMany(Product::class, 'order_product')->with(['image','deals.slots']);
     }
 
     public function shipping()
