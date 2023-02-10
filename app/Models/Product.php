@@ -85,7 +85,7 @@ class Product extends Model implements Auditable
     }
     public function deals()
     {
-        return $this->hasMany(Deal::class);
+        return $this->hasOne(Deal::class);
     }
     public function inventory()
     {
