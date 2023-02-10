@@ -15,16 +15,16 @@ use stdClass;
 class SlotDealService
 {
 
-    public function storeSlotDeal($orderId, $productId, $slots, $isBot): JsonResponse
+    public function storeSlotDeal($orderId, $dealId, $slots, $isBot): JsonResponse
     {
         try {
-            $deal = Deal::whereProductId($productId)->whereStatus('active')->orderBy('created_at', 'desc')->first();
+            $deal = Deal::whereId($dealId)->whereStatus('active')->first();
             $dealId = $deal->id;
             $slotId = $deal->slots()->first();
             $status = $isBot == 1 ? 'confirmed' : 'reserved';
             for ($i = 1; $i <= $slots; $i++) {
                 SlotDeal::create([
-                    'product_id' => $productId,
+                    'product_id' => $deal->product_id,
                     'order_id' => $orderId,
                     'booking_id' => getRandomIdGenerate('SB'),
                     'deal_id' => $dealId,
