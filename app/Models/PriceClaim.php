@@ -56,7 +56,7 @@ class PriceClaim extends Model
                 }
             }
             
-            // $productData['slot_deals'] = $slotDeals;
+            $productData['slot_deals'] = $slotDeals;
             // $productData['slot_deals_count'] = count($slotDeals);
             // array_push($productSlotDeals, $productData);
             // $attributes['product_slot_deals'] = $productData;
