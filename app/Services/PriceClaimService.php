@@ -106,8 +106,8 @@ class PriceClaimService
 
         //     $results[$key1]->order_product = $orderProductData;
         // }
-
-        $results['addresses'] = $this->addressService->all($request);
+        $addresses = $this->addressService->all($request);
+        $results['addresses'] = $addresses->original['data'];
 
         $result['message'] = 'fetch_price_claim_successfully';
         $result['data'] = $results;
