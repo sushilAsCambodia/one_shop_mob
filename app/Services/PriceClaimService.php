@@ -50,7 +50,8 @@ class PriceClaimService
             // });
 
             $results = $query->select('price_claims.*')
-                        ->with(['product', 'customer', 'slot_deals', 'order'])
+                        ->with(['product'])
+                        // ->with(['product', 'slot_deals', 'order'])
                         ->paginate($perPage, ['*'], 'page', $page);
 
             return response()->json($results, 200);
