@@ -63,7 +63,8 @@ class OrderService
             $query->whereHas('orderProducts',function ($query) use($slug) {
                 $query->where('order_product.status', $slug);
             });
-            $resultData = $query->with(['orderProducts.product'])->latest('created_at')->get();
+            // ->with(['orderProducts.product'])
+            $resultData = $query->latest('created_at')->get();
             if (!$resultData && empty($resultData)) {
                 $result['message'] = 'Data_Not_Found';
                 // $result['data'] = $resultData;
