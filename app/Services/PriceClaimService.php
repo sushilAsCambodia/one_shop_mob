@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Address;
 use App\Models\PriceClaim;
 use App\Models\Shipping;
 use Carbon\Carbon;
