@@ -62,10 +62,10 @@ class HomepageService
 
         $products = $products->with([
             'image',
-            'translation',
+            // 'translation',
             'tags',
             'deal.slots',
-            'favouriteCount',
+            // 'favouriteCount',
         ]);
 
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
@@ -184,17 +184,13 @@ class HomepageService
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
 
             $promotions = Promotion::whereStatus('active')->paginate($perPage, ['*'], 'page', $page);
-            // $promotions->map(function ($item) use ($sortBy, $sortOrder){
-            //     // modify the item here
-            //     $item->products = $this->getData($sortBy, $sortOrder, $item->slug);
-            //     return $item;
-            // });
+
             $data = [];
             foreach ($promotions as $promotion) {
                 $data[] = [
                     'id'        =>     $promotion->id,
                     'name'      =>     $promotion->name,
-                    'products'  =>     '$this->getData($sortBy, $sortOrder, $promotion->slug)',
+                    'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
                     'slug'      =>     $promotion->slug,
                     'image'      =>     $promotion->image
                 ];

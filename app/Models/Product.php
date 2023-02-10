@@ -91,10 +91,10 @@ class Product extends Model implements Auditable
     // {
     //     return $this->hasOne(Inventory::class);
     // }
-    // public function promotion()
-    // {
-    //     return $this->belongsToMany(Promotion::class);
-    // }
+    public function promotion()
+    {
+        return $this->belongsToMany(Promotion::class);
+    }
 
     // public function slotDeals()
     // {
