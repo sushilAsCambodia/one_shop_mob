@@ -27,9 +27,9 @@ class OrderProduct extends Model
 
     public function toArray()
     {
-        $attributes = parent::toArray();
-        if (array_key_exists('ordet', $attributes)) {
-            $attributes['dealSlotCounts'] = 25;
-        }
+        // $attributes = parent::toArray();
+        // if (array_key_exists('ordet', $attributes)) {
+        //     $attributes['dealSlotCounts'] = 25;
+        // }
     }
 }
