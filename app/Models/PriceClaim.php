@@ -62,6 +62,8 @@ class PriceClaim extends Model
             // $attributes['product_slot_deals'] = $productData;
             $attributes['order_table_id'] = $this->order->order_id;
         }
+        
+        $attributes['slotDealsCount'] = SlotDeal::whereIn('order_id', $this->order_id)->where('deal_id', $this->deal_id)->count();
 
         return $attributes;
     }

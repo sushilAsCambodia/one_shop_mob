@@ -50,30 +50,12 @@ class Order extends Model
     public function toArray()
     {
         $attributes = parent::toArray();
-        $orderIds = $this->order->id;
+
         $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
                                                 $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
                                             })->get();
 
-        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id"); 
-
-        // $orderProducts = OrderProduct::where('order_id', $orderId)->where('customer_id', auth()->user()->id)->get();
-        //     $orderIds = array();
-        //     if($orderId == null){
-        //         array_push($orderIds,$orderProducts->pluck('order_id'));
-        //     }else{
-        //         array_push($orderIds,$orderId);
-        //     }
-
-        //     if (!$orderIds && empty($orderIds)) {
-        //         return response()->json(['messages' => ['Data Not Found'],], 400);
-        //     }
-
-        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id"); 
-
-        $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id', $attributes['deal_ids'])->count();
-                      
-        $attributes['slotDealsCount'] = $this->dealIds()->pluck("slot_deals.deal_id");                       
+        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");                       
         return $attributes;
     }
 
