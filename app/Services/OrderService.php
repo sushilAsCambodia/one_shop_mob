@@ -55,7 +55,7 @@ class OrderService
     public function order($slug): JsonResponse
     {
         try {
-            $query = Order::with(['orderProducts', 'orderProducts.product'])
+            $query = Order::with(['orderProducts'])
                         ->where('customer_id', Auth()->user()->id)
                         ->where('orders.status', $slug);
             // dd($resultData); die;
@@ -63,7 +63,7 @@ class OrderService
             $query->whereHas('orderProducts',function ($query) use($slug) {
                 $query->where('order_product.status', $slug);
             });
-            $resultData = $query->latest('created_at')->get();
+            $resultData = $query->with(['orderProducts.product'])->latest('created_at')->get();
             if (!$resultData && empty($resultData)) {
                 $result['message'] = 'Data_Not_Found';
                 // $result['data'] = $resultData;
