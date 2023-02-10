@@ -83,7 +83,7 @@ class PriceClaimService
             //         });
             // });
 
-            $results = $query->select('price_claims.*')->where('booking_id', '=', $request->bookingId)
+            $results['price_claims'] = $query->select('price_claims.*')->where('booking_id', '=', $request->bookingId)
                             ->with(['product' , 'order'])->first();
 
             // foreach ($results as $key1 => $result) {
@@ -102,6 +102,25 @@ class PriceClaimService
 
             //     $results[$key1]->order_product = $orderProductData;
             // }
+            
+            $query =  (new Address())->newQuery();
+
+            $modelData = Auth::user();
+
+            $query->when($modelData, function ($query) use ($modelData) {
+                $query->whereAddressableType(Customer::class)
+                    ->whereAddressableId($modelData->id);
+            });
+            $results['addresses'] = $query->select(
+                'addresses.id',
+                'addresses.street_address_1',
+                'addresses.street_address_2',
+                'addresses.pincode',
+                'addresses.country_id',
+                'addresses.state_id',
+                'addresses.city_id'
+            )->get();
+
 
             $result['message'] = 'fetch_price_claim_successfully';
             $result['data'] = $results;
