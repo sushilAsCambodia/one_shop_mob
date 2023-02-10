@@ -116,11 +116,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
-        Route::get('orders/paginate/{params?}', 'paginate');
+        Route::get('orders/paginate/{params?}', 'paginate');  //done
         Route::post('customer/orders', 'store');   //done
         // Route::post('customer/orders-cancel', 'cancelOrder');
         // Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
-        Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
+        Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');  //done
         // Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
         // Route::patch('orders/{orders}', 'update');
         // Route::delete('orders/{orders}', 'delete');
@@ -137,7 +137,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Deals Routes
     Route::controller(DealController::class)->group(function () {
-        Route::get('slot-deals/{deals}/{orderId?}', 'getSlotDeals');
+        Route::get('slot-deals/{deals}/{orderId}', 'getSlotDeals');
     });
 
     // Add To favorites

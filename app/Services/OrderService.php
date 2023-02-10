@@ -160,16 +160,7 @@ class OrderService
         try {
 
             $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.product'])->first();
-
-            // foreach ($results->orderProducts as $key => $orderProduct) {
-            //     $deal = Deal::whereProductId($orderProduct->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
-            //     if (!empty($deal) && $deal) {
-            //         $slotsId = $deal->slots()->first()->id;
-            //         $results->orderProducts[$key]->slots_deals = SlotDeal::where('order_id', $results->id)
-            //             ->where('slot_id', $slotsId)->where('is_bot', 0)->get();
-            //     }
-            // }
-
+            
             $result['message'] = 'Order_Data_By_Order_ID';
             $result['data'] = $results;
             $result['statusCode'] = 200;
