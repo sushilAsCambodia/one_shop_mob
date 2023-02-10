@@ -16,8 +16,6 @@ class DealService
         try {
             $slotDeals = SlotDeal::where('order_id', $orderId)->where('deal_id', $deal)
                         ->select('slot_deals.id','slot_deals.booking_id','slot_deals.status')->get();
-            // $slotDeals = SlotDeal::where('order_id', $this->order_id)
-            //             ->where('deal_id', $this->deal_id)->get();
 
             $result['message'] = 'slotDeals_fetch_successfully';
             $result['data'] = $slotDeals;

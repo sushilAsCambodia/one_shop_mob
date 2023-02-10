@@ -137,7 +137,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Deals Routes
     Route::controller(DealController::class)->group(function () {
-        Route::get('slot-deals/{deals}/{orderId}', 'getSlotDeals');
+        Route::get('slot-deals/{deals}/{orderId}', 'getSlotDeals');  //done
     });
 
     // Add To favorites
