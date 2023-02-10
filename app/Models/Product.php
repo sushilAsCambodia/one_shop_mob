@@ -20,20 +20,20 @@ class Product extends Model implements Auditable
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class);
+    // }
 
-    public function subCategory()
-    {
-        return $this->belongsTo(SubCategory::class);
-    }
+    // public function subCategory()
+    // {
+    //     return $this->belongsTo(SubCategory::class);
+    // }
 
-    public function favouriteCount()
-    {
-        return $this->hasMany(Favorite::class);
-    }
+    // public function favouriteCount()
+    // {
+    //     return $this->hasMany(Favorite::class);
+    // }
 
 
     public function image()
@@ -41,43 +41,43 @@ class Product extends Model implements Auditable
         return $this->morphMany(File::class, 'fileable');
     }
 
-    public function dealConfiguration()
-    {
-        return $this->morphOne(Configure::class, 'configurable');
-    }
+    // public function dealConfiguration()
+    // {
+    //     return $this->morphOne(Configure::class, 'configurable');
+    // }
 
-    public function translation()
-    {
-        return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
-    }
+    // public function translation()
+    // {
+    //     return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
+    // }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
-    }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany(Tag::class);
+    // }
 
-    public function prices()
-    {
-        return $this->hasMany(ProductCurrency::class, 'product_id', 'id')->where('currency_id', request()->cur_id);
-    }
+    // public function prices()
+    // {
+    //     return $this->hasMany(ProductCurrency::class, 'product_id', 'id')->where('currency_id', request()->cur_id);
+    // }
 
-    public function slot()
-    {
-        // return $this->hasOneThrough(Slot::class,Deal::class, 'slot_id', 'id');
-        $query = $this->belongsToMany(Slot::class, 'deals')->distinct('slots.id');
-        return $query;
-    }
+    // public function slot()
+    // {
+    //     // return $this->hasOneThrough(Slot::class,Deal::class, 'slot_id', 'id');
+    //     $query = $this->belongsToMany(Slot::class, 'deals')->distinct('slots.id');
+    //     return $query;
+    // }
 
-    public function slot2()
-    {
-        // return $this->hasOneThrough(Slot::class,Deal::class, 'slot_id', 'id');
-        $query = $this->belongsToMany(Slot::class, 'deals');
-        $session = Session::get("promotional_query_session");
-        if ($session)
-            $query->where('deals.status', '!=', 'settled');
+    // public function slot2()
+    // {
+    //     // return $this->hasOneThrough(Slot::class,Deal::class, 'slot_id', 'id');
+    //     $query = $this->belongsToMany(Slot::class, 'deals');
+    //     $session = Session::get("promotional_query_session");
+    //     if ($session)
+    //         $query->where('deals.status', '!=', 'settled');
 
-        return $query;
-    }
+    //     return $query;
+    // }
 
     public function deal()
     {
@@ -87,35 +87,35 @@ class Product extends Model implements Auditable
     // {
     //     return $this->hasOne(Deal::class);
     // }
-    public function inventory()
-    {
-        return $this->hasOne(Inventory::class);
-    }
-    public function promotion()
-    {
-        return $this->belongsToMany(Promotion::class);
-    }
+    // public function inventory()
+    // {
+    //     return $this->hasOne(Inventory::class);
+    // }
+    // public function promotion()
+    // {
+    //     return $this->belongsToMany(Promotion::class);
+    // }
 
-    public function slotDeals()
-    {
+    // public function slotDeals()
+    // {
 
-        $query = $this->hasManyThrough(SlotDeal::class, Deal::class);
-        $orderID = Session::get('product_order_id');
-        if ($orderID)
-            $query->where('slot_deals.order_id', $orderID);
+    //     $query = $this->hasManyThrough(SlotDeal::class, Deal::class);
+    //     $orderID = Session::get('product_order_id');
+    //     if ($orderID)
+    //         $query->where('slot_deals.order_id', $orderID);
 
-        return $query;
-    }
+    //     return $query;
+    // }
 
-    public function orders()
-    {
-        return $this->belongsToMany(Order::class, 'order_product');
-    }
+    // public function orders()
+    // {
+    //     return $this->belongsToMany(Order::class, 'order_product');
+    // }
 
-    public function shipping()
-    {
-        return $this->hasOneThrough(Shipping::class, Order::class, 'id', 'order_id');
-    }
+    // public function shipping()
+    // {
+    //     return $this->hasOneThrough(Shipping::class, Order::class, 'id', 'order_id');
+    // }
 
     public function toArray()
     {
@@ -143,17 +143,17 @@ class Product extends Model implements Auditable
             if (sizeof($oneLanguageData) > 0)
                 $translateData = $oneLanguageData;
         });
-        if (array_key_exists('deal', $attributes)) {
-            if(isset($attributes['slot'])){
-                if ($attributes['slot'] && sizeof($attributes['slot']) > 0) {
-                    $deal = (array) $attributes['deal'];
-                    if ($deal) {
-                        $attributes['slot'] = $deal['slots'];
-                    }
-                }
+        // if (array_key_exists('deal', $attributes)) {
+        //     if(isset($attributes['slot'])){
+        //         if ($attributes['slot'] && sizeof($attributes['slot']) > 0) {
+        //             $deal = (array) $attributes['deal'];
+        //             if ($deal) {
+        //                 $attributes['slot'] = $deal['slots'];
+        //             }
+        //         }
 
-            }
-        }
+        //     }
+        // }
 
         /* if(sizeof($attributes['slot']) > 0){
             $attributes['slot'] = $attributes['slot'][0];
@@ -167,9 +167,6 @@ class Product extends Model implements Auditable
         if (isset($_GET['customer_id'])) {
             $attributes['favourite'] = Favorite::where('product_id', $attributes['id'])->where('customer_id', $_GET['customer_id'])->exists();
         }
-
-
-
 
         $attributes['translation'] = $translateData;
         return $attributes;
