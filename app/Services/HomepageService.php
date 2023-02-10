@@ -51,7 +51,7 @@ class HomepageService
         $products =  Product::whereHas('promotion', function ($query) use ($slug) {
             $query->where('promotions.slug', $slug);
         })
-            ->whereHas('deals', function ($query) {
+            ->whereHas('deal', function ($query) {
                 $query->whereIn('status', ['expired', 'active']);
             })
             ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
