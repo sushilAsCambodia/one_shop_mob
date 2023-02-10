@@ -61,7 +61,7 @@ class OrderService
             // dd($resultData); die;
 
             $query->whereHas('orderProducts',function ($query) use($slug) {
-                $query->where('status', $slug);
+                $query->where('order_product.status', $slug);
             });
             $resultData = $query->latest('created_at')->get();
             if (!$resultData && empty($resultData)) {
