@@ -48,12 +48,13 @@ class PriceClaim extends Model
             Session::put('product_order_id', $order['order_id']);
             $slotDeals = [];
             if(array_key_exists('order_products', $order)) {
+                $attributes['order_products'] = $order['order_products'];
                 foreach ($order['order_products'] as $p) {
                     if ($p->deal->product_id === $this->deal_id)
                         array_push($slotDeals, $p);
                 }
             }
-            $attributes['order_products'] = $order['order_products'];
+            
             // $productData['slot_deals'] = $slotDeals;
             // $productData['slot_deals_count'] = count($slotDeals);
             // array_push($productSlotDeals, $productData);
