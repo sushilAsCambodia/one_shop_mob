@@ -81,12 +81,12 @@ class Product extends Model implements Auditable
 
     public function deal()
     {
-        return $this->hasOne(Deal::class)->where('status', 'active');
-    }
-    public function deals()
-    {
         return $this->hasOne(Deal::class);
     }
+    // public function deals()
+    // {
+    //     return $this->hasOne(Deal::class);
+    // }
     public function inventory()
     {
         return $this->hasOne(Inventory::class);

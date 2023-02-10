@@ -20,7 +20,7 @@ class Order extends Model
     {
         return $this->hasMany(OrderProduct::class);
     }
-    public function deals() {
+    public function deal() {
         return $this->belongsToMany(Deal::class, 'slot_deal', 'order_id', 'deal_id');
     }
     public function customer() {

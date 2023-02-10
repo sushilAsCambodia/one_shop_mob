@@ -49,7 +49,8 @@ class PriceClaimService
                     });
             });
 
-            $results = $query->select('price_claims.*')->with(['product', 'product.slotDeals', 'customer', 'slot_deals', 'order'])->paginate($perPage, ['*'], 'page', $page);
+            $results = $query->select('price_claims.*')->with(['product', 'product.slotDeals', 'customer', 'slot_deals', 'order'])
+                        ->paginate($perPage, ['*'], 'page', $page);
 
             return response()->json($results, 200);
         } catch (\Exception $e) {

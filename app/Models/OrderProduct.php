@@ -22,7 +22,7 @@ class OrderProduct extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deals.slots']);
+        return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deal.slots']);
     }
 
 
