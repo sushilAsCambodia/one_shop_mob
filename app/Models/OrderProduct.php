@@ -25,11 +25,16 @@ class OrderProduct extends Model
         return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deals.slots']);
     }
 
+
     public function toArray()
     {
-        // $attributes = parent::toArray();
-        // if (array_key_exists('ordet', $attributes)) {
-        //     $attributes['dealSlotCounts'] = 25;
-        // }
+        $attributes = parent::toArray();
+
+        $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
+                                                $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
+                                            })->get();
+
+        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");                       
+        return $attributes;
     }
 }
