@@ -45,25 +45,27 @@ class PriceClaim extends Model
             // $productData['product_id'] = $product->id;
             // $productData['slug'] = $product->slug;
             // $productData['deal'] = $this->product->deals;
-            $order = (array) $attributes['order'];
-            Session::put('product_order_id', $order['order_id']);
+            if(array_key_exists('order', $attributes)) {
+                $order = (array) $attributes['order'];
+                Session::put('product_order_id', $order['order_id']);
 
-            // $slotDeals = [];
-            // if(array_key_exists('order_products', $order)) {
-            //     $attributes['order_products'] = $order['order_products'];
-            //     foreach ($order['order_products'] as $p) {
-            //         if ($p['product_id'] === $product->id){
-            //             array_push($slotDeals, $p);
-            //         }  
-            //     }
-            // }
-            
-            // $attributes['slot_deals_count'] = $slotDeals;
+                // $slotDeals = [];
+                // if(array_key_exists('order_products', $order)) {
+                //     $attributes['order_products'] = $order['order_products'];
+                //     foreach ($order['order_products'] as $p) {
+                //         if ($p['product_id'] === $product->id){
+                //             array_push($slotDeals, $p);
+                //         }  
+                //     }
+                // }
+                
+                // $attributes['slot_deals_count'] = $slotDeals;
 
-            // $productData['slot_deals_count'] = count($slotDeals);
-            // array_push($productSlotDeals, $productData);
-            // $attributes['product_slot_deals'] = $productData;
-            $attributes['order_table_id'] = $this->order->order_id;
+                // $productData['slot_deals_count'] = count($slotDeals);
+                // array_push($productSlotDeals, $productData);
+                // $attributes['product_slot_deals'] = $productData;
+                $attributes['order_table_id'] = $this->order->order_id;
+            }
         }
 
         $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $this->deal_id)->get()->count();
