@@ -22,12 +22,14 @@ class OrderProduct extends Model
 
     public function products()
     {
-        return $this->hasOne(Product::class, 'id', 'product_id')->with(['image','deals.slots']);
+        return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deals.slots']);
     }
 
-    public function slotsDeals()
+    public function toArray()
     {
-        return $this->hasMany(Product::class, 'id', 'product_id')->with(['image','deals.slots']);
+        $attributes = parent::toArray();
+        if (array_key_exists('ordet', $attributes)) {
+            $attributes['dealSlotCounts'] = 25;
+        }
     }
-    
 }
