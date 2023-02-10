@@ -55,7 +55,7 @@ class OrderService
     public function order($slug): JsonResponse
     {
         // try {
-            $query = Order::with(['orderProducts', 'orderProducts.product'])
+            $query = Order::with(['orderProducts'])
                         ->where('customer_id', Auth()->user()->id)
                         ->where('orders.status', $slug);
             // dd($resultData); die;
