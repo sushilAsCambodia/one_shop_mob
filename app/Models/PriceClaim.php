@@ -41,9 +41,9 @@ class PriceClaim extends Model
         // $productSlotDeals = new stdClass();
         $product = $this->product;
         if ($product) {
-            $productData['product_id'] = $product->id;
-            $productData['slug'] = $product->slug;
-            $productData['deal'] = $this->product->deals;
+            // $productData['product_id'] = $product->id;
+            // $productData['slug'] = $product->slug;
+            // $productData['deal'] = $this->product->deals;
             $order = (array) $attributes['order'];
             Session::put('product_order_id', $order['order_id']);
             $slotDeals = [];
@@ -53,11 +53,11 @@ class PriceClaim extends Model
                         array_push($slotDeals, $p);
                 }
             }
-
-            $productData['slot_deals'] = $this->slot_deals()->count();
-            $productData['slot_deals_count'] = count($slotDeals);
+            $attributes['order_products'] = $order['order_products'];
+            // $productData['slot_deals'] = $slotDeals;
+            // $productData['slot_deals_count'] = count($slotDeals);
             // array_push($productSlotDeals, $productData);
-            $attributes['product_slot_deals'] = $productData;
+            // $attributes['product_slot_deals'] = $productData;
             $attributes['order_table_id'] = $this->order->order_id;
         }
 
