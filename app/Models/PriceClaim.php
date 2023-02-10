@@ -63,7 +63,7 @@ class PriceClaim extends Model
             $attributes['order_table_id'] = $this->order->order_id;
         }
 
-        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $this->deal_id)->get();
+        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $this->deal_id)->get()->count();
 
         return $attributes;
     }
