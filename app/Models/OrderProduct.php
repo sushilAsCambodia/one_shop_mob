@@ -39,7 +39,7 @@ class OrderProduct extends Model
                                                 $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
                                             })->get();
 
-        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");                       
+        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id")[0];                       
         return $attributes;
     }
 }
