@@ -40,39 +40,43 @@ class PaymentService
     {
         try {
             $noProductDeal = false;
-            DB::transaction(function () use ($data, &$noProductDeal)  {
-                
-                foreach ($data as $dataVal) {
-                    $order = Order::where('id', $dataVal['order_id'])->where('customer_id', Auth()->user()->id)->firstOrFail();
+            DB::transaction(function () use ($data, &$noProductDeal) {
 
-                    $dataPayment['payment_id']  = rand();
+                foreach ($data as $dataVal) {
+                    $order = Order::where('id', $dataVal['order_id'])
+                        ->where('customer_id', Auth()->user()->id)->firstOrFail();
+
+                    $dataPayment['payment_id'] = rand();
                     $dataPayment['customer_id'] = Auth()->user()->id;
-                    $dataPayment['order_id']    = $order['id'];
-                    $dataPayment['amount']      = $order['total_amount'];
-                    $dataPayment['provider']    = 'test';
-                    $dataPayment['status']      = 'complete';
+                    $dataPayment['order_id'] = $order['id'];
+                    $dataPayment['amount'] = $order['total_amount'];
+                    $dataPayment['provider'] = 'test';
+                    $dataPayment['status'] = 'complete';
 
                     Payment::create($dataPayment);
 
                     foreach ($dataVal['order_product'] as $orderProduct) {
-                        $orderProductData = OrderProduct::where('id', $orderProduct['order_product_id'])->where('order_id', $dataVal['order_id'])->firstOrFail();
+                        $orderProductData = OrderProduct::where('id', $orderProduct['order_product_id'])
+                            ->where('order_id', $dataVal['order_id'])->firstOrFail();
                         $orderProductData->update(['status' => 'confirmed']);
 
-                        $deal = Deal::whereProductId($orderProductData->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
+                        $deal = Deal::whereProductId($orderProductData->product_id)
+                            ->whereStatus('active')->orderBy('created_at', 'desc')->first();
                         //check if deal available
-                        if(!$deal) {
+                        if (!$deal) {
                             $noProductDeal = true;
                             return false;
                         }
 
                         $slotId = $deal->slots()->first();
 
-                        SlotDeal::where('order_id', $order->id)->where('slot_id', $slotId->id)->update(['status' => 'confirmed']);
+                        SlotDeal::where('order_id', $order->id)->where('slot_id', $slotId->id)
+                            ->update(['status' => 'confirmed']);
                     }
 
-
                     $orderProductCount = OrderProduct::where('order_id', $dataVal['order_id'])->count();
-                    $orderProductCountConfirm = OrderProduct::where('order_id', $dataVal['order_id'])->where('status', 'confirmed')->count();
+                    $orderProductCountConfirm = OrderProduct::where('order_id', $dataVal['order_id'])
+                        ->where('status', 'confirmed')->count();
                     if ($orderProductCountConfirm == $orderProductCount) {
                         $orderStatus = ['status' => 'confirmed'];
                     } else {
@@ -81,22 +85,23 @@ class PaymentService
 
                     $order->update($orderStatus);
                 }
-                
+
             });
 
-            if($noProductDeal)
-                return response()->json([
-                    'message' => 'The selected order product id is invalid',
-                    "errors" => [
-                        "order_product.*.order_product_id" => [
-                            "product deal not exist"
-                        ]
-                    ]
-                ],422);
+            if ($noProductDeal) {
+                $result['message'] = 'The_selected_order_product_id_is_invalid';
+                $result['data'] = [
+                    "order_product.*.order_product_id" =>
+                    "product_deal_not_exist"
+                ];
+                $result['statusCode'] = 400;
+                return getSuccessMessages($result);
+            }
 
-            return response()->json([
-                'messages' => ['Payment created Successfully'],
-            ], 201);
+            $result['message'] = 'Payment_created_Successfully';
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
