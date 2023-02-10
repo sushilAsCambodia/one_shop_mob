@@ -41,7 +41,7 @@ class OrderProduct extends Model
 
         $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");      
         
-        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $attributes['deal_ids'][0])->get()->count();
+        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->whereIn('deal_id', $attributes['deal_ids'])->get()->count();
         
         return $attributes;
     }
