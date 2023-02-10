@@ -16,7 +16,7 @@ class PriceClaim extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class)->with(['image', 'translation', 'deal']);
+        return $this->belongsTo(Product::class)->with(['image', 'translation', 'deal.slots']);
     }
 
 
