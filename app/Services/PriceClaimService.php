@@ -83,7 +83,7 @@ class PriceClaimService
             //         });
             // });
 
-            $results = $query->select('price_claims.*')->where('booking_id', '=', $request->orderId)
+            $results = $query->select('price_claims.*')->where('booking_id', '=', $request->bookingId)
                             ->with(['product' , 'order'])->first();
 
             // foreach ($results as $key1 => $result) {
@@ -102,7 +102,7 @@ class PriceClaimService
 
             //     $results[$key1]->order_product = $orderProductData;
             // }
-            
+
             $result['message'] = 'fetch_price_claim_successfully';
             $result['data'] = $results;
             $result['statusCode'] = 200;

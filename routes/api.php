@@ -170,7 +170,7 @@ Route::controller(PriceClaimController::class)->group(function () {
     Route::get('prize-claim/paginate/{params?}', 'paginate');
     // Route::get('prize-claim/all', 'all');
     // Route::patch('prize-claim/{priceClaim}', 'update');
-    Route::get('prize-claim-byOrderId', 'prizeClaimByBookingId');
+    Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId');
 
     Route::get('prize-claim/{priceClaim}', 'get');
 });
