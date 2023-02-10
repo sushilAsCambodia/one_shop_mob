@@ -15,16 +15,16 @@ class OrderProduct extends Model
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
 
-    // public function product()
-    // {
-    //     return $this->belongsTo(Product::class);
-    // }
-
-    public function products()
+    public function product()
     {
-        return $this->hasMany(Product::class, 'id', 'product_id');
+        return $this->belongsTo(Product::class);
     }
 
+    // public function products()
+    // {
+    //     return $this->hasMany(Product::class, 'id', 'product_id');
+    // }
+    // ->with(['image', 'deal.slots'])
     // public function dealIds()
     // {
     //     return $this->hasOne(SlotDeal::class, 'order_id')->distinct('slot_deals.deal_id');
