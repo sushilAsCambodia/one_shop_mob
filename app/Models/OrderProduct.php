@@ -30,16 +30,16 @@ class OrderProduct extends Model
     //     return $this->hasOne(SlotDeal::class, 'order_id')->distinct('slot_deals.deal_id');
     // }
 
-    // public function toArray()
-    // {
-    //     $attributes = parent::toArray();
+    public function toArray()
+    {
+        $attributes = parent::toArray();
 
-    //     // $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
-    //     //                                         $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
-    //     //                                     })->get();
+        // $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
+        //                                         $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
+        //                                     })->get();
         
-    //     $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->whereIn('deal_id', $this->deal_id)->get();
+        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->whereIn('deal_id', $this->deal_id)->get();
         
-    //     return $attributes;
-    // }
+        return $attributes;
+    }
 }
