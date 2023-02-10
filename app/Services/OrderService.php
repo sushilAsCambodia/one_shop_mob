@@ -60,8 +60,8 @@ class OrderService
                         ->where('orders.status', $slug);
             // dd($resultData); die;
 
-            $query->whereHas('orderProducts',function ($query,$slug){
-                $query->where('status', $slug);
+            $query->whereHas('orderProducts',function ($query){
+                $query->where('status', 'canceled');
             });
             $resultData = $query->latest('created_at')->get();
             if (!$resultData && empty($resultData)) {
