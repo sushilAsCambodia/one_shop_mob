@@ -27,7 +27,8 @@ class DealService
                 return response()->json(['messages' => ['Data Not Found'],], 400);
             }
 
-            $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id',$deal->id)->get();
+            $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id',$deal->id)
+                        ->select('slot_deals.id','slot_deals.booking_id','slot_deals.status')->get();
 
 
             $result['message'] = 'slotDeals_fetch_successfully';

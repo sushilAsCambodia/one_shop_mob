@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\FailedValidation;
 
 class PriceClaimFormRequest extends FormRequest
 {
+    use FailedValidation;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,6 +27,14 @@ class PriceClaimFormRequest extends FormRequest
     {
         return [
             "address_id"=> "required"
+        ];
+    }
+    
+
+    public function messages()
+    {
+        return [
+            'address_id.required' => 'address_id_is_required',
         ];
     }
 }
