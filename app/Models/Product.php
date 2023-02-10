@@ -46,10 +46,10 @@ class Product extends Model implements Auditable
     //     return $this->morphOne(Configure::class, 'configurable');
     // }
 
-    // public function translation()
-    // {
-    //     return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
-    // }
+    public function translation()
+    {
+        return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
+    }
 
     // public function tags()
     // {
