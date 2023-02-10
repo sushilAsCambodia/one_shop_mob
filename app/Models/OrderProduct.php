@@ -10,7 +10,7 @@ class OrderProduct extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // protected $table = 'order_product';
+    protected $table = 'order_product';
     protected $guarded = ['id'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
