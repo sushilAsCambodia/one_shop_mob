@@ -88,8 +88,9 @@ class PriceClaimService
         //         });
         // });
 
-        $results['price_claims'] = $query->select('price_claims.*')->where('booking_id', '=', $request->bookingId)
-            ->with(['product', 'order'])->first();
+        $results['price_claims'] = $query->select('price_claims.*')
+                                    ->where('booking_id', '=', $request->bookingId)
+                                    ->with(['product', 'order'])->first();
 
         // foreach ($results as $key1 => $result) {
         //     // dd($result);
