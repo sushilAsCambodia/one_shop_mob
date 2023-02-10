@@ -55,35 +55,16 @@ class OrderService
     public function order($slug): JsonResponse
     {
         try {
-            $resultData = Order::where('customer_id', Auth()->user()->id)
-                ->where('orders.status', $slug)->latest('created_at')->get();
+            $resultData = Order::with(['orderProducts', 'orderProducts.product'])
+                        ->where('customer_id', Auth()->user()->id)
+                        ->where('orders.status', $slug)->latest('created_at')->get();
             // dd($resultData); die;
             if (!$resultData && empty($resultData)) {
                 $result['message'] = 'Data_Not_Found';
-                $result['data'] = $resultData;
+                // $result['data'] = $resultData;
                 $result['statusCode'] = 201;
 
-                return getSuccessMessages($result);
-                return response()->json(['messages' => [''],], );
-            }
-            // if ($slug == 'reserved') {
-            //     $slug = 'reserved';
-            // }
-            foreach ($resultData as $key1 => $result) {
-                // dd($result);
-                $orderProductData = OrderProduct::with('product.deal', 'product.slotDeals')->where('order_id', $result->id)->where('status', $slug)
-                    ->with(['product'])->latest('created_at')->get();
-
-                foreach ($orderProductData as $key => $orderProduct) {
-                    $deal = Deal::whereProductId($orderProduct->product_id)->where('deals.status', 'active')->orderBy('created_at', 'desc')->first();
-                    if (!empty($deal) && $deal) {
-                        $slotsId = $deal->slots()->first()->id;
-                        $orderProductData[$key]->slots_deals = SlotDeal::where('order_id', $result->id)
-                            ->where('slot_id', $slotsId)->where('is_bot', 0)->count();
-                    }
-                }
-
-                $resultData[$key1]->order_product = $orderProductData;
+                return getSuccessMessages($result, false);
             }
 
             $result['message'] = 'Orders_fetch_successfully';
