@@ -104,7 +104,7 @@ class PriceClaimService
             // }
 
             $result['message'] = 'fetch_price_claim_successfully';
-            $result['data'] = '$results';
+            $result['data'] = $results;
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
 
