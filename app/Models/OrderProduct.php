@@ -28,7 +28,7 @@ class OrderProduct extends Model
 
     public function dealIds()
     {
-        return $this->hasMany(SlotDeal::class)->distinct('slot_deals.deal_id');
+        return $this->hasMany(SlotDeal::class, 'order_id')->distinct('slot_deals.deal_id');
     }
 
     public function toArray()
