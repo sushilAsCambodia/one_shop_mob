@@ -40,12 +40,19 @@ class DealController extends Controller
 
         return $this->dealService->delete($deals);
     }
+
     public function setDeal(DealFormRequest $request)
     {
         return $this->dealService->setDeal($request->all());
     }
+
     public function clearDeals()
     {
         return $this->dealService->clearDeals();
+    }
+
+    public function getSlotDeals(Deal $deals, $orderId = null)
+    {
+        return $this->dealService->getSlotDeals($deals, $orderId);
     }
 }

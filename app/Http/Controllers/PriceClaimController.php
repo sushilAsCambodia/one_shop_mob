@@ -34,8 +34,8 @@ class PriceClaimController extends Controller
         return response()->json($priceClaim, 200);
     }
 
-    public function prizeClaimByOrderId(Request $request)
+    public function prizeClaimByBookingId(Request $request)
     {
-        return $this->priceClaimService->prizeClaimByOrderId($request);
+        return $this->priceClaimService->prizeClaimByBookingId($request);
     }
 }

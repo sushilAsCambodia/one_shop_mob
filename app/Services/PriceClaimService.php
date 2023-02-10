@@ -54,7 +54,7 @@ class PriceClaimService
         }
     }
 
-    public function prizeClaimByOrderId($request): JsonResponse
+    public function prizeClaimByBookingId($request): JsonResponse
     {
         try {
             $query = (new PriceClaim())->newQuery();
@@ -86,6 +86,22 @@ class PriceClaimService
             $results = $query->select('price_claims.*')->where('booking_id', '=', $request->orderId)
                             ->with(['product' , 'order'])->first();
 
+            // foreach ($results as $key1 => $result) {
+            //     // dd($result);
+            //     $orderProductData = OrderProduct::with('product.deal', 'product.slotDeals')->where('order_id', $result->id)->where('status', $slug)
+            //         ->with(['product'])->latest('created_at')->get();
+
+            //     foreach ($orderProductData as $key => $orderProduct) {
+            //         $deal = Deal::whereProductId($orderProduct->product_id)->where('deals.status', 'active')->orderBy('created_at', 'desc')->first();
+            //         if (!empty($deal) && $deal) {
+            //             $slotsId = $deal->slots()->first()->id;
+            //             $orderProductData[$key]->slots_deals = SlotDeal::where('order_id', $result->id)
+            //                 ->where('slot_id', $slotsId)->where('is_bot', 0)->count();
+            //         }
+            //     }
+
+            //     $results[$key1]->order_product = $orderProductData;
+            // }
             
             $result['message'] = 'fetch_price_claim_successfully';
             $result['data'] = $results;

@@ -77,7 +77,7 @@ class OrderService
                     if (!empty($deal) && $deal) {
                         $slotsId = $deal->slots()->first()->id;
                         $orderProductData[$key]->slots_deals = SlotDeal::where('order_id', $result->id)
-                            ->where('slot_id', $slotsId)->where('is_bot', 0)->get();
+                            ->where('slot_id', $slotsId)->where('is_bot', 0)->count();
                     }
                 }
 

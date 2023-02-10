@@ -155,7 +155,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('prize-claim/paginate/{params?}', 'paginate');
         // Route::get('prize-claim/all', 'all');
         // Route::patch('prize-claim/{priceClaim}', 'update');
-        Route::get('prize-claim-byOrderId', 'prizeClaimByOrderId');
+        Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId');
 
         Route::get('prize-claim/{priceClaim}', 'get');
     });
@@ -203,5 +203,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('add-addresses', 'store');
         Route::post('edit-addresses/{address}', 'update')->where(['address' => '[0-9]+']);
         Route::post('delete-addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
+    });
+
+    // Deals Routes
+    Route::controller(DealController::class)->group(function () {
+        Route::get('slot-deals/{deals}/{orderId?}', 'getSlotDeals');
     });
 });
