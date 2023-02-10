@@ -23,7 +23,7 @@ class OrderService
 
     public function paginate($request): JsonResponse
     {
-        try {
+        // try {
             // die('use another API');
             $perPage = $request->rowsPerPage ?: 20;
             $page = $request->page ?: 1;
@@ -46,10 +46,10 @@ class OrderService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-        } catch (\Exception $e) {
-            \Log::debug($e);
-            return generalErrorResponse($e);
-        }
+        // } catch (\Exception $e) {
+        //     \Log::debug($e);
+        //     return generalErrorResponse($e);
+        // }
     }
 
     public function order($slug): JsonResponse
