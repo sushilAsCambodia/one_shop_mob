@@ -60,7 +60,7 @@ class OrderService
                         ->where('orders.status', $slug);
             // dd($resultData); die;
 
-            $query->whereHas('orderProducts',function ($query){
+            $query->whereHas('orderProducts',function ($query) use($slug) {
                 $query->where('status', $slug);
             });
             $resultData = $query->latest('created_at')->get();
