@@ -30,10 +30,10 @@ class Product extends Model implements Auditable
     //     return $this->belongsTo(SubCategory::class);
     // }
 
-    // public function favouriteCount()
-    // {
-    //     return $this->hasMany(Favorite::class);
-    // }
+    public function favouriteCount()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 
 
     public function image()

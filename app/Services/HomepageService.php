@@ -65,7 +65,7 @@ class HomepageService
             // 'translation',
             'tags',
             'deal.slots',
-            // 'favouriteCount',
+            'favouriteCount',
         ]);
 
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
