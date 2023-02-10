@@ -54,7 +54,7 @@ class OrderService
 
     public function order($slug): JsonResponse
     {
-        try {
+        // try {
             $query = Order::with(['orderProducts', 'orderProducts.product'])
                         ->where('customer_id', Auth()->user()->id)
                         ->where('orders.status', $slug);
@@ -77,10 +77,10 @@ class OrderService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-        } catch (\Exception $e) {
-            \Log::debug($e);
-            return generalErrorResponse($e);
-        }
+        // } catch (\Exception $e) {
+        //     \Log::debug($e);
+        //     return generalErrorResponse($e);
+        // }
     }
 
     public function store(array $data): JsonResponse
