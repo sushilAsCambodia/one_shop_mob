@@ -50,7 +50,7 @@ class PriceClaim extends Model
             if(array_key_exists('order_products', $order)) {
                 $attributes['order_products'] = $order['order_products'];
                 foreach ($order['order_products'] as $p) {
-                    if ($p['product_id'] === $this->deal_id){
+                    if ($p['product_id'] === $product->id){
                         array_push($slotDeals, $p);
                     }  
                 }
