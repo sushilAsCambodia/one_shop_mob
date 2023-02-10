@@ -157,7 +157,7 @@ class OrderService
     {
         try {
 
-            $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.products','orderProducts.slotsDeals'])->first();
+            $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.products'])->first();
 
             // foreach ($results->orderProducts as $key => $orderProduct) {
             //     $deal = Deal::whereProductId($orderProduct->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
