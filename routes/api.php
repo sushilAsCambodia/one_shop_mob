@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
-        Route::get('orders/paginate/{params?}', 'paginate');  //done
+        Route::get('orders/paginate/{params?}', 'paginate')->middleware('lang_id');  //done
         Route::post('customer/orders', 'store');   //done
         // Route::post('customer/orders-cancel', 'cancelOrder');
         // Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
@@ -128,9 +128,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //Price Claim Route
     Route::controller(PriceClaimController::class)->group(function () {
-        Route::get('prize-claim/paginate/{params?}', 'paginate');
+        Route::get('prize-claim/paginate/{params?}', 'paginate')->middleware('lang_id');
         // Route::get('prize-claim/all', 'all');
-        Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId');
+        Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId')->middleware('lang_id');  //done
         Route::post('prize-claim/{priceClaim}', 'update');
         // Route::get('prize-claim/{priceClaim}', 'get');
     });
@@ -144,7 +144,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(FavoriteController::class)->group(function () {
         Route::post('favorites/add-to-favorites', 'addToFavorites');
         Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
-        Route::get('favorites/list', 'list');
+        Route::get('favorites/list', 'list')->middleware('lang_id');
     });
 
     Route::controller(OrderController::class)->group(function () {
@@ -164,7 +164,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::controller(NotificationController::class)->group(function () {
-        Route::get('notifications/paginate/{params?}', 'paginate');
+        Route::get('notifications/paginate/{params?}', 'paginate')->middleware('lang_id');
         Route::patch('notifications/{notification}', 'update');
     });
 });
