@@ -42,21 +42,4 @@ class Order extends Model
         return $this->products();
     }
 
-    public function dealIds()
-    {
-        return $this->hasMany(SlotDeal::class)->distinct('slot_deals.deal_id');
-    }
-
-    public function toArray()
-    {
-        $attributes = parent::toArray();
-
-        $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
-                                                $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
-                                            })->get();
-
-        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");                       
-        return $attributes;
-    }
-
 }
