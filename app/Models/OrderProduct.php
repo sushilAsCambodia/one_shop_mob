@@ -39,9 +39,9 @@ class OrderProduct extends Model
                                                 $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
                                             })->get();
 
-        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id")[0];      
+        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");      
         
-        $attributes['slotDealsCount'] = $this->order_id;
+        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $attributes['deal_ids'][0])->get()->count();
         
         return $attributes;
     }
