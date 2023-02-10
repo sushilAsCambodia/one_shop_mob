@@ -17,7 +17,7 @@ class PriceClaimService
 
     public function paginate($request): JsonResponse
     {
-        try {
+        // try {
             $perPage = $request->rowsPerPage ?: 15;
             $page = $request->page ?: 1;
             $sortBy = $request->sortBy ?: 'created_at';
@@ -55,10 +55,10 @@ class PriceClaimService
                         ->paginate($perPage, ['*'], 'page', $page);
 
             return response()->json($results, 200);
-        } catch (\Exception $e) {
-            \Log::debug($e);
-            return generalErrorResponse($e);
-        }
+        // } catch (\Exception $e) {
+        //     \Log::debug($e);
+        //     return generalErrorResponse($e);
+        // }
     }
 
     public function prizeClaimByBookingId($request): JsonResponse
