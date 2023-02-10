@@ -114,13 +114,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         // Route::post('add-to-cart', 'addToCart');
     });
 
-    // Add To favorites
-    Route::controller(FavoriteController::class)->group(function () {
-        Route::post('favorites/add-to-favorites', 'addToFavorites');
-        Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
-        Route::get('favorites/list', 'list');
-    });
-
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
         Route::get('orders/paginate/{params?}', 'paginate');
@@ -129,9 +122,29 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
         Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
         // Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
-
         // Route::patch('orders/{orders}', 'update');
         // Route::delete('orders/{orders}', 'delete');
+    });
+
+    //Price Claim Route
+    Route::controller(PriceClaimController::class)->group(function () {
+        Route::get('prize-claim/paginate/{params?}', 'paginate');
+        // Route::get('prize-claim/all', 'all');
+        Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId');
+        Route::post('prize-claim/{priceClaim}', 'update');
+        // Route::get('prize-claim/{priceClaim}', 'get');
+    });
+
+    // Deals Routes
+    Route::controller(DealController::class)->group(function () {
+        Route::get('slot-deals/{deals}/{orderId?}', 'getSlotDeals');
+    });
+    
+    // Add To favorites
+    Route::controller(FavoriteController::class)->group(function () {
+        Route::post('favorites/add-to-favorites', 'addToFavorites');
+        Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
+        Route::get('favorites/list', 'list');
     });
 
     Route::controller(OrderController::class)->group(function () {
@@ -148,15 +161,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Add To Payment
     Route::controller(PaymentController::class)->group(function () {
         // Route::post('customer/order-payment', 'store');
-    });
-
-    //Price Claim Route
-    Route::controller(PriceClaimController::class)->group(function () {
-        Route::get('prize-claim/paginate/{params?}', 'paginate');
-        // Route::get('prize-claim/all', 'all');
-        Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId');
-        Route::post('prize-claim/{priceClaim}', 'update');
-        // Route::get('prize-claim/{priceClaim}', 'get');
     });
 
     Route::controller(NotificationController::class)->group(function () {
@@ -194,10 +198,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('add-addresses', 'store');
         Route::post('edit-addresses/{address}', 'update')->where(['address' => '[0-9]+']);
         Route::post('delete-addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
-    });
-
-    // Deals Routes
-    Route::controller(DealController::class)->group(function () {
-        Route::get('slot-deals/{deals}/{orderId?}', 'getSlotDeals');
     });
 });

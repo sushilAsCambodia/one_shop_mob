@@ -105,13 +105,13 @@ class OrderService
 
             foreach ($data['product_details'] as $pData) {
 
-                $deal = Deal::whereProductId($pData['product_id'])->whereStatus('active')->orderBy('created_at', 'desc')->first();
+                $deal = Deal::whereId($pData['deal_id'])->whereStatus('active')->first();
                 $slots = $deal->slots()->first();
 
-                if ($slots->total_slots < $slots->booked_slots + $pData['slots']) {
+                if ($slots->total_slots < $slots->booked_slots + $pData['slots'] || empty($slots)) {
 
                     $result['message'] = 'Insufficient_Slots';
-                    $result['data'] = ['product_id' => $pData['product_id'], 'available_slots' => $slots->total_slots - $slots->booked_slots,];
+                    $result['data'] = ['deal_id' => $pData['deal_id'], 'available_slots' => $slots->total_slots - $slots->booked_slots,];
                     $result['statusCode'] = 200;
 
                     return getSuccessMessages($result, false);
@@ -121,7 +121,7 @@ class OrderService
                 //     $custmerIdBot = 6;
                 //     $dataBot      = array();
                 //     $dataBot      = ["total_amount"   => 1, "total_slots"    => 1, "total_products" => 1, "total_quantity" => 1];
-                //     $dataBot['product_details'] = [["product_id" => $pData['product_id'], "amount"     => 1, "slots"      => 1,],];
+                //     $dataBot['product_details'] = [["deal_id" => $pData['deal_id'], "amount"     => 1, "slots"      => 1,],];
 
                 //     $orderIdBot = Order::create(
                 //         array_merge($dataBot, array('customer_id' => $custmerIdBot, 'order_id' => getRandomIdGenerate('BD'), 'status' => 'confirmed'))

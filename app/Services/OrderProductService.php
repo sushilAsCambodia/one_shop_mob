@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Deal;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use Illuminate\Http\JsonResponse;
@@ -20,8 +21,11 @@ class OrderProductService
                 }else{
                     $status = 'reserved';
                 }
-                OrderProduct::create(array_merge($dataVal, array('customer_id' => $custmerId, 'order_id' => $orderId, 'status' => $status)));
-                $slotDealService->storeSlotDeal($orderId, $dataVal['product_id'], $dataVal['slots'], $isBot);
+                
+                $deal = Deal::whereId($dataVal['deal_id'])->whereStatus('active')->first();
+
+                OrderProduct::create(array_merge($dataVal, array('product_id' => $deal->product_id, 'customer_id' => $custmerId, 'order_id' => $orderId, 'status' => $status)));
+                $slotDealService->storeSlotDeal($orderId, $dataVal['deal_id'], $dataVal['slots'], $isBot);
             }
 
             return response()->json([
