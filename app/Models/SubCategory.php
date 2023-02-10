@@ -33,7 +33,7 @@ class SubCategory extends Model implements Auditable
             'translation',
             'tags',
             'deal.slots',
-            'favouriteCount',
+            // 'favouriteCount',
         ]);
 
         $query = $query->whereHas('deal', function ($query) {
