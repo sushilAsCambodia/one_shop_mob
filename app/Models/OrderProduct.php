@@ -15,33 +15,30 @@ class OrderProduct extends Model
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+    // public function product()
+    // {
+    //     return $this->belongsTo(Product::class);
+    // }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deal.slots']);
-    }
+    // public function products()
+    // {
+    //     return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deal.slots']);
+    // }
 
-
-    public function dealIds()
-    {
-        return $this->hasOne(SlotDeal::class, 'order_id')->distinct('slot_deals.deal_id');
-    }
+    // public function dealIds()
+    // {
+    //     return $this->hasOne(SlotDeal::class, 'order_id')->distinct('slot_deals.deal_id');
+    // }
 
     public function toArray()
     {
         $attributes = parent::toArray();
 
-        $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
-                                                $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
-                                            })->get();
-
-        $attributes['deal_ids'] = $this->dealIds()->pluck("slot_deals.deal_id");      
+        // $attributes['delivered_products'] = $this->products()->whereHas('shipping',function ($query) use ($attributes) {
+        //                                         $query->where('shippings.status','Delivered')->where('shippings.order_id', $attributes['id']);
+        //                                     })->get();
         
-        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->whereIn('deal_id', $attributes['deal_ids'])->get()->count();
+        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->whereIn('deal_id', $this->deal_id)->get()->count();
         
         return $attributes;
     }
