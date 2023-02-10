@@ -54,14 +54,14 @@ class OrderService
 
     public function order($slug): JsonResponse
     {
-        // try {
+        try {
             $query = Order::with(['orderProducts', 'orderProducts.product'])
                         ->where('customer_id', Auth()->user()->id)
                         ->where('orders.status', $slug);
             // dd($resultData); die;
 
-            $query->whereHas('orderProducts',function ($query){
-                $query->where('status', 'canceled');
+            $query->whereHas('orderProducts',function ($query,$slug){
+                $query->where('status', $slug);
             });
             $resultData = $query->latest('created_at')->get();
             if (!$resultData && empty($resultData)) {
@@ -77,10 +77,10 @@ class OrderService
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
-        // } catch (\Exception $e) {
-        //     \Log::debug($e);
-        //     return generalErrorResponse($e);
-        // }
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
     }
 
     public function store(array $data): JsonResponse
