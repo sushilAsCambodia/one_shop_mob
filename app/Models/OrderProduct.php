@@ -20,10 +20,10 @@ class OrderProduct extends Model
     //     return $this->belongsTo(Product::class);
     // }
 
-    // public function products()
-    // {
-    //     return $this->hasMany(Product::class, 'id', 'product_id')->with(['image', 'deal.slots']);
-    // }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'id', 'product_id');
+    }
 
     // public function dealIds()
     // {
