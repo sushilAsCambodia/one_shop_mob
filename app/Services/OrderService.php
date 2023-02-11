@@ -53,70 +53,27 @@ class OrderService
         // }
     }
 
-    // public function order($slug): JsonResponse
-    // {
-    //     try {
-    //         $resultData = Order::with(['orderProducts', 'orderProducts.product'])
-    //                     ->where('customer_id', Auth()->user()->id)
-    //                     ->where('orders.status', $slug)->latest('created_at')->get();
-            
-    //         if (!$resultData && empty($resultData)) {
-    //             $result['message'] = 'Data_Not_Found';
-    //             $result['statusCode'] = 201;
-
-    //             return getSuccessMessages($result, false);
-    //         }
-
-    //         $result['message'] = 'Orders_fetch_successfully';
-    //         $result['data'] = $resultData;
-    //         $result['statusCode'] = 200;
-
-    //         return getSuccessMessages($result);
-    //     } catch (\Exception $e) {
-    //         \Log::debug($e);
-    //         return generalErrorResponse($e);
-    //     }
-    // }
-
-    
     public function order($slug): JsonResponse
     {
         try {
-            $ops = OrderProduct::where('status', $slug)
-                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
-                ->where('customer_id', Auth()->user()->id)
-                ->with(['product'])
-                ->groupBy('product_id')
-                ->get();
+            // $resultData = Order::with(['orderProducts', 'orderProducts.product'])
+            //             ->where('customer_id', Auth()->user()->id)
+            //             ->where('orders.status', $slug)->latest('created_at')->get();
 
-            if (!$ops && empty($ops)) {
+            $resultData = OrderProduct::with(['product'])
+                        ->where('customer_id', Auth()->user()->id)
+                        ->where('status', $slug)->latest('created_at')->get();
+            
+            if (!$resultData && empty($resultData)) {
                 $result['message'] = 'Data_Not_Found';
-                $result['statusCode'] = 400;
+                $result['statusCode'] = 201;
 
                 return getSuccessMessages($result, false);
             }
-            // $orderIds = $ops->pluck('order_id');
-            foreach ($ops as $key => $opData) {
-                $deals = Deal::where('product_id', $opData->product_id)->get();
-                $dealIds = $deals->pluck('id');
-                // echo json_encode($dealIds);exit;
-                $dealsData = SlotDeal::select('slot_deals.*')->with('deal.slots')
-                    ->whereIn('deal_id', $dealIds)
-                    ->where('order_id', $opData->order_id)
-                    ->groupBy('deal_id')
-                    ->first();
 
-                $orderId =  Order::whereId($opData->order_id)->first()->order_id;
-                // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
-                $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
-                $ops[$key]->orderId = $orderId;
-                // $opData->slotDeals = $slotDeals;
-                // $opData->o_ids = $orderIds;
-            }
-
-            $result['message'] = 'Data_Not_Found';
-            $result['data'] = $ops;
-            $result['statusCode'] = 400;
+            $result['message'] = 'Orders_fetch_successfully';
+            $result['data'] = $resultData;
+            $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
         } catch (\Exception $e) {
@@ -124,6 +81,48 @@ class OrderService
             return generalErrorResponse($e);
         }
     }
+
+    
+    // public function order($slug): JsonResponse
+    // {
+    //     try {
+    //         $ops = OrderProduct::where('status', $slug)
+    //             ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
+    //             ->where('customer_id', Auth()->user()->id)
+    //             ->with(['product'])
+    //             ->groupBy('product_id')
+    //             ->get();
+
+    //         if (!$ops && empty($ops)) {
+    //             $result['message'] = 'Data_Not_Found';
+    //             $result['statusCode'] = 400;
+
+    //             return getSuccessMessages($result, false);
+    //         }
+    //         foreach ($ops as $key => $opData) {
+    //             $deals = Deal::where('product_id', $opData->product_id)->get();
+    //             $dealIds = $deals->pluck('id');
+    //             $dealsData = SlotDeal::select('slot_deals.*')->with('deal.slots')
+    //                 ->whereIn('deal_id', $dealIds)
+    //                 ->where('order_id', $opData->order_id)
+    //                 ->groupBy('deal_id')
+    //                 ->first();
+
+    //             $orderId =  Order::whereId($opData->order_id)->first()->order_id;
+    //             $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
+    //             $ops[$key]->orderId = $orderId;
+    //         }
+
+    //         $result['message'] = 'Data_Not_Found';
+    //         $result['data'] = $ops;
+    //         $result['statusCode'] = 400;
+
+    //         return getSuccessMessages($result);
+    //     } catch (\Exception $e) {
+    //         \Log::debug($e);
+    //         return generalErrorResponse($e);
+    //     }
+    // }
 
     public function store(array $data): JsonResponse
     {
