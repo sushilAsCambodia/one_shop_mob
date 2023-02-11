@@ -20,15 +20,15 @@ class Product extends Model implements Auditable
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class);
-    // }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
-    // public function subCategory()
-    // {
-    //     return $this->belongsTo(SubCategory::class);
-    // }
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
 
     public function favouriteCount()
     {
