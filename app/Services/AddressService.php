@@ -15,7 +15,7 @@ class AddressService
     public function all($request): JsonResponse
     {
         try {
-            $query =  (new Address())->newQuery();
+            $query =  (new Address())->newQuery()->orderBy('updated_at', 'DESC');
 
             $modelData = Auth::user();
 
