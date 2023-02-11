@@ -134,9 +134,9 @@ class PriceClaimService
                 ]);
             });
 
-            return response()->json([
-                'messages' => ['Price Claim updated successfully'],
-            ], 200);
+            $result['message'] = 'Price_Claim_updated_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);

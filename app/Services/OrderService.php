@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class OrderService
 {
@@ -81,7 +82,7 @@ class OrderService
     public function order($slug): JsonResponse
     {
         try {
-            $ops =  OrderProduct::where('status', $slug)
+            $ops = OrderProduct::where('status', $slug)
                 ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
@@ -89,7 +90,10 @@ class OrderService
                 ->get();
 
             if (!$ops && empty($ops)) {
-                return response()->json(['messages' => ['Data Not Found'],], 400);
+                $result['message'] = 'Data_Not_Found';
+                $result['statusCode'] = 400;
+
+                return getSuccessMessages($result, false);
             }
             // $orderIds = $ops->pluck('order_id');
             foreach ($ops as $key => $opData) {
@@ -110,9 +114,11 @@ class OrderService
                 // $opData->o_ids = $orderIds;
             }
 
-            return response()->json([
-                'order' => $ops,
-            ], 200);
+            $result['message'] = 'Data_Not_Found';
+            $result['data'] = $ops;
+            $result['statusCode'] = 400;
+
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
