@@ -4,10 +4,11 @@ namespace App\Http\Requests;
 
 use App\Traits\PhoneNumberSerializable;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\FailedValidation;
 
 class CustomerAccountFormRequest extends FormRequest
 {
-    use PhoneNumberSerializable;
+    use PhoneNumberSerializable, FailedValidation;
 
     /**
      * Determine if the user is authorized to make this request.

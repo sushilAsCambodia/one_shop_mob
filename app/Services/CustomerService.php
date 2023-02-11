@@ -261,6 +261,29 @@ class CustomerService
             return generalErrorResponse($e);
         }
     }
+    public function updatePassword($request): JsonResponse
+    {
+        try {
+            if ($request->current_password) {
+                if (Hash::check($request->current_password, Auth::user()->password)) {
+                    $customerData['password'] = $request->new_password;
+                } else {
+                    $result['message'] = 'Current_password_not_correct';
+                    $result['statusCode'] = 200;
+                    return getSuccessMessages($result, false);
+                }
+            }
+            Auth::user()->update($customerData);
+
+            $result['message'] = 'password_has_been_update_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
+
+        } catch (\Exception $e) {
+            // \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
 
     /**
      * @description customer detail using token service function

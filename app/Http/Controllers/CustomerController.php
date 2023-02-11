@@ -65,6 +65,10 @@ class CustomerController extends Controller
     {
         return $this->customerService->updateAccount($request);
     }
+    public function updatePassword(CustomerAccountFormRequest $request)
+    {
+        return $this->customerService->updatePassword($request);
+    }
 
     /**
      * @description get customer account detail controller function
