@@ -49,7 +49,7 @@ class PriceClaimService
                     });
             });
 
-            $results = $query->select('price_claims.*')->with(['product' , 'product.slotDeals','deal_id', 'order'])
+            $results = $query->select('price_claims.*')->with(['product' , 'product.slotDeals', 'order'])
                              ->paginate($perPage, ['*'], 'page', $page);
 
             $result['message'] = 'fetch_price_claim_successfully';
