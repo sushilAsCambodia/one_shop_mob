@@ -57,7 +57,14 @@ class OrderService
     {
         try {
             $ops =  OrderProduct::where('status', $slug)
-                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"), DB::raw("SUM(order_product.amount) as amounts"))
+                ->select(
+                    'order_product.order_id',
+                    'order_product.product_id',
+                    'order_product.deal_id',
+                    'order_product.status',
+                    DB::raw("SUM(order_product.slots) as slots"),
+                    DB::raw("SUM(order_product.amount) as amounts")
+                )
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
                 ->groupBy('deal_id')
@@ -103,7 +110,7 @@ class OrderService
     //         $resultData = OrderProduct::with(['product'])
     //                     ->where('customer_id', Auth()->user()->id)
     //                     ->where('status', $slug)->latest('created_at')->get();
-            
+
     //         if (!$resultData && empty($resultData)) {
     //             $result['message'] = 'Data_Not_Found';
     //             $result['statusCode'] = 201;
@@ -185,7 +192,7 @@ class OrderService
         try {
 
             $results = Order::where('id', $orderId)->with(['orderProducts', 'orderProducts.product'])->first();
-            
+
             $result['message'] = 'Order_Data_By_Order_ID';
             $result['data'] = $results;
             $result['statusCode'] = 200;
