@@ -56,16 +56,13 @@ class OrderService
     public function order($slug): JsonResponse
     {
         try {
+
             $ops =  OrderProduct::where('status', $slug)
                 ->select(
-                    'order_product.order_id',
-                    'order_product.product_id',
-                    'order_product.deal_id',
-                    'order_product.status',
+                    'order_product.*',
                     DB::raw("SUM(order_product.slots) as slots"),
                     DB::raw("SUM(order_product.amount) as amounts"),
-                    DB::raw("GROUP_CONCAT(order_product.id) as order_product_id"),
-                    // CONCAT
+                    DB::raw("GROUP_CONCAT(order_product.id) as ids")
                 )
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
@@ -90,11 +87,10 @@ class OrderService
                     ->first();
 
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
-                // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
                 $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
                 $ops[$key]->orderId = $orderId;
-                // $opData->slotDeals = $slotDeals;
-                // $opData->o_ids = $orderIds;
+                $ops[$key]->ids = explode(',', $opData->ids);
+
             }
             $result['message'] = 'Orders_fetch_successfully';
             $result['data'] = $ops;
