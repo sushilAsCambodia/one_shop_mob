@@ -14,7 +14,8 @@ class Order extends Model
 
     public function orderProduct()
     {
-        return $this->hasMany(OrderProduct::class , 'status', 'status');
+        // return $this->hasMany(OrderProduct::class , 'status', 'status');
+        return $this->hasMany(OrderProduct::class);
     }
     public function orderProducts()
     {
