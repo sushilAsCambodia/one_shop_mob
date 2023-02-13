@@ -52,7 +52,7 @@ class PriceClaimService
             $results = $query->select('price_claims.*')->with(['product' , 'product.slotDeals', 'order'])
                              ->paginate($perPage, ['*'], 'page', $page);
 
-            $result['message'] = 'fetch_price_claim_successfully';
+            $result['message'] = 'fetch_to_ship_successfully';
             $result['data'] = $results;
             $result['statusCode'] = 200;
             return getSuccessMessages($result);

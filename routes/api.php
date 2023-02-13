@@ -167,6 +167,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('notifications/paginate/{params?}', 'paginate')->middleware('lang_id');
         Route::patch('notifications/{notification}', 'update');
     });
+    
+    // Shipping Routes
+    Route::controller(ShippingController::class)->group(function () {
+        Route::get('shipping/paginate/{params?}', 'paginate');
+        // Route::get('shipping/all', 'all')->name('Shipping: View Shipping');
+        // Route::post('shipping', 'store')->name('Shipping: Create Shipping');
+        // Route::patch('shipping/{shippings}', 'update')->name('Shipping: Edit/Update Shipping')->where(['shippings' => '[0-9]+']);
+        // Route::patch('shipping/update-status/{shippings}', 'updateShippingStatus')->name('Shipping: Update Shipping Status')->where(['shippings' => '[0-9]+']);
+        // Route::patch('shipping/update-carrier/{shippings}', 'updateShippingCarrier')->name('Shipping: Update Shipping Carrier')->where(['shippings' => '[0-9]+']);
+        // Route::delete('shipping/{shippings}', 'delete')->name('Shipping: Delete Shipping')->where(['shippings' => '[0-9]+']);
+        // Route::get('shipping/status/{trackingId}', 'getShippingStatus')->name('Shipping: get ShippingStatus Shipping')->where(['shippings' => '[0-9]+']);
+    });
 });
 
 // login creadation

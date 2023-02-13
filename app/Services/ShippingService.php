@@ -48,9 +48,14 @@ class ShippingService
                 $query->orWhere('booking_id', 'like', "%$request->search%");
                 $query->orWhere('tracking_id', 'like', "%$request->search%");
             });
-            $results = $query->with(['shippingLogs', 'shippingLogs.user'])->paginate($perPage, ['*'], 'page', $page);
 
-            return response()->json($results, 200);
+            $results = $query->with(['shippingLogs', 'shippingLogs.user', 'products','slotDeal:id,deal_id,booking_id','slotDeal.deal:id,deal_price'])
+                             ->paginate($perPage, ['*'], 'page', $page);
+
+            $result['message'] = 'fetch_to_receive_successfully';
+            $result['data'] = $results;
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
