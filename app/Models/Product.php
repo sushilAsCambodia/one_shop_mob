@@ -96,16 +96,16 @@ class Product extends Model implements Auditable
         return $this->belongsToMany(Promotion::class);
     }
 
-    // public function slotDeals()
-    // {
+    public function slotDeals()
+    {
 
-    //     $query = $this->hasManyThrough(SlotDeal::class, Deal::class);
-    //     $orderID = Session::get('product_order_id');
-    //     if ($orderID)
-    //         $query->where('slot_deals.order_id', $orderID);
+        $query = $this->hasManyThrough(SlotDeal::class, Deal::class);
+        $orderID = Session::get('product_order_id');
+        if ($orderID)
+            $query->where('slot_deals.order_id', $orderID);
 
-    //     return $query;
-    // }
+        return $query;
+    }
 
     // public function orders()
     // {
