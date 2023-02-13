@@ -60,7 +60,7 @@ class OrderService
                 ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
-                ->groupBy('product_id')
+                ->groupBy('deal_id')
                 ->get();
 
             if (!$ops && empty($ops)) {
