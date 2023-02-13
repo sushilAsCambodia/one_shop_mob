@@ -12,10 +12,10 @@ class Order extends Model
     protected $guarded = ['id'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
-    // public function orderProduct()
-    // {
-    //     return $this->hasMany(OrderProduct::class , 'status', 'status');
-    // }
+    public function orderProduct()
+    {
+        return $this->hasMany(OrderProduct::class , 'status', 'status');
+    }
     public function orderProducts()
     {
         return $this->hasMany(OrderProduct::class);
