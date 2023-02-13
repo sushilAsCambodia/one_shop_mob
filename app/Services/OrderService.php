@@ -67,7 +67,7 @@ class OrderService
                 )
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
-                ->groupBy('deal_id')
+                ->groupBy('product_id')
                 ->get();
 
             if (!$ops && empty($ops)) {
