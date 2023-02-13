@@ -44,8 +44,13 @@ class PaymentService
 
                 foreach ($data as $dataVal) {
                     $order = Order::where('id', $dataVal['order_id'])
-                        ->where('customer_id', Auth()->user()->id)->firstOrFail();
-
+                        ->where('customer_id', Auth()->user()->id)->first();
+                    if(empty($order)){
+                        $result['message'] = 'The_selected_order_id_is_invalid';
+                        $result['data'] = $dataVal['order_id'];
+                        $result['statusCode'] = 400;
+                        return getSuccessMessages($result); 
+                    }
                     $dataPayment['payment_id'] = rand();
                     $dataPayment['customer_id'] = Auth()->user()->id;
                     $dataPayment['order_id'] = $order['id'];
