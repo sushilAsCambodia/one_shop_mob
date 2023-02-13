@@ -187,9 +187,9 @@ class PaymentService
                 return getSuccessMessages($result);
             }
 
-
             $result['message'] = 'Payment_created_Successfully';
             $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
