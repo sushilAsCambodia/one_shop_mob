@@ -112,6 +112,7 @@ class PaymentService
     //     }
     // }
 
+
     public function store(array $data)
     {
         try {
@@ -124,14 +125,6 @@ class PaymentService
 
                 if (!$orderIds) {
                     // $noProductDeal = false;
-                    // return response()->json([
-                    //     'message' => 'The selected order product id is invalid',
-                    //     "errors" => [
-                    //         "order_product.*.order_product_id" => [
-                    //             "product deal not exist"
-                    //         ]
-                    //     ]
-                    // ], 422);
                     $result['message'] = 'The_selected_order_id_is_invalid';
                     $result['statusCode'] = 400;
                     return getSuccessMessages($result);
@@ -193,22 +186,93 @@ class PaymentService
                 $result['statusCode'] = 400;
                 return getSuccessMessages($result);
             }
-            // return response()->json([
-            //     'message' => 'The selected order product id is invalid',
-            //     "errors" => [
-            //         "order_product.*.order_product_id" => [
-            //             "product deal not exist"
-            //         ]
-            //     ]
-            // ], 422);
+
+
             $result['message'] = 'Payment_created_Successfully';
             $result['statusCode'] = 200;
-            // return response()->json([
-            //     'messages' => ['Payment created Successfully'],
-            // ], 201);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
         }
     }
+
+    // public function store(array $data)
+    // {
+    //     try {
+    //         $noProductDeal = false;
+    //         DB::transaction(function () use ($data, &$noProductDeal) {
+    //             $orderProductsIds = $data['order_product_ids'];
+    //             $orderProducts = OrderProduct::whereIn('id', $orderProductsIds)->where('customer_id', auth()->user()->id)->get();
+
+    //             $orderIds = $orderProducts->pluck('order_id');
+
+    //             if (!$orderIds) {
+    //                 $result['message'] = 'The_selected_order_id_is_invalid';
+    //                 $result['statusCode'] = 400;
+    //                 return getSuccessMessages($result);
+    //             }
+
+    //             $orderIds = array_unique($orderIds->toArray());
+
+    //             $orderProductsCount = Order::whereIn('id', $orderIds)->withCount('orderProduct')->get()->pluck('order_product_count', 'id')->toArray();
+
+    //             $orderStatus = ['status' => 'confirmed'];
+
+    //             foreach ($orderProducts as $order) {
+
+    //                 $check = Payment::whereOrderId($order->order_id)->where('order_product_ids', $order->id)->first();
+
+    //                 $orderStatus = ['status' => 'confirmed'];
+
+    //                 if (!$check) {
+    //                     $dataPayment['payment_id']  = rand();
+    //                     $dataPayment['customer_id'] = Auth()->user()->id;
+    //                     $dataPayment['order_id']    = $order->order_id;
+    //                     $dataPayment['order_product_ids']    = $order->id;
+    //                     $dataPayment['amount']      = $order->amount;
+    //                     $dataPayment['provider']    = 'test';
+    //                     $dataPayment['status']      = 'complete';
+    //                     Payment::create($dataPayment);
+    //                     $deal = Deal::whereProductId($order->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
+
+    //                     if (!$deal) {
+    //                         $noProductDeal = true;
+    //                         return false;
+    //                     }
+    //                     $slotId = $deal->slots()->first();
+
+    //                     SlotDeal::where('order_id', $order->order_id)->where('deal_id', $deal->id)->update(['status' => 'confirmed']);
+
+
+    //                     if ($slotId->total_slots <= SlotDeal::where('status', 'confirmed')->where('deal_id', $deal->id)->count()) {
+    //                         Deal::whereId($deal->id)->update(['status' => 'inactive']);
+    //                     }
+
+    //                     OrderProduct::whereId($order->id)->update($orderStatus);
+    //                 }
+    //                 if (array_key_exists($order->order_id, $orderProductsCount)) {
+
+    //                     if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() != $orderProductsCount[$order->order_id]) {
+    //                         $orderStatus = ['status' => 'remaining'];
+    //                     } else if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() == 0) {
+    //                         $orderStatus = ['status' => 'pending'];
+    //                     }
+
+    //                     Order::whereId($order->order_id)->update($orderStatus);
+    //                 }
+    //             }
+    //         });
+
+    //         if ($noProductDeal) {
+    //             $result['message'] = 'The_selected_order_id_is_invalid';
+    //             $result['statusCode'] = 400;
+    //             return getSuccessMessages($result);
+    //         }
+    //         $result['message'] = 'Payment_created_Successfully';
+    //         $result['statusCode'] = 200;
+    //     } catch (\Exception $e) {
+    //         \Log::debug($e);
+    //         return generalErrorResponse($e);
+    //     }
+    // }
 }
