@@ -64,7 +64,7 @@ class OrderService
                     'order_product.status',
                     DB::raw("SUM(order_product.slots) as slots"),
                     DB::raw("SUM(order_product.amount) as amounts"),
-                    DB::raw(json_array("GROUP_CONCAT(order_product.id) as ids")),
+                    DB::raw("GROUP_CONCAT(order_product.id) as ids"),
                     // CONCAT
                 )
                 ->where('customer_id', Auth()->user()->id)
