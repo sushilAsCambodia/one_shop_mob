@@ -47,19 +47,11 @@ class HomepageService
 
     public function getData($sortBy, $sortOrder, $slug)
     {
-        // Session::put("query_promotions_session", true);
         $products =  Product::whereHas('promotion', function ($query) use ($slug) {
             $query->where('promotions.slug', $slug);
-        })
-            ->whereHas('deal', function ($query) {
-                $query->whereIn('status', ['expired', 'active']);
-            })
-            ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
-
-        $products = Product::whereHas('deal', function ($query) {
+        })->whereHas('deal', function ($query) {
             $query->whereIn('status', ['expired', 'active']);
         });
-
         $products = $products->with([
             'image',
             // 'translation',
@@ -67,7 +59,6 @@ class HomepageService
             'deal.slots',
             'favouriteCount',
         ]);
-
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
     public function getSearchResult($request): JsonResponse
