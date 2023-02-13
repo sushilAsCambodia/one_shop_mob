@@ -27,21 +27,28 @@ class PaymentFormRequest extends FormRequest
     public function rules()
     {
         return [
-            '*.order_id' => $this->method() === 'POST' ? 'required|exists:orders,id':
-                                    'exists:orders,id',
-            '*.order_product.*.order_product_id' => $this->method() === 'POST' ? 
-                                    'required|exists:order_product,id': 'exists:order_product,id',
+            'order_product_ids' => $this->method() === 'POST' ? 'array|required|exists:order_product,id': 'exists:order_product,id',
 
         ];
+        // return [
+        //     '*.order_id' => $this->method() === 'POST' ? 'required|exists:orders,id':
+        //                             'exists:orders,id',
+        //     '*.order_product.*.order_product_id' => $this->method() === 'POST' ? 
+        //                             'required|exists:order_product,id': 'exists:order_product,id',
+
+        // ];
     }
 
     public function messages()
     {
         return [
-            'order_id.required'=>'order_id_is_required',
-            'order_id.exists'=>'order_id_is_not_exists',
-            'order_product_id.required'=>'order_product_id_is_required',
-            'order_product_id.exists'=>'order_product_id_is_not_exists',
+            'order_product_ids.required'=>'order_product_ids_is_required',
+            'order_product_ids.exists'=>'order_product_ids_is_not_exists',
+            'order_product_ids.array'=>'order_product_ids_is_not_array',
+            // 'order_id.required'=>'order_id_is_required',
+            // 'order_id.exists'=>'order_id_is_not_exists',
+            // 'order_product_id.required'=>'order_product_id_is_required',
+            // 'order_product_id.exists'=>'order_product_id_is_not_exists',
         ];
     }
 
