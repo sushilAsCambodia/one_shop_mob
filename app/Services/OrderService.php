@@ -57,7 +57,7 @@ class OrderService
     {
         try {
             $ops =  OrderProduct::where('status', $slug)
-                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
+                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"), DB::raw("SUM(order_product.amount) as amounts"))
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
                 ->groupBy('deal_id')
