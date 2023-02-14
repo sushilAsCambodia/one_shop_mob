@@ -62,7 +62,7 @@ class PriceClaimService
         }
     }
 
-    public function prizeClaimByBookingId($request): JsonResponse
+    public function prizeClaimByClaimId($request): JsonResponse
     {
         // try {
         $query = (new PriceClaim())->newQuery();
@@ -92,7 +92,7 @@ class PriceClaimService
         // });
 
         $results['price_claims'] = $query->select('price_claims.*')
-                                    ->where('booking_id', '=', $request->bookingId)
+                                    ->where('id', '=', $request->claimId)
                                     ->with(['product', 'order'])->first();
 
         // foreach ($results as $key1 => $result) {

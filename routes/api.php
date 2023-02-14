@@ -130,7 +130,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(PriceClaimController::class)->group(function () {
         Route::get('prize-claim/paginate/{params?}', 'paginate')->middleware('lang_id');  //done
         // Route::get('prize-claim/all', 'all');
-        Route::get('prize-claim-byBookingId', 'prizeClaimByBookingId')->middleware('lang_id');  //done
+        Route::get('prize-claim-byClaimId', 'prizeClaimByClaimId')->middleware('lang_id');  //done
         Route::post('prize-claim/{priceClaim}', 'update');
         // Route::get('prize-claim/{priceClaim}', 'get');
     });

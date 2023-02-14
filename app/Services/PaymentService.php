@@ -125,7 +125,7 @@ class PaymentService
 
                 if (!$orderIds) {
                     // $noProductDeal = false;
-                    $result['message'] = 'The_selected_order_id_is_invalid1';
+                    $result['message'] = 'The_selected_order_id_is_invalid';
                     $result['statusCode'] = 400;
                     return getSuccessMessages($result);
                 }
@@ -151,7 +151,7 @@ class PaymentService
                         $dataPayment['provider']    = 'test';
                         $dataPayment['status']      = 'complete';
                         Payment::create($dataPayment);
-                        $deal = Deal::whereProductId($order->product_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
+                        $deal = Deal::whereId($order->deal_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
 
                         if (!$deal) {
                             $noProductDeal = true;
@@ -159,11 +159,11 @@ class PaymentService
                         }
                         $slotId = $deal->slots()->first();
 
-                        SlotDeal::where('order_id', $order->order_id)->where('deal_id', $deal->id)->update(['status' => 'confirmed']);
+                        SlotDeal::where('order_id', $order->order_id)->where('deal_id', $order->deal_id)->update(['status' => 'confirmed']);
 
 
-                        if ($slotId->total_slots <= SlotDeal::where('status', 'confirmed')->where('deal_id', $deal->id)->count()) {
-                            Deal::whereId($deal->id)->update(['status' => 'inactive']);
+                        if ($slotId->total_slots <= SlotDeal::where('status', 'confirmed')->where('deal_id', $order->deal_id)->count()) {
+                            Deal::whereId($order->deal_id)->update(['status' => 'inactive']);
                         }
 
                         OrderProduct::whereId($order->id)->update($orderStatus);
@@ -182,7 +182,7 @@ class PaymentService
             });
 
             if ($noProductDeal) {
-                $result['message'] = 'The_selected_order_id_is_invalid2';
+                $result['message'] = 'The_selected_order_id_is_invalid';
                 $result['statusCode'] = 400;
                 return getSuccessMessages($result);
             }
