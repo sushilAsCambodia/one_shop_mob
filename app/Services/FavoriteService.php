@@ -22,7 +22,15 @@ class FavoriteService
 
             $query = (new Favorite())->newQuery()->whereCustomerId(Auth::id());
 
-            $results = $query->select('favorites.*')->with('products')->paginate($perPage, ['*'], 'page', $page);
+            // $results = $query->select('favorites.*')->with('products')->paginate($perPage, ['*'], 'page', $page);
+            $results = $query->select('favorites.*')
+                ->whereHas('product', function ($query) {
+                    $query->whereHas('deal', function ($query) {
+                        $query->whereNotIn('deals.status', ['settled', 'inactive']);
+                    });
+                })
+                ->with('product.deal.slots')
+                ->paginate($perPage, ['*'], 'page', $page);
 
             $result['message'] = 'favorite_fetch_successfully';
             $result['data'] = $results;
@@ -76,5 +84,4 @@ class FavoriteService
             return generalErrorResponse($e);
         }
     }
-
 }
