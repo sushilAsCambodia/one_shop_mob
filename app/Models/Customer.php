@@ -41,6 +41,10 @@ class Customer extends Authenticatable implements Auditable
         })->sum('amount');
     }
 
+    public function orderProduct()
+    {
+        return $this->hasMany(OrderProduct::class)->where('status','!=', 'reserved');
+    }
 
     protected function setPasswordAttribute($value)
     {
