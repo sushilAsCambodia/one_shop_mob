@@ -94,7 +94,7 @@ class CustomerService
                     $customer = Customer::create($data);
                     $customer->assignRole('Customer');
 
-                    $result['message'] = 'customer_registered_successfully';
+                    $result['message'] = 'registered_successfully';
                     $result['statusCode'] = 200;
 
                     return getSuccessMessages($result);
@@ -144,7 +144,7 @@ class CustomerService
             unset($loginData['password']);
             if (!Customer::where($loginData)->first()) {
 
-                $result['message'] = 'This_user_not_yet_registered';
+                $result['message'] = 'user_not_registered';
                 $result['statusCode'] = 400;
 
                 return getSuccessMessages($result, false);
@@ -195,7 +195,7 @@ class CustomerService
 
                     return getSuccessMessages($result);
                 } else {
-                    $result['message'] = 'OTP_not_yet_verified';
+                    $result['message'] = 'OTP_not_verified';
                     $result['statusCode'] = 400;
 
                     return getSuccessMessages($result, false);
@@ -218,7 +218,7 @@ class CustomerService
             Auth::guard('web')->logout();
         }
 
-        $result['message'] = 'Logout_successful';
+        $result['message'] = 'logout_successful';
         $result['statusCode'] = 200;
 
         return getSuccessMessages($result);
@@ -252,7 +252,7 @@ class CustomerService
             // }
             Auth::user()->update($customerData);
 
-            $result['message'] = 'Account_has_been_saved_successfully';
+            $result['message'] = 'updated_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
 
@@ -268,14 +268,14 @@ class CustomerService
                 if (Hash::check($request->current_password, Auth::user()->password)) {
                     $customerData['password'] = $request->new_password;
                 } else {
-                    $result['message'] = 'Current_password_not_correct';
+                    $result['message'] = 'current_password_not_correct';
                     $result['statusCode'] = 200;
                     return getSuccessMessages($result, false);
                 }
             }
             Auth::user()->update($customerData);
 
-            $result['message'] = 'password_has_been_update_successfully';
+            $result['message'] = 'update_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
 

@@ -117,7 +117,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
         Route::get('orders/paginate/{params?}', 'paginate')->middleware('lang_id');  //done
-        Route::post('customer/orders', 'store');   //done
+        Route::post('customer/orders', 'store');   //done 1
         // Route::post('customer/orders-cancel', 'cancelOrder');
         Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id'); // done
         Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');  //done
@@ -131,7 +131,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('prize-claim/paginate/{params?}', 'paginate')->middleware('lang_id');  //done
         // Route::get('prize-claim/all', 'all');
         Route::get('prize-claim-byClaimId', 'prizeClaimByClaimId')->middleware('lang_id');  //done
-        Route::post('prize-claim/{priceClaim}', 'update');
+        Route::post('prize-claim/{priceClaim}', 'update'); //done 1
         // Route::get('prize-claim/{priceClaim}', 'get');
     });
 
@@ -142,8 +142,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Add To favorites
     Route::controller(FavoriteController::class)->group(function () {
-        Route::post('favorites/add-to-favorites', 'addToFavorites');
-        Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
+        Route::post('favorites/add-to-favorites', 'addToFavorites');  //done 1
+        Route::post('favorites/remove-from-favorites', 'removeFromFavorites'); //done 1
         Route::get('favorites/list', 'list')->middleware('lang_id');
     });
 
@@ -160,12 +160,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     // Add To Payment
     Route::controller(PaymentController::class)->group(function () {
-        Route::post('customer/order-payment', 'store');
+        Route::post('customer/order-payment', 'store'); //done 1
     });
 
     Route::controller(NotificationController::class)->group(function () {
         Route::get('notifications/paginate/{params?}', 'paginate')->middleware('lang_id');
-        Route::patch('notifications/{notification}', 'update');
+        Route::patch('notifications/{notification}', 'update'); //done 1
     });
     
     // Shipping Routes
@@ -185,14 +185,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // Customer routes
 Route::controller(CustomerController::class)->group(function () {
     // Route::get('customers-earning', 'getCalculations');
-    Route::post('customers/send-otp', 'sendOTP');
+    Route::post('customers/send-otp', 'sendOTP'); 
     Route::post('customers/verify-otp', 'verifyOTP');
     Route::post('customers/register', 'register');
     Route::post('customers/login', 'login');
     // Route::get('customers/{customer}', 'get')->where(['customer' => '[0-9]+']);
     Route::post('customers/forget-password', 'forgetPassword');
     Route::post('customers/set-new-password', 'setNewPassword');
-});
+}); //done 1
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(CustomerController::class)->group(function () {
@@ -202,7 +202,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('customers/user-details', 'userDetails');
         // Route::post('customers/create-bot-customer', 'createBotCustomer');
         Route::post('customers/logout', 'logout');
-    });
+    }); //done 1
 
     // Address routes
     Route::controller(AddressController::class)->group(function () {
@@ -211,5 +211,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('add-addresses', 'store');
         Route::post('edit-addresses/{address}', 'update')->where(['address' => '[0-9]+']);
         Route::post('delete-addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
-    });
+    }); //done 1
 });

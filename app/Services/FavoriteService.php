@@ -67,7 +67,7 @@ class FavoriteService
                 Favorite::where('product_id', $data['product_id'])->where('customer_id', $data['customer_id'])->delete();
             });
 
-            $result['message'] = 'Product_Removed_from_favorite_successfully';
+            $result['message'] = 'removed_successfully';
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);

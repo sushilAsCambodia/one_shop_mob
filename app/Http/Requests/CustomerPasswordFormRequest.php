@@ -38,11 +38,11 @@ class CustomerPasswordFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'idd.required' => 'idd_is_required',
-            'phone_number.required' => 'phone_number_is_required',
-            'password.required' => 'password_is_required',
-            'password_confirmation.required' => 'password_confirmation_is_required',
-            'password_confirmation.same' => 'password_confirmation_is_same',
+            'idd.required' => 'idd_required',
+            'phone_number.required' => 'number_required',
+            'password.required' => 'password_required',
+            'password_confirmation.required' => 'password_confirmation_required',
+            'password_confirmation.same' => 'password_confirmation_not_same',
         ];
     }
 }

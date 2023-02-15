@@ -79,8 +79,9 @@ class NotificationService
     {
         $data->read_at = Carbon::now()->format('Y-m-d H:i:s');
         $data->update();
-        return response()->json([
-            'messages' => ['Notification updated successfully'],
-        ], 200);
+
+        $result['message'] = 'updated_successfully';
+        $result['statusCode'] = 200; 
+        return getSuccessMessages($result);
     }
 }

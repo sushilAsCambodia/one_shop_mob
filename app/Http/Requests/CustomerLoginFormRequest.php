@@ -38,9 +38,9 @@ class CustomerLoginFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'idd.required' => 'idd_is_required',
-            'phone_number.required' => 'phone_number_is_required',
-            'password.required' => 'password_is_required',
+            'idd.required' => 'idd_required',
+            'phone_number.required' => 'number_required',
+            'password.required' => 'password_required',
         ];
     }
 }

@@ -39,10 +39,10 @@ class CustomerRegisterFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'idd.required' => 'idd_is_required',
-            'password.required' => 'password_is_required',
-            'otp.required' => 'otp_is_required',
-            'phone_number.required' => 'phone_number_is_required',
+            'idd.required' => 'idd_required',
+            'password.required' => 'password_required',
+            'otp.required' => 'otp_required',
+            'phone_number.required' => 'number_required',
         ];
     }
 }

@@ -28,13 +28,13 @@ class FavoriteFormRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
         ];
-        return $validation;
+        // return $validation;
     }
     public function messages()
     {
         return [
-            'product_id.required' => 'product_id_is_required',
-            'product_id.exists' => 'product_id_not_exists',
+            'product_id.required' => 'product_required',
+            'product_id.exists' => 'product_not_exists',
         ];
     }
 }

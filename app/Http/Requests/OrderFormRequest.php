@@ -39,16 +39,16 @@ class OrderFormRequest extends FormRequest
     public function messages()
     {
         return [
-            "product_details.required" => "Cart_is_Empty",
-            'product_details.array' => 'The_product_details_must_be_an_array',
-            'product_details.min' => 'The_product_details_must_have_at_least_one_item',
-            'product_details.*.deal_id.required' => 'The_product_ID_field_is_required',
-            'product_details.*.deal_id.exists' => 'The_deal_is_not_valid',
+            "product_details.required" => "cart_Empty",
+            'product_details.array' => 'invalid_product',
+            'product_details.min' => 'select_at_least_one_item',
+            'product_details.*.deal_id.required' => 'product_required',
+            'product_details.*.deal_id.exists' => 'invalid_product',
 
-            'product_details.*.amount.required' => 'The_amount_field_is_required',
-            'product_details.*.amount.int' => 'The_amount_must_be_an_integer',
-            'product_details.*.slots.required' => 'The_slots_field_is_required',
-            'product_details.*.slots.int' => 'The_slots_must_be_an_integer',
+            'product_details.*.amount.required' => 'amount_required',
+            'product_details.*.amount.int' => 'invalid_amount',
+            'product_details.*.slots.required' => 'slots_required',
+            'product_details.*.slots.int' => 'invalid_slots',
         ];
     }
 }

@@ -34,7 +34,7 @@ class PriceClaimFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'address_id.required' => 'address_id_is_required',
+            'address_id.required' => 'address_required',
         ];
     }
 }

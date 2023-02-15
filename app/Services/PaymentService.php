@@ -125,7 +125,7 @@ class PaymentService
 
                 if (!$orderIds) {
                     // $noProductDeal = false;
-                    $result['message'] = 'The_selected_order_id_is_invalid';
+                    $result['message'] = 'invalid_product';
                     $result['statusCode'] = 400;
                     return getSuccessMessages($result);
                 }
@@ -182,12 +182,12 @@ class PaymentService
             });
 
             if ($noProductDeal) {
-                $result['message'] = 'The_selected_order_id_is_invalid';
+                $result['message'] = 'invalid_product';
                 $result['statusCode'] = 400;
                 return getSuccessMessages($result);
             }
 
-            $result['message'] = 'Payment_created_Successfully';
+            $result['message'] = 'payment_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {

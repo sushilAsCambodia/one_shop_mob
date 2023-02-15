@@ -52,7 +52,7 @@ class AddressService
                 Auth::user()->addresses()->save($address);
             });
 
-            $result['message'] = 'Address_created_successfully';
+            $result['message'] = 'created_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {
@@ -67,7 +67,7 @@ class AddressService
                 $address->update($data);
             });
 
-            $result['message'] = 'Address_updated_successfully';
+            $result['message'] = 'updated_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {
@@ -80,7 +80,7 @@ class AddressService
         try {
             $address->delete();
 
-            $result['message'] = 'Address_deleted_successfully';
+            $result['message'] = 'deleted_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {

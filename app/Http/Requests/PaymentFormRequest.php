@@ -42,9 +42,9 @@ class PaymentFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'order_product_ids.required'=>'order_product_ids_is_required',
-            'order_product_ids.exists'=>'order_product_ids_is_not_exists',
-            'order_product_ids.array'=>'order_product_ids_is_not_array',
+            'order_product_ids.required'=>'product_required',
+            'order_product_ids.exists'=>'product_not_exists',
+            'order_product_ids.array'=>'invalid_product',
             // 'order_id.required'=>'order_id_is_required',
             // 'order_id.exists'=>'order_id_is_not_exists',
             // 'order_product_id.required'=>'order_product_id_is_required',
