@@ -255,7 +255,6 @@ class CustomerService
             $result['message'] = 'updated_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
-
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
@@ -278,7 +277,6 @@ class CustomerService
             $result['message'] = 'update_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
-
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
@@ -347,28 +345,27 @@ class CustomerService
     {
         try {
             $mlmConfiguration = json_decode(Configure::where('type', 'MLM')->select('data')->first()->data);
-            $L1Customers = Customer::withSum('order', 'amount')->where('parent_referral_code', $customer->referral_code)->get();
+            if (empty($mlmConfiguration)) {
+                $result['message'] = 'Please_set_the_Configuration';
+                $result['statusCode'] = 400;
+                return getSuccessMessages($result, false);
+            }
+            $L1Customers = Customer::withSum('orderProduct', 'amount')->where('parent_referral_code', $customer->referral_code)->get();
             $L1CustomersId = collect($L1Customers->pluck('referral_code'));
+            $L1CustomersIds = collect($L1Customers->pluck('id'));
 
-            $L2Customers = Customer::withSum('order', 'amount')->whereIn('parent_referral_code', $L1CustomersId)->get();
+            $L2Customers = Customer::withSum('orderProduct', 'amount')->whereIn('parent_referral_code', $L1CustomersId)->get();
             $L2CustomersId = collect($L2Customers->pluck('referral_code'));
+            $L2CustomersIds = collect($L2Customers->pluck('id'));
 
-            $L3Customers = Customer::withSum('order', 'amount')->whereIn('parent_referral_code', $L2CustomersId)->get();
+            $L3Customers = Customer::withSum('orderProduct', 'amount')->whereIn('parent_referral_code', $L2CustomersId)->get();
+            $L3CustomersIds = collect($L3Customers->pluck('id'));
 
-            $L3CustomersId = collect($L3Customers->pluck('referral_code'));
-
-            $L1OrdersValue = OrderProduct::whereIn('customer_id', $L1CustomersId)->where(function ($q) {
-                $q->where('status', 'confirmed')->orWhere('status', 'winner');
-            })->sum('amount');
-            $L2OrdersValue = OrderProduct::whereIn('customer_id', $L2CustomersId)->where(function ($q) {
-                $q->where('status', 'confirmed')->orWhere('status', 'winner');
-            })->sum('amount');
-            $L3OrdersValue = OrderProduct::whereIn('customer_id', $L3CustomersId)->where(function ($q) {
-                $q->where('status', 'confirmed')->orWhere('status', 'winner');
-            })->sum('amount');
+            $L1OrdersValue = OrderProduct::whereIn('customer_id', $L1CustomersIds)->where('status', '!=', 'reserved')->sum('amount');
+            $L2OrdersValue = OrderProduct::whereIn('customer_id', $L2CustomersIds)->where('status', '!=', 'reserved')->sum('amount');
+            $L3OrdersValue = OrderProduct::whereIn('customer_id', $L3CustomersIds)->where('status', '!=', 'reserved')->sum('amount');
 
             $result = [];
-
             $obj1 = new stdClass();
             $obj2 = new stdClass();
             $obj3 = new stdClass();
@@ -383,7 +380,7 @@ class CustomerService
 
             $obj2->members = $L2Customers;
             $obj2->members_count = count($L2Customers);
-            $obj2->transaction_amount = $L1OrdersValue;
+            $obj2->transaction_amount = $L2OrdersValue;
             if ($L2OrdersValue > 0 && $mlmConfiguration->level_two_status == 'active')
                 $obj2->commission = ($mlmConfiguration->level_two_commission  *  $L2OrdersValue) / 100;
             else
@@ -410,7 +407,10 @@ class CustomerService
             $result['total_commissions'] = $obj1->commission + $obj2->commission + $obj3->commission;
 
 
-            return response()->json($result, 200);
+            $results['message'] = 'fetch_mlm_data_successfully';
+            $results['data'] = $result;
+            $results['statusCode'] = 200;
+            return getSuccessMessages($results, false);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
