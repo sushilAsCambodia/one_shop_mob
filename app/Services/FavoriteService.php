@@ -23,12 +23,12 @@ class FavoriteService
             $query = (new Favorite())->newQuery()->whereCustomerId(Auth::id());
 
             $results = $query->select('favorites.*')
-                ->whereHas('product', function ($query) {
+                ->whereHas('products', function ($query) {
                     $query->whereHas('deal', function ($query) {
                         $query->whereNotIn('deals.status', ['settled', 'inactive']);
                     });
                 })
-                ->with('product.deal.slots')
+                ->with('products.deal.slots')
                 ->paginate($perPage, ['*'], 'page', $page);
 
             $result['message'] = 'favorite_fetch_successfully';
