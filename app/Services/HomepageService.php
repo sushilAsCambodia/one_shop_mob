@@ -60,6 +60,14 @@ class HomepageService
             'favouriteCount',
         ]);
         return $products->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
+
+        $products =  Product::with('deal.slots')->whereHas('promotion', function ($query) use ($slug) {
+            $query->where('promotions.slug', $slug);
+        })
+            ->whereHas('deals', function ($query) {
+                $query->whereIn('status', ['expired', 'active']);
+            })
+            ->select('products.*')->inRandomOrder()->limit(8)->orderBy($sortBy, $sortOrder)->get();
     }
     public function getSearchResult($request): JsonResponse
     {

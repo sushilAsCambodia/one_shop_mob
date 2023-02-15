@@ -15,6 +15,6 @@ class SlotDeal extends Model
     //protected $hidden = ['created_at','updated_at','deleted_at'];
     
     public function deal(){
-        return $this->belongsTo(Deal::class);
+        return $this->belongsTo(Deal::class)->orderBy('created_at', 'desc');
     }
 }
