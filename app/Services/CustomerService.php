@@ -310,8 +310,7 @@ class CustomerService
                     $query->whereHas('deal', function ($query) {
                         $query->whereNotIn('deals.status', ['settled', 'inactive']);
                     });
-                })
-                ->with('product.deal.slots')->count();
+                })->count();
 
             $result['customer'] = Auth()->user();
 

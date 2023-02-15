@@ -29,7 +29,6 @@ class FavoriteService
                         $query->whereNotIn('deals.status', ['settled', 'inactive']);
                     });
                 })
-                ->with('product.deal.slots')
                 ->paginate($perPage, ['*'], 'page', $page);
 
             $result['message'] = 'favorite_fetch_successfully';
