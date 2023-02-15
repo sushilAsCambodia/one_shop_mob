@@ -307,7 +307,19 @@ class CustomerService
             $result['addressCount'] = $query->count();
 
             // $result['whishlistDetails'] = Favorite::where('customer_id', Auth()->user()->id)->get();
-            $result['whishlistCount'] = Favorite::where('customer_id', Auth()->user()->id)->count();
+            // $result['whishlistCount'] = Favorite::where('customer_id', Auth()->user()->id)->count();
+
+            $query2 = (new Favorite())->newQuery()->whereCustomerId(Auth::id());
+
+            $query2->select('favorites.*')
+                ->whereHas('products', function ($query2) {
+                    $query2->whereHas('deal', function ($query2) {
+                        $query2->whereNotIn('deals.status', ['settled', 'inactive']);
+                    });
+                })
+                ->with('products.deal.slots');
+
+            $result['whishlistCount'] = $query2->count();
 
             $result['customer'] = Auth()->user();
 
