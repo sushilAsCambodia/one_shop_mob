@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerAccountFormRequest;
+use App\Http\Requests\CustomerPasswordUpdateFormRequest;
 use App\Http\Requests\CustomerForgetPasswordFormRequest;
 use App\Http\Requests\CustomerLoginFormRequest;
 use App\Http\Requests\CustomerPasswordFormRequest;
@@ -65,7 +66,7 @@ class CustomerController extends Controller
     {
         return $this->customerService->updateAccount($request);
     }
-    public function updatePassword(CustomerAccountFormRequest $request)
+    public function updatePassword(CustomerPasswordUpdateFormRequest $request)
     {
         return $this->customerService->updatePassword($request);
     }

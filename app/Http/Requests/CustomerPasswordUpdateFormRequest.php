@@ -39,10 +39,11 @@ class CustomerPasswordUpdateFormRequest extends FormRequest
     }
 
     public function messages()
-    {
+    { 
         return [
-            'current_password.required' => 'current_password_is_required',
-            'new_password_confirmation.required_with' => 'new_password_confirmation_is_required',
+            'current_password.required' => 'password_required',
+            'new_password_confirmation.same' => 'password_confirmation_not_same',
+            'new_password_confirmation.required_with' => 'password_confirmation_required',
         ];
     }
 
