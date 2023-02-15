@@ -43,7 +43,7 @@ class PaymentFormRequest extends FormRequest
     {
         return [
             'order_product_ids.required'=>'product_required',
-            'order_product_ids.exists'=>'product_not_exists_11',
+            'order_product_ids.exists'=>'product_not_exists',
             'order_product_ids.array'=>'invalid_product',
             // 'order_id.required'=>'order_id_is_required',
             // 'order_id.exists'=>'order_id_is_not_exists',
