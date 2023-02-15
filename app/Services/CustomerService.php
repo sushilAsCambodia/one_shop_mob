@@ -255,6 +255,7 @@ class CustomerService
             $result['message'] = 'Account_has_been_saved_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
+
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
@@ -277,6 +278,7 @@ class CustomerService
             $result['message'] = 'password_has_been_update_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
+
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
@@ -305,12 +307,7 @@ class CustomerService
             $result['addressCount'] = $query->count();
 
             // $result['whishlistDetails'] = Favorite::where('customer_id', Auth()->user()->id)->get();
-            $result['whishlistCount'] = $query->select('favorites.*')
-                ->whereHas('products', function ($query) {
-                    $query->whereHas('deal', function ($query) {
-                        $query->whereNotIn('deals.status', ['settled', 'inactive']);
-                    });
-                })->count();
+            $result['whishlistCount'] = Favorite::where('customer_id', Auth()->user()->id)->count();
 
             $result['customer'] = Auth()->user();
 
