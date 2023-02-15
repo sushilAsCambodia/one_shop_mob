@@ -274,7 +274,7 @@ class CustomerService
             }
             Auth::user()->update($customerData);
 
-            $result['message'] = 'update_successfully';
+            $result['message'] = 'updated_successfully';
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {
