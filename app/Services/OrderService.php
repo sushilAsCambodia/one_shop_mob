@@ -321,11 +321,10 @@ class OrderService
                     $ops[$key]->status = 'completed';
                 }
                 $opData->checked_status = 'loser';
-                if (in_array('completed', explode(',', $opData->all_status)))
+                if (in_array('completed', explode(',', $opData->all_status))){
                     $opData->checked_status = 'completed';
-
-
-
+                }
+                   
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
                 $opData->orderId = $orderId;
                 $opData->deals = $dealsData->deal;
