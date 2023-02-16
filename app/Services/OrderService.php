@@ -91,7 +91,6 @@ class OrderService
                 $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
                 $ops[$key]->orderId = $orderId;
                 $ops[$key]->ids = explode(',', $opData->ids);
-
             }
             $result['message'] = 'Orders_fetch_successfully';
             $result['data'] = $ops;
@@ -145,7 +144,7 @@ class OrderService
 
                     $result['message'] = 'Insufficient_Slots';
                     $result['data'] = ['deal_id' => $pData['deal_id'], 'available_slots' => $slots->total_slots - $slots->booked_slots,];
-                    $result['statusCode'] = 200;
+                    $result['statusCode'] = 400;
 
                     return getSuccessMessages($result, false);
                 }
@@ -242,46 +241,100 @@ class OrderService
         }
     }
 
+    // public function orderCompleted($request): JsonResponse
+    // {
+    //     try {
+    //         $ops =  OrderProduct::whereIn('status', ['loser', 'completed'])
+    //             ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
+    //             ->where('customer_id', Auth()->user()->id)
+    //             ->with(['product'])
+    //             ->groupBy('product_id')
+    //             ->get();
+
+    //         if (!$ops && empty($ops)) {
+    //             return response()->json(['messages' => ['Data Not Found'],], 400);
+    //         }
+
+
+    //         foreach ($ops as $key =>  $opData) {
+    //             $deals = Deal::where('product_id', $opData->product_id)->get();
+    //             $dealIds = $deals->pluck('id');
+    //             $dealsData = SlotDeal::select('slot_deals.*')->with('deal.slots')
+    //                 ->whereIn('deal_id', $dealIds)
+    //                 ->where('order_id', $opData->order_id)
+    //                 ->groupBy('deal_id')
+    //                 ->first();
+    //             $winner = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $dealsData->deal_id])->first();
+    //             if (!empty($winner)) {
+    //                 $ops[$key]->status = 'Completed';
+    //             }
+    //             $orderId =  Order::whereId($opData->order_id)->first()->order_id;
+
+    //             $opData->orderId = $orderId;
+
+    //         }
+
+    //         $result['message'] = 'fetch_completed_successfully';
+    //         $result['data'] = $ops;
+    //         $result['statusCode'] = 200;
+
+    //         return getSuccessMessages($result);
+    //     } catch (\Exception $e) {
+    //         \Log::debug($e);
+    //         return generalErrorResponse($e);
+    //     }
+    // }
+
+
     public function orderCompleted($request): JsonResponse
     {
         try {
             $ops =  OrderProduct::whereIn('status', ['loser', 'completed'])
-                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"))
+                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"), DB::raw("GROUP_CONCAT(order_product.status) as all_status"))
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
-                ->groupBy('product_id')
+                ->groupBy('deal_id')
                 ->get();
 
             if (!$ops && empty($ops)) {
-                return response()->json(['messages' => ['Data Not Found'],], 400);
+                $result['message'] = 'data_not_found';
+                $result['statusCode'] = 400;
+
+                return getSuccessMessages($result, false);
             }
+
+
+            $orders = [];
 
             // $orderIds = $ops->pluck('order_id');
 
             foreach ($ops as $key =>  $opData) {
-                $deals = Deal::where('product_id', $opData->product_id)->get();
-                $dealIds = $deals->pluck('id');
+                // $deals = Deal::where('product_id', $opData->product_id)->get();
+                $dealIds = $opData->deal_id;
                 $dealsData = SlotDeal::select('slot_deals.*')->with('deal.slots')
-                    ->whereIn('deal_id', $dealIds)
+                    ->where('deal_id', $dealIds)
                     ->where('order_id', $opData->order_id)
                     ->groupBy('deal_id')
                     ->first();
-                $winner = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $dealsData->deal_id])->first();
+                $winner = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $opData->deal_id])->first();
                 if (!empty($winner)) {
-                    $ops[$key]->status = 'Completed';
+                    $ops[$key]->status = 'completed';
                 }
-                // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
+                $opData->checked_status = 'loser';
+                if (in_array('completed', explode(',', $opData->all_status)))
+                    $opData->checked_status = 'completed';
+
+
 
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
-
                 $opData->orderId = $orderId;
+                $opData->deals = $dealsData->deal;
 
-                // $opData->deals = $dealsData->deal;
-                // $opData->slotDeals = $slotDeals;
+                array_push($orders, $opData);
             }
 
             $result['message'] = 'fetch_completed_successfully';
-            $result['data'] = $ops;
+            $result['data'] = $orders;
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
