@@ -40,6 +40,12 @@ class PriceClaim extends Model
         return $this->hasOne(OrderProduct::class, 'order_id', 'order_id');
     }
 
+
+    public function deal()
+    {
+        return $this->hasOne(Deal::class, 'id', 'deal_id');
+    }
+    
     public function toArray()
     {
         $attributes = parent::toArray();
