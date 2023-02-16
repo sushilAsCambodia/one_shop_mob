@@ -17,7 +17,7 @@ class OrderProduct extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class)->with(['image', 'deal.slots']);
+        return $this->belongsTo(Product::class)->with(['image']);
     }
 
     // public function products()
