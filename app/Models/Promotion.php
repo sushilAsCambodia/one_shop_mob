@@ -20,4 +20,9 @@ class Promotion extends Model
     {
         return $this->morphOne(File::class, 'fileable');
     }
+
+    public function translation()
+    {
+        return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
+    }
 }

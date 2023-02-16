@@ -15,6 +15,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use stdClass;
 
 class HomepageService
 {
@@ -182,16 +183,18 @@ class HomepageService
             $sortBy = $request->sortBy ?: 'created_at';
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
 
-            $promotions = Promotion::whereStatus('active')->paginate($perPage, ['*'], 'page', $page);
+            $promotions = Promotion::with('translation')->whereStatus('active')->paginate($perPage, ['*'], 'page', $page);
 
             $data = [];
             foreach ($promotions as $promotion) {
+                $langData = !empty($promotion->translation) ? $this->getTranslation($promotion->translation->toArray(), ['name']) : new stdClass();
                 $data[] = [
                     'id'        =>     $promotion->id,
                     'name'      =>     $promotion->name,
                     'products'  =>     $this->getData($sortBy, $sortOrder, $promotion->slug),
                     'slug'      =>     $promotion->slug,
-                    'image'      =>     $promotion->image
+                    'image'      =>     $promotion->image,
+                    'translation' =>   $langData
                 ];
             }
             // $paginator = new LengthAwarePaginator($promotions->all(), $promotions->count(), $perPage);
@@ -216,6 +219,20 @@ class HomepageService
             \Log::debug($e);
             return generalErrorResponse($e);
         }
+    }
+
+    public function getTranslation($data, $reqData)
+    {
+        $lanuageData = array();
+        foreach ($reqData as $n) {
+            foreach ($data as $dt) {
+                if (array_key_exists('translation', $dt));
+                $lanuageData[$n] = $dt['translation'];
+            }
+        }
+
+
+        return  !empty($lanuageData) ? $lanuageData : new stdClass();
     }
 
     public function getPromotional($request)
