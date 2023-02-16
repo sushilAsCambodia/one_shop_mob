@@ -116,7 +116,7 @@ class PriceClaimService
                         'order' => $item->order,
                         'slot_deals' => $item->slot_deals,
                         'deal' => $item->deal,
-                        'total_booked_slots' => $this->getTotalBookedSlots($item),
+                        'slotDealsCount' => $this->getTotalBookedSlots($item),
                     ];
                     return $data;
                 })->toArray();
