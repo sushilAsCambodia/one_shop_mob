@@ -31,6 +31,9 @@ class OrderService
         $page = $request->page ?: 1;
         $sortBy = $request->sortBy ?: 'created_at';
         $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+        if(!isset($request->descending)){
+            $sortOrder = 'desc';
+        }
 
         $results = Order::where('customer_id', Auth()->user()->id)->with(['orderProducts', 'orderProducts.product'])
             ->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);

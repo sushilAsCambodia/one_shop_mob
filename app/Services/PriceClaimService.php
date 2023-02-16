@@ -62,6 +62,9 @@ class PriceClaimService
             $page = $request->page ?: 1;
             $sortBy = $request->sortBy ?: 'created_at';
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+            if(!isset($request->descending)){
+                $sortOrder = 'desc';
+            }
 
             $query = (new PriceClaim())->newQuery()->orderBy($sortBy, $sortOrder);
 

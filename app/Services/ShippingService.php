@@ -62,6 +62,9 @@ class ShippingService
             $page = $request->page ?: 1;
             $sortBy = $request->sortBy ?: 'created_at';
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+            if(!isset($request->descending)){
+                $sortOrder = 'desc';
+            }
             $query = (new Shipping())->newQuery()->where('customer_id', Auth::id())->orderBy($sortBy, $sortOrder);
 
             $query->when($request->dates, function ($query) use ($request) {
@@ -307,6 +310,9 @@ class ShippingService
             $page = $request->page ?: 1;
             $sortBy = $request->sortBy ?: 'created_at';
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+            if(!isset($request->descending)){
+                $sortOrder = 'desc';
+            }
 
             $query = (new Shipping())->newQuery()->orderBy($sortBy, $sortOrder);
 
