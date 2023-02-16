@@ -17,7 +17,7 @@ class PriceClaim extends Model
     public function product()
     {
         return $this->belongsTo(Product::class)
-               ->with(['image', 'deal.slots', 'tags', 'favouriteCount',]);
+               ->with(['image', 'tags', 'favouriteCount',]);
     }
 
 
@@ -45,7 +45,7 @@ class PriceClaim extends Model
     {
         return $this->hasOne(Deal::class, 'id', 'deal_id');
     }
-    
+
     public function toArray()
     {
         $attributes = parent::toArray();
