@@ -285,7 +285,6 @@ class OrderService
     //     }
     // }
 
-
     public function orderCompleted($request): JsonResponse
     {
         try {
@@ -316,20 +315,25 @@ class OrderService
                     ->where('order_id', $opData->order_id)
                     ->groupBy('deal_id')
                     ->first();
-                $winner = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $opData->deal_id])->first();
+                $opData->checked_status = 'loser';
+                $winner = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $opData->deal_id])->where('status', '!=', 'completed')->first();
                 if (!empty($winner)) {
                     $ops[$key]->status = 'completed';
                 }
-                $opData->checked_status = 'loser';
-                if (in_array('completed', explode(',', $opData->all_status))){
+                if (in_array('completed', explode(',', $opData->all_status))) {
                     $opData->checked_status = 'completed';
                 }
-                   
+
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
                 $opData->orderId = $orderId;
                 $opData->deals = $dealsData->deal;
-
-                array_push($orders, $opData);
+                if ($winner) {
+                    if ($winner->deal_id != $opData->deal_id) {
+                        array_push($orders, $opData);
+                    }
+                } else {
+                    array_push($orders, $opData);
+                }
             }
 
             $result['message'] = 'fetch_completed_successfully';
