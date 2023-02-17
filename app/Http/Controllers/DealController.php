@@ -14,8 +14,8 @@ class DealController extends Controller
     {
     }
 
-    public function getSlotDeals(Deal $deals, $orderId = null)
+    public function getSlotDeals(Request $request,Deal $deals, $orderId = null)
     {
-        return $this->dealService->getSlotDeals($deals, $orderId);
+        return $this->dealService->getSlotDeals($request->all(),$deals, $orderId);
     }
 }
