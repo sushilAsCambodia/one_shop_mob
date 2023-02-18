@@ -304,7 +304,7 @@ class OrderService
     {
         try {
             $ops =  OrderProduct::whereIn('status', ['loser', 'completed'])
-                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slots"), DB::raw("GROUP_CONCAT(order_product.status) as all_status"))
+                ->select('order_product.*', DB::raw("SUM(order_product.slots) as slotDealsCount"), DB::raw("GROUP_CONCAT(order_product.status) as all_status"))
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
                 ->groupBy('deal_id')
