@@ -41,7 +41,7 @@ class PriceClaim extends Model
     }
 
 
-    public function deal()
+    public function deals()
     {
         return $this->hasOne(Deal::class, 'id', 'deal_id');
     }
