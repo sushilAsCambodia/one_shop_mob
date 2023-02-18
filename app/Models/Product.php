@@ -83,6 +83,10 @@ class Product extends Model implements Auditable
     {
         return $this->hasOne(Deal::class)->orderBy('created_at', 'desc');
     }
+    public function deals()
+    {
+        return $this->hasOne(Deal::class)->orderBy('created_at', 'desc');
+    }
     // public function deals()
     // {
     //     return $this->hasOne(Deal::class);
