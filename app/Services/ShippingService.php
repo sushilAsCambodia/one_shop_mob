@@ -85,7 +85,7 @@ class ShippingService
                 $query->orWhere('booking_id', 'like', "%$request->search%");
                 $query->orWhere('tracking_id', 'like', "%$request->search%");
             });
-            $results = $query->with(['shippingLogs', 'shippingLogs.user', 'product', 'slotDeal:id,deal_id,booking_id', 'slotDeal.deals:id,deal_price'])
+            $results = $query->with(['shippingLogs', 'shippingLogs.user', 'products', 'slotDeal:id,deal_id,booking_id', 'slotDeal.deals:id,deal_price'])
                 ->paginate($perPage, ['*'], 'page', $page);
 
             // return response()->json($results, 200);

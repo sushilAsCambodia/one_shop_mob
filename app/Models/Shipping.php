@@ -21,11 +21,9 @@ class Shipping extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function product()
+    public function products()
     {
-        // return $this->belongsTo(Product::class,'order_product','order_id','product_id','order_id')
-        // ->with(['image', 'tags', 'favouriteCount',]);
-        return $this->hasOne(Product::class,'order_product','order_id','product_id','order_id');
+        return $this->belongsToMany(Product::class,'order_product','order_id','product_id','order_id');
     }
 
     public function slotDeal()
