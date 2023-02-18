@@ -63,7 +63,7 @@ class OrderService
             $ops =  OrderProduct::where('status', $slug)
                 ->select(
                     'order_product.*',
-                    DB::raw("SUM(order_product.slots) as slots"),
+                    DB::raw("SUM(order_product.slots) as slotDealsCount"),
                     DB::raw("SUM(order_product.amount) as amounts"),
                     DB::raw("GROUP_CONCAT(order_product.id) as ids")
                 )
