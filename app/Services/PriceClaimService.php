@@ -93,7 +93,7 @@ class PriceClaimService
             });
 
             $itemsPaginated = $query->select('price_claims.*')
-                ->with(['product', 'customer', 'order', 'slot_deals', 'deals'])
+                ->with(['product', 'customer', 'order', 'slot_deals', 'deal'])
                 ->paginate($perPage, ['*'], 'page', $page);
 
             $itemsTransformed = $itemsPaginated
@@ -115,7 +115,7 @@ class PriceClaimService
                         'customer' => $item->customer,
                         'order' => $item->order,
                         'slot_deals' => $item->slot_deals,
-                        'deal' => $item->deal,
+                        'deals' => $item->deal,
                         'slotDealsCount' => $this->getTotalBookedSlots($item),
                     ];
                     return $data;
