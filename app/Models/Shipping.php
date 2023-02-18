@@ -23,7 +23,7 @@ class Shipping extends Model
 
     public function product()
     {
-        return $this->hasOneThrough(Product::class,OrderProduct::class,'product_id','id','order_id');
+        return $this->hasOneThrough(Product::class,OrderProduct::class,'id','product_id','order_id');
     }
 
     public function slotDeal()
