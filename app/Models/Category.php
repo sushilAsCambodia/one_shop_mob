@@ -34,7 +34,7 @@ class Category extends Model implements Auditable
     {
         return $this->morphOne(Translation::class, 'translationable')->where('language_id', request()->lang_id);
     }
-    public function translations()
+    public function translates()
     {
         return $this->morphOne(Translation::class, 'translationable')->where('language_id', request()->lang_id);
     }
