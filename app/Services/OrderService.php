@@ -63,7 +63,7 @@ class OrderService
             $ops =  OrderProduct::where('status', $slug)
                 ->select(
                     'order_product.*',
-                    DB::raw("SUM(order_product.slots) as slotDealsCount"),
+                    DB::raw("SUM(order_product.slots) as slots"),
                     DB::raw("SUM(order_product.amount) as amounts"),
                     DB::raw("GROUP_CONCAT(order_product.id) as ids")
                 )
@@ -95,6 +95,7 @@ class OrderService
                 $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
                 $ops[$key]->orderId = $orderId;
                 $ops[$key]->ids = explode(',', $opData->ids);
+                $ops[$key]->slotDealsCount = $this->getTotalBookedSlots($dealsData);
             }
 
             $result['message'] = 'Orders_fetch_successfully';
@@ -106,6 +107,15 @@ class OrderService
             \Log::debug($e);
             return generalErrorResponse($e);
         }
+    }    
+    public function getTotalBookedSlots($data)
+    {
+        $slotsCounts = SlotDeal::leftJoin('orders', 'orders.id', 'slot_deals.order_id')
+            ->where('orders.customer_id', $data->customer_id)
+            ->where('slot_deals.deal_id', $data->deal->id)
+            ->groupBy('deal_id')
+            ->count();
+        return $slotsCounts;
     }
     // public function order($slug): JsonResponse
     // {
