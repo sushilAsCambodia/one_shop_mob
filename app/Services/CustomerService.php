@@ -218,6 +218,8 @@ class CustomerService
             Auth::guard('web')->logout();
         }
 
+        Session::flush();
+
         $result['message'] = 'logout_successful';
         $result['statusCode'] = 200;
 
