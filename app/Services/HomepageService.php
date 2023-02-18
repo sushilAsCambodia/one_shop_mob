@@ -173,7 +173,7 @@ class HomepageService
     //     }
     // }
 
-    public function getSearchResult($request)
+    public function getSearchResult($request): JsonResponse
     {
         try {
             if (!isset($request->type)) {
