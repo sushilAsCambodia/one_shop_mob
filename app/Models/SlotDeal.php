@@ -16,5 +16,8 @@ class SlotDeal extends Model
     
     public function deal(){
         return $this->belongsTo(Deal::class)->orderBy('created_at', 'desc');
+    }    
+    public function deals(){
+        return $this->belongsTo(Deal::class)->orderBy('created_at', 'desc');
     }
 }
