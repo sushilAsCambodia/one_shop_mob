@@ -39,7 +39,7 @@ class OrderProduct extends Model
         //                                     })->get();
         
         // $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $this->deal_id)->get()->count();
-        $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $this->deal_id)->get()->count();
+        // $attributes['slotDealsCount'] = SlotDeal::where('order_id', $this->order_id)->where('deal_id', $this->deal_id)->get()->count();
         
         return $attributes;
     }
