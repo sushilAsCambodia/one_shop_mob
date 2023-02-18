@@ -26,12 +26,18 @@ class Shipping extends Model
         return $this->belongsToMany(Product::class,'order_product','order_id','product_id','order_id');
     }
 
+    public function slotDeal()
+    {
+        return $this->hasOne(SlotDeal::class,'booking_id','booking_id');
+    }
+
 
     public function toArray()
     {
         $attributes = parent::toArray();
         
         $attributes['deals'] = $this->order->deals;
+        $attributes['product'] = $attributes['product'][0];
         return $attributes;
     }
 
