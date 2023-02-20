@@ -14,7 +14,7 @@ class Shipping extends Model
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
     public function shippingLogs(){
-        return $this->hasMany(ShippingLog::class);
+        return $this->hasOne(ShippingLog::class);
     }
 
     public function order()
