@@ -19,7 +19,11 @@ class OrderProduct extends Model
     {
         return $this->belongsTo(Product::class)->with(['image']);
     }
-
+    
+    public function deal()
+    {
+        return $this->hasOne(Deal::class, 'id', 'deal_id');
+    }
     // public function products()
     // {
     //     return $this->hasMany(Product::class, 'id', 'product_id');
