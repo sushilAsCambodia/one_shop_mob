@@ -36,7 +36,7 @@ class Shipping extends Model
     {
         $attributes = parent::toArray();
 
-        $attributes['deals'] = $this->slot_deal;
+        $attributes['deals'] = $attributes['slot_deal']['deal'];
         if ($attributes['product']) {
             $attributes['product'] = $attributes['product'][0];
         }
