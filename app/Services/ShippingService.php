@@ -24,47 +24,10 @@ class ShippingService
     public function paginate($request): JsonResponse
     {
         try {
-            // $perPage = $request->rowsPerPage ?: 15;
-            // $page = $request->page ?: 1;
-            // $sortBy = $request->sortBy ?: 'created_at';
-            // $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
-            // $query = (new Shipping())->newQuery()->where('customer_id', Auth::id())->orderBy($sortBy, $sortOrder);
-
-            // $query->when($request->dates, function ($query) use ($request) {
-            //     if ($request->dates[0] == $request->dates[1]) {
-            //         $query->whereDate('created_at', Carbon::parse($request->dates[0])->format('Y-m-d'));
-            //     } else {
-            //         $query->whereBetween('created_at', [
-            //             Carbon::parse($request->dates[0])->startOfDay(),
-            //             Carbon::parse($request->dates[1])->endOfDay(),
-            //         ]);
-            //     }
-            // });
-
-            // $query->where('status', '!=', 'Delivered');
-
-            // $query->when($request->search, function ($query) use ($request) {
-            //     $query->where('shipping_id', 'like', "%$request->search%");
-            //     $query->orWhere('booking_id', 'like', "%$request->search%");
-            //     $query->orWhere('tracking_id', 'like', "%$request->search%");
-            // });
-
-            // $results = $query->with(['shippingLogs', 'shippingLogs.user', 'products','slotDeal:id,deal_id,booking_id','slotDeal.deal:id,deal_price'])
-            //                  ->paginate($perPage, ['*'], 'page', $page);
-
-            // $result['message'] = 'fetch_to_receive_successfully';
-            // $result['data'] = $results;
-            // $result['statusCode'] = 200;
-            // return getSuccessMessages($result);
-
-
             $perPage = $request->rowsPerPage ?: 15;
             $page = $request->page ?: 1;
             $sortBy = $request->sortBy ?: 'created_at';
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
-            if(!isset($request->descending)){
-                $sortOrder = 'desc';
-            }
             $query = (new Shipping())->newQuery()->where('customer_id', Auth::id())->orderBy($sortBy, $sortOrder);
 
             $query->when($request->dates, function ($query) use ($request) {
@@ -85,7 +48,7 @@ class ShippingService
                 $query->orWhere('booking_id', 'like', "%$request->search%");
                 $query->orWhere('tracking_id', 'like', "%$request->search%");
             });
-            $results = $query->with(['shippingLogs', 'shippingLogs.user', 'product', 'slotDeal:id,deal_id,booking_id', 'slotDeal.deals:id,deal_price'])
+            $results = $query->with(['shippingLogs', 'shippingLogs.user', 'products', 'slotDeal:id,deal_id,booking_id', 'slotDeal.deal:id,deal_price'])
                 ->paginate($perPage, ['*'], 'page', $page);
 
             // return response()->json($results, 200);
@@ -310,7 +273,7 @@ class ShippingService
             $page = $request->page ?: 1;
             $sortBy = $request->sortBy ?: 'created_at';
             $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
-            if(!isset($request->descending)){
+            if (!isset($request->descending)) {
                 $sortOrder = 'desc';
             }
 
