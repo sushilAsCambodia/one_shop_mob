@@ -296,7 +296,9 @@ class CustomerService
     {
         try {
 
-            $result['orderCount']   = Order::where('customer_id', Auth()->user()->id)->where('status', 'confirmed')->count();
+            $result['orderCount']   = Order::where('customer_id', Auth()->user()->id)
+                // ->where('status', 'confirmed')
+                ->count();
 
             $query =  (new Address())->newQuery();
             $modelData = Auth::user();

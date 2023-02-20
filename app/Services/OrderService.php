@@ -35,7 +35,7 @@ class OrderService
             $sortOrder = 'desc';
         }
 
-        $results = Order::where('customer_id', Auth()->user()->id)->with(['orderProducts', 'orderProducts.product'])
+        $results = Order::where('customer_id', Auth()->user()->id)->with(['orderProducts', 'orderProducts.deal', 'orderProducts.product'])
             ->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
 
         // , 'orderProducts.products'
