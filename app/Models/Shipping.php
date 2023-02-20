@@ -32,5 +32,15 @@ class Shipping extends Model
         return $this->hasOne(SlotDeal::class,'booking_id','booking_id');
     }
 
+    public function toArray()
+    {
+        $attributes = parent::toArray();
+
+        $attributes['deals'] = $this->order->slot_deal;
+        if ($attributes['product']) {
+            $attributes['product'] = $attributes['product'][0];
+        }
+        return $attributes;
+    }
     
 }
