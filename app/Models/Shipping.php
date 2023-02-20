@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
+// use App\Traits\TranslationUtilities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shipping extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory,SoftDeletes;
     protected $guarded = ['id'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
-    public function shippingLogs()
-    {
+    public function shippingLogs(){
         return $this->hasMany(ShippingLog::class);
     }
 
@@ -24,23 +24,13 @@ class Shipping extends Model
 
     public function product()
     {
-        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id', 'order_id');
+        return $this->belongsToMany(Product::class,'order_product','order_id','product_id','order_id');
     }
 
     public function slotDeal()
     {
-        return $this->hasOne(SlotDeal::class, 'booking_id', 'booking_id');
+        return $this->hasOne(SlotDeal::class,'booking_id','booking_id');
     }
 
-
-    public function toArray()
-    {
-        $attributes = parent::toArray();
-
-        $attributes['deals'] = $this->order->deals;
-        if ($attributes['product']) {
-            $attributes['product'] = $attributes['product'][0];
-        }
-        return $attributes;
-    }
+    
 }
