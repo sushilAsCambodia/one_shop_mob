@@ -12,6 +12,11 @@ class Payment extends Model
     protected $guarded = ['id'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
+    protected $cast = [
+        'request_data' => 'array',
+        'response_data' => 'array',
+    ];
+
     public function payment(){
 
         return $this->belongsTo(Order::class,'order_id','id');

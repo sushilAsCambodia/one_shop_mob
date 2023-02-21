@@ -316,13 +316,12 @@ class PaymentService
                             //pay with third party api
                             $dataPayment['request_data']      = ['amount' => $remainingPayAmount];
                         }
-                        \Log::debug("Payment::create");
-                        \Log::debug($dataPayment);
+                        // \Log::debug("Payment::create");
+                        // \Log::debug($dataPayment);
                         Payment::create($dataPayment);
                         $dataPayment['wallet_amount'] = 0;
                         $paymentWalletBalance = 0;
 
-                        \Log::debug("deal->status");
                         if ($deal->status != 'active') {
                             $noProductDeal = true;
                             // return false;
@@ -335,20 +334,16 @@ class PaymentService
                             OrderProduct::whereId($order->id)->update($orderStatus);
                         }
                     }
-                    \Log::debug("'status' => 'remaining'");
                     if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() != OrderProduct::whereId($order->id)->count()) {
                         $orderStatus = ['status' => 'remaining'];
                     } else if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() == 0) {
                         $orderStatus = ['status' => 'reserved'];
                     }
-                    \Log::debug("'status' => 'confirmed'");
                     Order::whereId($order->order_id)->update($orderStatus);
                     $ct = SlotDeal::where('deal_id', $deal->id)->where(['status' => 'confirmed'])->count();
                     if ($ct > $slotId->total_slots) {
                         $ct = $slotId->total_slots;
                     }
-                    \Log::debug("'status' => 'booked_slots'");
-
                     Slot::where(['id' => $deal->slot_id])->update(['booked_slots' => $ct]);
                 }
             });
