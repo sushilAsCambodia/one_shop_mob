@@ -12,7 +12,7 @@ class Payment extends Model
     protected $guarded = ['id'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
-    protected $cast = [
+    protected $casts = [
         'request_data' => 'array',
         'response_data' => 'array',
     ];
