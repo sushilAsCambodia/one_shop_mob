@@ -273,6 +273,7 @@ class PaymentService
                         'status' => $remainingPayAmount ? "Review" : "Debit",
                         'message' => "Payment transaction",
                     ]);
+                    $dataPayment = array();
                     if (!$check) {
                         $dataPayment['payment_id']  = rand();
                         $dataPayment['customer_id'] = Auth()->user()->id;
