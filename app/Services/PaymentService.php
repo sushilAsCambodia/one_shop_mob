@@ -313,7 +313,7 @@ class PaymentService
 
                         if ($payWithThirdPart) {
                             //pay with third party api
-                            $dataPayment['amount']      = $remainingPayAmount;
+                            $dataPayment['request_data']      = ['amount' => $remainingPayAmount];
                         }
                         // \Log::debug("Payment::create");
                         // \Log::debug($dataPayment);
