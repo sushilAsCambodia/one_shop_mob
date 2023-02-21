@@ -43,7 +43,7 @@ class NotificationService
                         $datas->read_at = $item->read_at;
                         $datas->id = $item->id;
                         if(!empty($item->data->data->winning_status)){
-                           $header = $item->data->data->winning_status ? 'You Won' : 'Thank You For Participation';
+                           $header = $item->data->data->winning_status ? trans('message.You Won') : 'Thank You For Participation';
                         }elseif(!empty($item->data->data->slug)){
                             $header = $item->data->data->slug;
                         }else{
