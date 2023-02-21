@@ -36,8 +36,10 @@ class Notification extends Model
     {
         $attributes = parent::toArray();
 
-        $attributes['header'] = $attributes['shipping_id'];
-
+        $attributes['dealsssss'] = $attributes['shipping_id'];
+        // if ($attributes['product']) {
+        //     $attributes['product'] = $attributes['product'][0];
+        // }
         return $attributes;
     }
 
