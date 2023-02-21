@@ -254,10 +254,9 @@ class PaymentService
                             else
                                 $paymentWalletBalance = $order->amount;
                         }
-                    }
-                    else{
+                    } else {
                         $remainingPayAmount = $order->amount;
-                    } 
+                    }
 
                     if ($paymentWalletBalance)
                         $wallet->update([ //update balance in user wallet
@@ -274,7 +273,11 @@ class PaymentService
                         'wallet_amount' => $paymentWalletBalance,
                         'third_party_amount' => $remainingPayAmount,
                         'currency_id' => $currencyId,
-                        'status' => $remainingPayAmount ? "Review" : "Debit",
+
+                        'status' => 'success',
+
+                        // 'status' => $remainingPayAmount ? "Review" : "Debit",
+
                         'message' => "Payment transaction",
                     ]);
                     $dataPayment = array();
@@ -467,8 +470,11 @@ class PaymentService
                     // Payment::find($payment->id)->update(['status' => $paymentStatus]);
                     //update transaction
                     $transactionStatus = 'Debit';
-                    if ($paymentStatus == 'fail')
+                    if ($paymentStatus == 'fail') {
                         $transactionStatus = 'Reject';
+                    } else {
+                        OrderProduct::whereId($payment->order_product_ids)->update(['status' => 'confirmed']);
+                    }
                     Transaction::find($payment->transaction_id)->update(['status' => $transactionStatus]);
                 }
             });
