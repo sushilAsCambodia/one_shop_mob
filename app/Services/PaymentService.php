@@ -203,7 +203,7 @@ class PaymentService
     public function store(array $data)
     {
         try {
-
+            $orderProductsIds = array();
             $noProductDeal = false;
             $orderProductsIds = $data['order_product_ids'];
             $currencyId = 1;
