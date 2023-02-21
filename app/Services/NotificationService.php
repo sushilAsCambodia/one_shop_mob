@@ -37,11 +37,19 @@ class NotificationService
                 ->getCollection()
                 ->map(function ($item) {
                     $datas = new stdClass();
+                    $header = "";
                     if (!empty($item->data->data)) {
                         $datas = $item->data->data;
                         $datas->read_at = $item->read_at;
                         $datas->id = $item->id;
-                        $datas->header = !empty($item->data->data->winning_status) ? $item->data->data->winning_status ? 'You Won' : 'Thank You For Participation' : null;
+                        if(!empty($item->data->data->winning_status)){
+                           $header = $item->data->data->winning_status ? 'You Won' : 'Thank You For Participation';
+                        }elseif(!empty($item->data->data->slug)){
+                            $header = $item->data->data->slug;
+                        }else{
+
+                        }
+                        $datas->header = $header;
                         $datas->is_read = $item->read_at ? true : false;
                         $datas->message = $item->data->message;
                         $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
