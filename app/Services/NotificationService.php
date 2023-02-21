@@ -41,7 +41,7 @@ class NotificationService
                         $datas = $item->data->data;
                         $datas->read_at = $item->read_at;
                         $datas->id = $item->id;
-                        $datas->header = !empty($item->data->data->slug) ? $item->data->data->slug : null;
+                        $datas->header = !empty($item->data->data->winning_status) ? $item->data->data->winning_status ? 'You Won' : 'Thank You For Participation' : null;
                         $datas->is_read = $item->read_at ? true : false;
                         $datas->message = $item->data->message;
                         $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
