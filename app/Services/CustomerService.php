@@ -300,6 +300,8 @@ class CustomerService
                 // ->where('status', 'confirmed')
                 ->count();
 
+            $result['orderCount'] = Notification::where('notifiable_id', auth()->user()->id)->where(['read_at' => null])->get()->counts();
+
             $query =  (new Address())->newQuery();
             $modelData = Auth::user();
             $query->when($modelData, function ($query) use ($modelData) {
