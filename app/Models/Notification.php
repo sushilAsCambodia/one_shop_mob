@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-// use App\Traits\TranslationUtilities;
+use App\Traits\TranslationUtilities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-    use HasFactory;
+    use HasFactory, TranslationUtilities;
 
     protected $casts = [
         'data' => 'array',
