@@ -202,7 +202,7 @@ class PaymentService
 
     public function store(array $data)
     {
-        // try {
+        try {
             $orderProductsIds = array();
             $noProductDeal = false;
             $orderProductsIds = $data['order_product_ids'];
@@ -357,10 +357,10 @@ class PaymentService
             $result['data'] = $responseData;
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
-        // } catch (\Exception $e) {
-        //     \Log::debug($e);
-        //     return generalErrorResponse($e);
-        // }
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
     }
 
     // public function store(array $data)
