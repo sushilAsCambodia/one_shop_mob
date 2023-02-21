@@ -7,8 +7,11 @@ use App\Models\Deal;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Payment;
+use App\Models\Slot;
 use App\Models\SlotDeal;
+use App\Models\Transaction;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -113,35 +116,163 @@ class PaymentService
     // }
 
 
+    // public function store(array $data)
+    // {
+    //     try {
+    //         $noProductDeal = false;
+    //         DB::transaction(function () use ($data, &$noProductDeal) {
+    //             $orderProductsIds = $data['order_product_ids'];
+    //             $orderProducts = OrderProduct::whereIn('id', $orderProductsIds)->where('customer_id', auth()->user()->id)->get();
+
+    //             $orderIds = $orderProducts->pluck('order_id');
+
+    //             if (!$orderIds) {
+    //                 // $noProductDeal = false;
+    //                 $result['message'] = 'invalid_product';
+    //                 $result['statusCode'] = 400;
+    //                 return getSuccessMessages($result);
+    //             }
+
+    //             $orderIds = array_unique($orderIds->toArray());
+
+    //             $orderProductsCount = Order::whereIn('id', $orderIds)->withCount('orderProduct')->get()->pluck('order_product_count', 'id')->toArray();
+
+    //             $orderStatus = ['status' => 'confirmed'];
+
+    //             foreach ($orderProducts as $order) {
+
+    //                 $check = Payment::whereOrderId($order->order_id)->where('order_product_ids', $order->id)->first();
+
+    //                 $orderStatus = ['status' => 'confirmed'];
+
+    //                 if (!$check) {
+    //                     $dataPayment['payment_id']  = rand();
+    //                     $dataPayment['customer_id'] = Auth()->user()->id;
+    //                     $dataPayment['order_id']    = $order->order_id;
+    //                     $dataPayment['order_product_ids']    = $order->id;
+    //                     $dataPayment['amount']      = $order->amount;
+    //                     $dataPayment['provider']    = 'test';
+    //                     $dataPayment['status']      = 'complete';
+    //                     Payment::create($dataPayment);
+    //                     $deal = Deal::whereId($order->deal_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
+
+    //                     if (!$deal) {
+    //                         $noProductDeal = true;
+    //                         return false;
+    //                     }
+    //                     $slotId = $deal->slots()->first();
+
+    //                     SlotDeal::where('order_id', $order->order_id)->where('deal_id', $order->deal_id)->update(['status' => 'confirmed']);
+
+
+    //                     if ($slotId->total_slots <= SlotDeal::where('status', 'confirmed')->where('deal_id', $order->deal_id)->count()) {
+    //                         Deal::whereId($order->deal_id)->update(['status' => 'inactive']);
+    //                     }
+
+    //                     OrderProduct::whereId($order->id)->update($orderStatus);
+    //                 }
+    //                 if (array_key_exists($order->order_id, $orderProductsCount)) {
+
+    //                     if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() != $orderProductsCount[$order->order_id]) {
+    //                         $orderStatus = ['status' => 'remaining'];
+    //                     } else if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() == 0) {
+    //                         $orderStatus = ['status' => 'pending'];
+    //                     }
+
+    //                     Order::whereId($order->order_id)->update($orderStatus);
+    //                 }
+    //             }
+    //         });
+
+    //         if ($noProductDeal) {
+    //             $result['message'] = 'invalid_product';
+    //             $result['statusCode'] = 400;
+    //             return getSuccessMessages($result);
+    //         }
+
+    //         $result['message'] = 'payment_successfully';
+    //         $result['statusCode'] = 200;
+    //         return getSuccessMessages($result);
+    //     } catch (\Exception $e) {
+    //         \Log::debug($e);
+    //         return generalErrorResponse($e);
+    //     }
+    // }
+
+
     public function store(array $data)
     {
         try {
+
             $noProductDeal = false;
-            DB::transaction(function () use ($data, &$noProductDeal) {
-                $orderProductsIds = $data['order_product_ids'];
+            $orderProductsIds = $data['order_product_ids'];
+            $currencyId = 1;
+            $customer = Auth::user();
+            // $totalPayAmount = OrderProduct::whereIn('id', $orderProductsIds)->sum('amount');
+            // $customerRemainAmount = 0;
+            // if(@$customer->wallets)
+            //     $customerRemainAmount = @$customer->wallets->where('currency_id', $currencyId)->first()->amount ?? 0;
+            // $paymentType = @$data['payment_type']??'w';
+            // if($paymentType == 'w') {
+            //     if ($customerRemainAmount < $totalPayAmount) {
+            //         // return false;
+            //         return response()->json([
+            //             'message' => 'insufficient balance in your wallet',
+            //         ], 422);
+            //     }
+            // }
+            $payWithThirdPart = false;
+            $responseData = [];
+            DB::transaction(function () use ($data, &$noProductDeal, $orderProductsIds, $currencyId, $customer, &$payWithThirdPart, &$responseData) {
+
                 $orderProducts = OrderProduct::whereIn('id', $orderProductsIds)->where('customer_id', auth()->user()->id)->get();
 
                 $orderIds = $orderProducts->pluck('order_id');
-
-                if (!$orderIds) {
-                    // $noProductDeal = false;
-                    $result['message'] = 'invalid_product';
-                    $result['statusCode'] = 400;
-                    return getSuccessMessages($result);
-                }
-
+                //checking user balance
+                //ending checking user balance
                 $orderIds = array_unique($orderIds->toArray());
-
-                $orderProductsCount = Order::whereIn('id', $orderIds)->withCount('orderProduct')->get()->pluck('order_product_count', 'id')->toArray();
-
                 $orderStatus = ['status' => 'confirmed'];
-
                 foreach ($orderProducts as $order) {
-
                     $check = Payment::whereOrderId($order->order_id)->where('order_product_ids', $order->id)->first();
-
+                    $deal = Deal::whereProductId($order->product_id)->orderBy('created_at', 'desc')->first();
                     $orderStatus = ['status' => 'confirmed'];
 
+
+
+                    $paymentWalletBalance = 0;
+                    $remainingPayAmount = 0;
+                    $wallets = $customer->wallets();
+                    if ($wallets && $data['payment_type'] == 'w') {
+                        $wallet =  $customer->wallets()->where('currency_id', $currencyId)->first();
+                        if ($wallet) {
+                            if ($wallet->amount < $order->amount) {
+                                $paymentWalletBalance = $wallet->amount;
+                                $remainingPayAmount = $order->amount - $paymentWalletBalance;
+                            } else if ($wallet->amount == 0)
+                                $remainingPayAmount = $order->amount;
+
+                            else
+                                $paymentWalletBalance = $order->amount;
+                        }
+                    }
+                    if ($paymentWalletBalance)
+                        $wallet->update([ //update balance in user wallet
+                            'amount' => $wallet->amount - $paymentWalletBalance
+                        ]);
+
+                    //add transaction record
+                    $transaction = Transaction::create([
+                        'transaction_ID' => getRandomIdGenerate('TR'),
+                        'member_id' => auth()->user()->id,
+                        'transaction_type' => TRANSFER_OUT,
+                        'order_id' => $order->order_id,
+                        'amount' => $order->amount,
+                        'wallet_amount' => $paymentWalletBalance,
+                        'third_party_amount' => $remainingPayAmount,
+                        'currency_id' => $currencyId,
+                        'status' => $remainingPayAmount ? "Review" : "Debit",
+                        'message' => "Payment transaction",
+                    ]);
                     if (!$check) {
                         $dataPayment['payment_id']  = rand();
                         $dataPayment['customer_id'] = Auth()->user()->id;
@@ -150,34 +281,69 @@ class PaymentService
                         $dataPayment['amount']      = $order->amount;
                         $dataPayment['provider']    = 'test';
                         $dataPayment['status']      = 'complete';
+                        $dataPayment['transaction_id']      = $transaction->id;
+                        $dataPayment['message']      = @$data['message'];
+                        $dataPayment['wallet_amount'] = $paymentWalletBalance;
+
+                        $paymentType = $data['payment_type'];
+                        if ($paymentWalletBalance && $remainingPayAmount) {
+                            $paymentType = 'b';
+                            $payWithThirdPart = true;
+                        } else if ($paymentWalletBalance)
+                            $paymentType = 'w';
+                        else {
+                            $paymentType = 'p';
+                            $payWithThirdPart = true;
+                        }
+                        $dataPayment['payment_type']      = $paymentType;
+
+                        if ($remainingPayAmount) {
+                            if (sizeof($responseData) <= 0) {
+                                $externalOrderID = getRandomIdGenerate('EO');
+                                $responseData = [
+                                    'external_order_id' => $externalOrderID,
+                                    'amount' => $remainingPayAmount,
+                                ];
+                            } else {
+                                $responseData['amount'] = $responseData['amount'] + $remainingPayAmount;
+                            }
+                        }
+
+                        $dataPayment['external_order_ID']      = @$externalOrderID;
+
+                        if ($payWithThirdPart) {
+                            //pay with third party api
+                            $dataPayment['request_data']      = ['amount' => $remainingPayAmount];
+                        }
+                        // \Log::debug("Payment::create");
+                        // \Log::debug($dataPayment);
                         Payment::create($dataPayment);
-                        $deal = Deal::whereId($order->deal_id)->whereStatus('active')->orderBy('created_at', 'desc')->first();
+                        $dataPayment['wallet_amount'] = 0;
+                        $paymentWalletBalance = 0;
 
-                        if (!$deal) {
+                        if ($deal->status != 'active') {
                             $noProductDeal = true;
-                            return false;
+                            // return false;
+                        } else {
+                            $slotId = $deal->slots()->first();
+                            SlotDeal::where('order_id', $order->order_id)->where('deal_id', $deal->id)->update(['status' => 'confirmed']);
+                            if ($slotId->total_slots <= SlotDeal::where('status', 'confirmed')->where('deal_id', $deal->id)->count()) {
+                                Deal::whereId($deal->id)->update(['status' => 'inactive']);
+                            }
+                            OrderProduct::whereId($order->id)->update($orderStatus);
                         }
-                        $slotId = $deal->slots()->first();
-
-                        SlotDeal::where('order_id', $order->order_id)->where('deal_id', $order->deal_id)->update(['status' => 'confirmed']);
-
-
-                        if ($slotId->total_slots <= SlotDeal::where('status', 'confirmed')->where('deal_id', $order->deal_id)->count()) {
-                            Deal::whereId($order->deal_id)->update(['status' => 'inactive']);
-                        }
-
-                        OrderProduct::whereId($order->id)->update($orderStatus);
                     }
-                    if (array_key_exists($order->order_id, $orderProductsCount)) {
-
-                        if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() != $orderProductsCount[$order->order_id]) {
-                            $orderStatus = ['status' => 'remaining'];
-                        } else if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() == 0) {
-                            $orderStatus = ['status' => 'pending'];
-                        }
-
-                        Order::whereId($order->order_id)->update($orderStatus);
+                    if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() != OrderProduct::whereId($order->id)->count()) {
+                        $orderStatus = ['status' => 'remaining'];
+                    } else if (OrderProduct::whereId($order->id)->whereStatus('confirmed')->count() == 0) {
+                        $orderStatus = ['status' => 'reserved'];
                     }
+                    Order::whereId($order->order_id)->update($orderStatus);
+                    $ct = SlotDeal::where('deal_id', $deal->id)->where(['status' => 'confirmed'])->count();
+                    if ($ct > $slotId->total_slots) {
+                        $ct = $slotId->total_slots;
+                    }
+                    Slot::where(['id' => $deal->slot_id])->update(['booked_slots' => $ct]);
                 }
             });
 
@@ -188,6 +354,7 @@ class PaymentService
             }
 
             $result['message'] = 'payment_successfully';
+            $result['data'] = $responseData;
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {

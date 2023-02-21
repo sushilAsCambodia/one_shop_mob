@@ -12,6 +12,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 
+const TRANSFER_IN  = 'transfer_in';
+const TRANSFER_OUT  = 'transfer_out';
+
 if (!function_exists('getErrorMessages')) {
     function getErrorMessages($messages)
     {
