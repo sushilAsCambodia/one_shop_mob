@@ -25,6 +25,7 @@ class CustomerService
     public function sendOTP($data): JsonResponse
     {
         try {
+            die('ppppp');
             //save customer data in session
             sendOTP($data['idd'], $data['phone_number']);
 
