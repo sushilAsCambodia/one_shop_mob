@@ -42,6 +42,7 @@ class NotificationService
                         $datas->read_at = $item->read_at;
                         $datas->id = $item->id;
                         $datas->header = 'sushil';
+                        $datas->is_read = $item->read_at ? true : false;
                         $datas->message = $item->data->message;
                         $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
                     }
