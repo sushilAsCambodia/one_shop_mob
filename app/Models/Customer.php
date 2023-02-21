@@ -23,31 +23,38 @@ class Customer extends Authenticatable implements Auditable
     protected $hidden = [
         'password', 'created_at', 'updated_at', 'deleted_at',
     ];
-    
-    public $relationsToCascade = ['addresses','orders','invoice'];
+
+    public $relationsToCascade = ['addresses', 'orders', 'invoice'];
 
     public function addresses()
     {
         return $this->morphMany(Address::class, 'addressable');
     }
 
-    public function orders() {
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function orderSum() {
-        return $this->hasMany(OrderProduct::class)->where(function($q) {
-            $q->where('status','confirmed')->orWhere('status','winner');
+    public function orderSum()
+    {
+        return $this->hasMany(OrderProduct::class)->where(function ($q) {
+            $q->where('status', 'confirmed')->orWhere('status', 'winner');
         })->sum('amount');
     }
 
     public function orderProduct()
     {
-        return $this->hasMany(OrderProduct::class)->where('status','!=', 'reserved');
+        return $this->hasMany(OrderProduct::class)->where('status', '!=', 'reserved');
     }
 
     protected function setPasswordAttribute($value)
     {
         return $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function wallets()
+    {
+        return $this->hasOne(Wallet::class, 'member_id', 'id');
     }
 }
