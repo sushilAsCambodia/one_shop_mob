@@ -414,7 +414,7 @@ class CustomerService
             $results['message'] = 'fetch_mlm_data_successfully';
             $results['data'] = $result;
             $results['statusCode'] = 200;
-            return getSuccessMessages($results, false);
+            return getSuccessMessages($results);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }

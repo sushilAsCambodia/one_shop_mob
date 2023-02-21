@@ -60,6 +60,9 @@ class NotificationService
                     ]
                 ]
             );
+            $data = Notification::where()->update([]);
+            $data->read_at = Carbon::now()->format('Y-m-d H:i:s');
+            $data->update();
 
             $result['message'] = 'fetch_Notification_data_successfully';
             $result['data'] = $itemsTransformedAndPaginated;
