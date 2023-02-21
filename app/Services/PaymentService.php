@@ -316,8 +316,8 @@ class PaymentService
                             //pay with third party api
                             $dataPayment['request_data']      = ['amount' => $remainingPayAmount];
                         }
-                        // \Log::debug("Payment::create");
-                        // \Log::debug($dataPayment);
+                        \Log::debug("Payment::create");
+                        \Log::debug($dataPayment);
                         Payment::create($dataPayment);
                         $dataPayment['wallet_amount'] = 0;
                         $paymentWalletBalance = 0;
