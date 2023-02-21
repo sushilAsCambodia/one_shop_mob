@@ -31,4 +31,16 @@ class Notification extends Model
         $value->message = $message;
         return $value;
     }
+
+    public function toArray()
+    {
+        $attributes = parent::toArray();
+
+        $attributes['header'] = $attributes['shipping_id'];
+
+        return $attributes;
+    }
+
+
+
 }
