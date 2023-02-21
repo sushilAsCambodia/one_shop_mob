@@ -255,6 +255,10 @@ class PaymentService
                                 $paymentWalletBalance = $order->amount;
                         }
                     }
+                    else{
+                        $remainingPayAmount = $order->amount;
+                    } 
+
                     if ($paymentWalletBalance)
                         $wallet->update([ //update balance in user wallet
                             'amount' => $wallet->amount - $paymentWalletBalance
