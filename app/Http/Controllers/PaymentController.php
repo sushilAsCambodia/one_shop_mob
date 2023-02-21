@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentFormRequest;
+use App\Http\Requests\PaymentResponseFormRequest;
 use App\Models\Order;
 use App\Models\payment;
 use App\Services\PaymentService;
@@ -26,9 +27,13 @@ class PaymentController extends Controller
         return response()->json(Payment::all(), 200);
     }
 
-     public function store(PaymentFormRequest $request)
+    public function store(PaymentFormRequest $request)
     {
         return $this->paymentService->store($request->all());
     }
 
+    public function paymentResponse(PaymentResponseFormRequest $request)
+    {
+        return $this->paymentService->paymentResponse($request);
+    }
 }

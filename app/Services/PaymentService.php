@@ -442,4 +442,39 @@ class PaymentService
     //         return generalErrorResponse($e);
     //     }
     // }
+
+
+
+    public function paymentResponse($request): JsonResponse
+    {
+        try {
+
+            DB::transaction(function () use ($request) {
+                $status = $request->status;
+                $externalOrderID = $request->external_order_ID;
+
+                $payments = Payment::whereExternalOrderId($externalOrderID)->get();
+                $paymentStatus = 'fail';
+                if ($status == 'success')
+                    $paymentStatus = 'complete';
+                foreach ($payments as $key => $payment) {
+                    DB::table('payments')->whereId($payment->id)->update(['status' => $paymentStatus]);
+                    // Payment::find($payment->id)->update(['status' => $paymentStatus]);
+                    //update transaction
+                    $transactionStatus = 'Debit';
+                    if ($paymentStatus == 'fail')
+                        $transactionStatus = 'Reject';
+                    Transaction::find($payment->transaction_id)->update(['status' => $transactionStatus]);
+                }
+            });
+
+            $result['message'] = 'updated_successfully';
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return generalErrorResponse($e);
+        }
+    }
 }

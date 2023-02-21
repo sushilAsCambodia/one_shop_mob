@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Add To Payment
     Route::controller(PaymentController::class)->group(function () {
         Route::post('customer/order-payment', 'store'); //done 1
+        Route::post('payments/payment-response', 'paymentResponse');
     });
 
     Route::controller(NotificationController::class)->group(function () {
