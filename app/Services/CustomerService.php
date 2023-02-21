@@ -26,7 +26,7 @@ class CustomerService
     {
         try {
             //save customer data in session
-            return sendOTP($data['idd'], $data['phone_number']);
+            sendOTP($data['idd'], $data['phone_number']);
 
             $result['message'] = 'otp_send_successfully';
             $result['statusCode'] = 200;

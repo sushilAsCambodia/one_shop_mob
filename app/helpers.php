@@ -219,7 +219,7 @@ if (!function_exists('sendOTP')) {
         $urlName = "https://api.mekongsms.com/api/sendsms.aspx?username=" . env('SMS_USERNAME') . "&pass=" . env('SMS_PASSWORD') . "&cd=&sender=" . $header . "&smstext=" . $textMessage . "&gsm=" . $idd . $phoneNumber . "&int=1";
 
         $response = Http::get($urlName);
-        return $response;
+        // return $response;
         $contains = str_contains($response, 'Success');
 
         if ($contains === false) {
