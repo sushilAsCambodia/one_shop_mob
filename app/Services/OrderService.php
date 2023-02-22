@@ -343,11 +343,17 @@ class OrderService
                 $opData->orderId = $orderId;
                 $opData->deals = $dealsData->deal;
 
-                $opData->winnerSlotId = SlotDeal::where('deal_id', $dealIds)
+                $winnerSlotId = SlotDeal::where('deal_id', $dealIds)
                     ->where('order_id', $opData->order_id)
                     ->where('status', 'winner')
                     ->groupBy('deal_id')
                     ->first()->booking_id;
+
+                $opData->winnerSlotId = null;
+                
+                if ($winnerSlotId) {
+                    $opData->winnerSlotId = $winnerSlotId->booking_id;
+                }
 
                 if ($winner) {
                     if ($winner->deal_id != $opData->deal_id) {
