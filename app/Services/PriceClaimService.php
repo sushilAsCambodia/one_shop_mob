@@ -203,6 +203,9 @@ class PriceClaimService
 
             //     $results[$key1]->order_product = $orderProductData;
             // }
+
+            echo $results['price_claims']['address_id']; die('oo');
+
             $addresses = $this->addressService->all($request);
             $results['addresses'] = $addresses->original['data'];
 
