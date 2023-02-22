@@ -31,7 +31,7 @@ class OrderService
         $page = $request->page ?: 1;
         $sortBy = $request->sortBy ?: 'created_at';
         $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
-        if(!isset($request->descending)){
+        if (!isset($request->descending)) {
             $sortOrder = 'desc';
         }
 
@@ -107,7 +107,7 @@ class OrderService
             \Log::debug($e);
             return generalErrorResponse($e);
         }
-    }    
+    }
     public function getTotalBookedSlots($data)
     {
         $slotsCounts = SlotDeal::leftJoin('orders', 'orders.id', 'slot_deals.order_id')
@@ -342,6 +342,13 @@ class OrderService
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
                 $opData->orderId = $orderId;
                 $opData->deals = $dealsData->deal;
+
+                $opData->winnerSlotId = SlotDeal::where('deal_id', $dealIds)
+                    ->where('order_id', $opData->order_id)
+                    ->where('status', 'winner')
+                    ->groupBy('deal_id')
+                    ->first()->booking_id;
+
                 if ($winner) {
                     if ($winner->deal_id != $opData->deal_id) {
                         array_push($orders, $opData);
