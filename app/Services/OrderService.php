@@ -336,7 +336,7 @@ class OrderService
                 $winnerNew = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $opData->deal_id])->where('status', '=', 'completed')->first();
                 if (!empty($winner)) {
                     $ops[$key]->status = 'completed';
-                    $opData->winnerSlotId = $winnerNew->booking_id;
+                    // $opData->winnerSlotId = $winnerNew->booking_id;
                 }
                 if (in_array('completed', explode(',', $opData->all_status))) {
                     $opData->checked_status = 'completed';
