@@ -63,6 +63,7 @@ class DealService
             } else {
                 $status = ['confirmed', 'winner', 'loser', 'pending', 'shipping'];
             }
+
             $orderProducts = OrderProduct::where('deal_id', $deal->id)->whereIn('status', $status)->where('customer_id', auth()->user()->id)->get();
             
             $orderIds = array();
@@ -81,7 +82,7 @@ class DealService
             $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id', $deal->id)->get();
 
             $result['message'] = 'slotDeals_fetch_successfully';
-            $result['data'] = $orderProducts;
+            $result['data'] = $status;
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {
