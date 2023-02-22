@@ -204,10 +204,13 @@ class PriceClaimService
             //     $results[$key1]->order_product = $orderProductData;
             // }
 
-            echo $results['price_claims']['address_id']; die('oo');
-
-            $addresses = $this->addressService->all($request);
-            $results['addresses'] = $addresses->original['data'];
+            if($results['price_claims']['address_id']){
+                $addresses = $this->addressService->all($request, $results['price_claims']['address_id']);
+                $results['addresses'] = $addresses->original['data'];
+            }else{
+                $addresses = $this->addressService->all($request);
+                $results['addresses'] = $addresses->original['data'];
+            }
 
             $result['message'] = 'fetch_price_claim_successfully';
             $result['data'] = $results;

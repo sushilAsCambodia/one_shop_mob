@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class AddressService
 {
 
-    public function all($request): JsonResponse
+    public function all($request, $addressId=null): JsonResponse
     {
         try {
             $query =  (new Address())->newQuery()->orderBy('updated_at', 'DESC');
@@ -23,6 +23,9 @@ class AddressService
                 $query->whereAddressableType(Customer::class)
                     ->whereAddressableId($modelData->id);
             });
+            if($addressId){
+                $query->whereId($addressId)->withTrashed();
+            }
             $results = $query->select(
                 'addresses.id',
                 'addresses.street_address_1',
