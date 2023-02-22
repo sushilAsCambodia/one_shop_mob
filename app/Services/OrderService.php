@@ -347,7 +347,7 @@ class OrderService
                     ->where('order_id', $opData->order_id)
                     ->where('status', 'winner')
                     ->groupBy('deal_id')
-                    ->first()->booking_id;
+                    ->first();
 
                 $opData->winnerSlotId = null;
                 
