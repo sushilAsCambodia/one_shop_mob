@@ -331,29 +331,20 @@ class OrderService
                     ->groupBy('deal_id')
                     ->first();
                 $opData->checked_status = 'loser';
+                $opData->winnerSlotId = null;
                 $winner = PriceClaim::where(['customer_id' => $opData['customer_id'], 'deal_id' => $opData->deal_id])->where('status', '!=', 'completed')->first();
                 if (!empty($winner)) {
                     $ops[$key]->status = 'completed';
+                    $opData->winnerSlotId = $winner->booking_id;
                 }
                 if (in_array('completed', explode(',', $opData->all_status))) {
                     $opData->checked_status = 'completed';
+                    $opData->winnerSlotId = $winner->booking_id;
                 }
 
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
                 $opData->orderId = $orderId;
                 $opData->deals = $dealsData->deal;
-
-                $winnerSlotId = SlotDeal::where('deal_id', $dealIds)
-                    ->where('order_id', $opData->order_id)
-                    ->where('status', 'winner')
-                    ->groupBy('deal_id')
-                    ->first();
-
-                $opData->winnerSlotId = null;
-                
-                if ($winnerSlotId) {
-                    $opData->winnerSlotId = $winnerSlotId->booking_id;
-                }
 
                 if ($winner) {
                     if ($winner->deal_id != $opData->deal_id) {
