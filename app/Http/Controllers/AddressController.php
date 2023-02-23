@@ -6,7 +6,7 @@ use App\Http\Requests\AddressFormRequest;
 use App\Models\Address;
 use App\Services\AddressService;
 use Illuminate\Http\Request;
-// use SoapClient;
+use SoapClient;
 
 
 class AddressController extends Controller
@@ -52,7 +52,7 @@ class AddressController extends Controller
         $cpCode = 'LOMA001';
         $serviceID = 'MetfoneT';
     
-        $client = new SoapClient($serviceUrl);
+        $client = new \SoapClient($serviceUrl);
         $params = array("User" => $userId,    "Password" => $pass,    "CPCode" => $cpCode,    "RequestID" => "1",    "UserID" => $toNumbers,     "ReceiverID" => $toNumbers,    "ServiceID" => $serviceID,    "CommandCode" => "bulksms",    "Content" => $message,    "ContentType" => "0");
         $response = $client->__soapCall("wsCpMt", array($params));
     
