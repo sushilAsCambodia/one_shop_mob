@@ -47,7 +47,13 @@ return [
     "Language Id Required" => "Language Id Required",
     "Shipping" => "Shipping",
     'Prize Claimed by' => "Prize Claimed by",
+    "You Won" => "You Won Sushil",
 
+    "firstOtpTextReg" => "Dear Customer,",
+    "secondOtpTextReg" => "is the OTP to complete your registration for OneShop. DO NOT disclose it to anyone, OneShop team never asks for OTP.",
+
+    "firstOtpTextForgot" => "Use",
+    "secondOtpTextRegForgot" => "as your OTP to reset your OneShop Password. If you did not make this request, please alert us at admin@the1shops.com",
     
 
 ];

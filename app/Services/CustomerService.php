@@ -27,19 +27,18 @@ class CustomerService
         try {
             //save customer data in session
             $otpData = sendOTP($data['idd'], $data['phone_number'], $data['lang_id']);
-            return $otpData;
-            if($otpData){
+
+            if ($otpData) {
                 $result['message'] = 'otp_send_successfully';
                 $result['statusCode'] = 200;
-    
+
                 return getSuccessMessages($result);
             }
-            
+
             $result['message'] = 'otp_not_send';
             $result['statusCode'] = 201;
-    
+
             return getSuccessMessages($result, false);
-    
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
@@ -170,12 +169,19 @@ class CustomerService
     public function forgetPassword(array $data): JsonResponse
     {
         try {
-            sendOTP($data['idd'], $data['phone_number'], 'forget_password');
+            $otpData = sendOTP($data['idd'], $data['phone_number'], $data['lang_id'], 'forget_password');
 
-            $result['message'] = 'otp_send_successfully';
-            $result['statusCode'] = 200;
+            if ($otpData) {
+                $result['message'] = 'otp_send_successfully';
+                $result['statusCode'] = 200;
 
-            return getSuccessMessages($result);
+                return getSuccessMessages($result);
+            }
+
+            $result['message'] = 'otp_not_send';
+            $result['statusCode'] = 201;
+
+            return getSuccessMessages($result, false);
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);
