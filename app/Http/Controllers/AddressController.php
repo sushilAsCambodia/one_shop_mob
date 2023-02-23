@@ -40,23 +40,5 @@ class AddressController extends Controller
     {
         return $this->addressService->delete($address);
     }
-
-    public function smsTesting()
-    {
-        $message = "test otp 1234567 local Sushil";
-        $toNumbers = "855882103199";
-        $serviceUrl = 'http://bizsms.metfone.com.kh:8804/bulkapi?wsdl';
-    
-        $userId = 'loma_api';
-        $pass = 'L0m@T3ch';
-        $cpCode = 'LOMA001';
-        $serviceID = 'MetfoneT';
-    
-        $client = new \SoapClient($serviceUrl);
-        $params = array("User" => $userId,    "Password" => $pass,    "CPCode" => $cpCode,    "RequestID" => "1",    "UserID" => $toNumbers,     "ReceiverID" => $toNumbers,    "ServiceID" => $serviceID,    "CommandCode" => "bulksms",    "Content" => $message,    "ContentType" => "0");
-        $response = $client->__soapCall("wsCpMt", array($params));
-    
-        var_dump($response);
-    }
     
 }
