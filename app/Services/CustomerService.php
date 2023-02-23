@@ -22,16 +22,24 @@ use stdClass;
 
 class CustomerService
 {
-    public function sendOTP($data): JsonResponse
+    public function sendOTP($data)
     {
         try {
             //save customer data in session
-            sendOTP($data['idd'], $data['phone_number']);
-
-            $result['message'] = 'otp_send_successfully';
-            $result['statusCode'] = 200;
-
-            return getSuccessMessages($result);
+            $otpData = sendOTP($data['idd'], $data['phone_number'], $data['lang_id']);
+            return $otpData;
+            if($otpData){
+                $result['message'] = 'otp_send_successfully';
+                $result['statusCode'] = 200;
+    
+                return getSuccessMessages($result);
+            }
+            
+            $result['message'] = 'otp_not_send';
+            $result['statusCode'] = 201;
+    
+            return getSuccessMessages($result, false);
+    
         } catch (\Exception $e) {
             // \Log::debug($e);
             return generalErrorResponse($e);

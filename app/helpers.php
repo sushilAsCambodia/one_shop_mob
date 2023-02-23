@@ -210,11 +210,49 @@ if (! function_exists('getCustomerData')) {
 }
 
 if (!function_exists('sendOTP')) {
-    function sendOTP($idd = 0, $phoneNumber = 0, $type = 'register')
+    function sendOTP($idd = 0, $phoneNumber = 0, $langId=1, $type = 'register')
     {
-
         $otpValue = rand(100000, 999999);
-        $otpValue = 123456;
+        // $otpValue = 123456;
+
+        $message = "test otp ".$otpValue." server Sushil";
+        // $toPhoneNumber = "855882103199";
+        $toPhoneNumber = $idd.$phoneNumber;
+        $toPhoneNumber = str_replace(array('+'), '',$toPhoneNumber);
+       
+        $serviceUrl = 'http://bizsms.metfone.com.kh:8804/bulkapi?wsdl';
+
+        $userId = 'loma_api';
+        $pass = 'L0m@T3ch';
+        $cpCode = 'LOMA001';
+        $serviceID = 'MetfoneT';
+        if($langId == 1){
+            $contentType = 1;
+        }else{
+            $contentType = 0;
+        }
+        
+
+        $client = new \SoapClient($serviceUrl);
+        $params = array(
+            "User" => $userId,
+            "Password" => $pass,
+            "CPCode" => $cpCode,
+            "RequestID" => "1",
+            "UserID" => $toPhoneNumber,
+            "ReceiverID" => $toPhoneNumber,
+            "ServiceID" => $serviceID,
+            "CommandCode" => "bulksms",
+            "Content" => $message,
+            "ContentType" => $contentType
+        );
+
+        $response = $client->__soapCall("wsCpMt", array($params));
+        // print_r($response);
+        if ($response->return->result === 0) {
+            return false;
+        }
+
         //save otp in table
         $otp = OntimePassword::whereIdd($idd)->wherePhoneNumber($phoneNumber)->whereType($type)->whereValue($otpValue)->first();
         if ($otp)
@@ -227,6 +265,7 @@ if (!function_exists('sendOTP')) {
                 'type' => $type,
             ]);
         }
+        return true;
     }
 }
 
