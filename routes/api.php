@@ -214,3 +214,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('delete-addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
     }); //done 1
 });
+
+Route::controller(AddressController::class)->group(function () {
+    Route::get('sms/testing', 'smsTesting');
+});
