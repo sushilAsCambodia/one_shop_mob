@@ -214,61 +214,64 @@ if (!function_exists('sendOTP')) {
     function sendOTP($idd = 0, $phoneNumber = 0, $langId = 1, $type = 'register')
     {
         $otpValue = rand(100000, 999999);
-        $otpValue = 123456;
-        // if ($type == 'register') {
-        //     // $message = trans('message.firstOtpTextReg') . ' ' . $otpValue . ' ' . trans('message.secondOtpTextReg');
-        //     if ($langId == 2) {
-        //         $message = $otpValue . ' 是您的一次性密码，输入密码以完成注册';
-        //     } elseif ($langId == 3) {
-        //         $message = 'អតិថិជនជាទីគោរព លេខ ' . $otpValue . ' គឺជា OTP ដើម្បីចុះឈ្មោះរបស់អ្នកសម្រាប់ OneShop ។ សូមកុំបង្ហាញនរណា, ក្រុមការងារ OneShop មិនដែលសុំ OTP ទេ។';
-        //     } else {
-        //         $message = 'Dear Customer, ' . $otpValue . ' is the OTP to complete your registration for OneShop. DO NOT disclose it to anyone, OneShop team never asks for OTP.';
-        //     }
-        // } else {
-        //     if ($langId == 2) {
-        //         $message = $otpValue . ' 是您的一次性密码，输入密码以重置密码。如果您没提出此请求，请通过 admin@the1shops.com 联系我们';
-        //     } elseif ($langId == 3) {
-        //         $message = 'ប្រើលេខ ' . $otpValue . ' ជា OTP របស់អ្នក ដើម្បីប្តូរពាក្យសម្ងាត់ OneShop របស់អ្នកឡើងវិញ។ ប្រសិនបើអ្នកមិនបានធ្វើសំណើនេះទេ សូមជូនដំណឹងមកយើងតាមរយៈ admin@the1shops.com';
-        //     } else {
-        //         $message = 'Use ' . $otpValue . ' as your OTP to reset your OneShop Password. If you did not make this request, please alert us at admin@the1shops.com';
-        //     }
-        // }
+        // $otpValue = 123456;
+        if ($type == 'register') {
+            // $message = trans('message.firstOtpTextReg') . ' ' . $otpValue . ' ' . trans('message.secondOtpTextReg');
+            if ($langId == 2) {
+                $message = $otpValue . ' 是您的一次性密码，输入密码以完成注册';
+            } elseif ($langId == 3) {
+                $message = 'អតិថិជនជាទីគោរព លេខ ' . $otpValue . ' គឺជា OTP ដើម្បីចុះឈ្មោះរបស់អ្នកសម្រាប់ OneShop ។ សូមកុំបង្ហាញនរណា, ក្រុមការងារ OneShop មិនដែលសុំ OTP ទេ។';
+            } else {
+                $message = 'Dear Customer, ' . $otpValue . ' is the OTP to complete your registration for OneShop. DO NOT disclose it to anyone, OneShop team never asks for OTP.';
+            }
+        } else {
+            if ($langId == 2) {
+                $message = $otpValue . ' 是您的一次性密码，输入密码以重置密码。如果您没提出此请求，请通过 admin@the1shops.com 联系我们';
+            } elseif ($langId == 3) {
+                $message = 'ប្រើលេខ ' . $otpValue . ' ជា OTP របស់អ្នក ដើម្បីប្តូរពាក្យសម្ងាត់ OneShop របស់អ្នកឡើងវិញ។ ប្រសិនបើអ្នកមិនបានធ្វើសំណើនេះទេ សូមជូនដំណឹងមកយើងតាមរយៈ admin@the1shops.com';
+            } else {
+                $message = 'Use ' . $otpValue . ' as your OTP to reset your OneShop Password. If you did not make this request, please alert us at admin@the1shops.com';
+            }
+        }
 
-        // // $toPhoneNumber = "855882103199";
-        // $toPhoneNumber = $idd . $phoneNumber;
-        // $toPhoneNumber = str_replace(array('+'), '', $toPhoneNumber);
+        // $toPhoneNumber = "855882103199";
+        $toPhoneNumber = $idd . $phoneNumber;
+        $toPhoneNumber = str_replace(array('+'), '', $toPhoneNumber);
 
-        // $serviceUrl = 'http://bizsms.metfone.com.kh:8804/bulkapi?wsdl';
+        $serviceUrl = 'http://bizsms.metfone.com.kh:8804/bulkapi?wsdl';
 
-        // $userId = 'loma_api';
-        // $pass = 'L0m@T3ch';
-        // $cpCode = 'LOMA001';
+        $userId = 'loma_api';
+        $pass = 'L0m@T3ch';
+        $cpCode = 'LOMA001';
         // $serviceID = 'MetfoneT';
-        // if ($langId == 1) {
-        //     $contentType = 0;
-        // } else {
-        //     $contentType = 1;
-        // }
 
-        // $client = new \SoapClient($serviceUrl);
-        // $params = array(
-        //     "User" => $userId,
-        //     "Password" => $pass,
-        //     "CPCode" => $cpCode,
-        //     "RequestID" => "1",
-        //     "UserID" => $toPhoneNumber,
-        //     "ReceiverID" => $toPhoneNumber,
-        //     "ServiceID" => $serviceID,
-        //     "CommandCode" => "bulksms",
-        //     "Content" => $message,
-        //     "ContentType" => $contentType
-        // );
+        $serviceID = 'One Shop';
+        
+        if ($langId == 1) {
+            $contentType = 0;
+        } else {
+            $contentType = 1;
+        }
 
-        // $response = $client->__soapCall("wsCpMt", array($params));
-        // // print_r($response);
-        // if ($response->return->result === 0) {
-        //     return false;
-        // }
+        $client = new \SoapClient($serviceUrl);
+        $params = array(
+            "User" => $userId,
+            "Password" => $pass,
+            "CPCode" => $cpCode,
+            "RequestID" => "1",
+            "UserID" => $toPhoneNumber,
+            "ReceiverID" => $toPhoneNumber,
+            "ServiceID" => $serviceID,
+            "CommandCode" => "bulksms",
+            "Content" => $message,
+            "ContentType" => $contentType
+        );
+
+        $response = $client->__soapCall("wsCpMt", array($params));
+        // print_r($response);
+        if ($response->return->result === 0) {
+            return false;
+        }
         //save otp in table
         $otp = OntimePassword::whereIdd($idd)->wherePhoneNumber($phoneNumber)->whereType($type)->whereValue($otpValue)->first();
         if ($otp)
