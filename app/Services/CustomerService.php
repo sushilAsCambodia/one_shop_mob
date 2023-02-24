@@ -26,7 +26,10 @@ class CustomerService
     {
         try {
             //save customer data in session
-            $otpData = sendOTP($data['idd'], $data['phone_number'], $data['lang_id']);
+            if(isset($data['lang_id'])){
+                $langId = $data['lang_id'];
+            }
+            $otpData = sendOTP($data['idd'], $data['phone_number'], $langId);
 
             if ($otpData) {
                 $result['message'] = 'otp_send_successfully';
