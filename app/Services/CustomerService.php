@@ -28,6 +28,8 @@ class CustomerService
             //save customer data in session
             if(isset($data['lang_id'])){
                 $langId = $data['lang_id'];
+            }else{
+                $langId = 1;
             }
             $otpData = sendOTP($data['idd'], $data['phone_number'], $langId);
 
@@ -174,6 +176,8 @@ class CustomerService
         try {
             if(isset($data['lang_id'])){
                 $langId = $data['lang_id'];
+            }else{
+                $langId = 1;
             }
             $otpData = sendOTP($data['idd'], $data['phone_number'], $langId, 'forget_password');
 
