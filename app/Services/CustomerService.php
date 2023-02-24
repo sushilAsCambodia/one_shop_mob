@@ -32,14 +32,15 @@ class CustomerService
                 $langId = 1;
             }
             $otpData = sendOTP($data['idd'], $data['phone_number'], $langId);
+            // echo $otpData; die;
+            // if ($otpData) {
+            //     $result['message'] = 'otp_send_successfully';
+            //     $result['statusCode'] = 200;
 
-            if ($otpData) {
-                $result['message'] = 'otp_send_successfully';
-                $result['statusCode'] = 200;
+            //     return getSuccessMessages($result);
+            // }
 
-                return getSuccessMessages($result);
-            }
-
+            $result['data'] = $otpData;
             $result['message'] = 'otp_not_send';
             $result['statusCode'] = 201;
 
