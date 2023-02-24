@@ -246,10 +246,7 @@ if (!function_exists('sendOTP')) {
         $toPhoneNumber = str_replace(array('+'), '', $toPhoneNumber);
 
         $serviceUrl = 'http://bizsms.metfone.com.kh:8804/bulkapi?wsdl';
-
-        $userId = 'loma_api';
-        $pass = 'L0m@T3ch';
-        $cpCode = 'LOMA001';
+        
         // $serviceID = 'MetfoneT';
 
         $serviceID = 'One Shop';
@@ -262,9 +259,9 @@ if (!function_exists('sendOTP')) {
         // return $contentType;
         $client = new \SoapClient($serviceUrl);
         $params = array(
-            "User" => $userId,
-            "Password" => $pass,
-            "CPCode" => $cpCode,
+            "User" => env('SMS_GATEWAY_USERID'),
+            "Password" => env('SMS_GATEWAY_PASSWORD'),
+            "CPCode" => env('SMS_GATEWAY_CODE'),
             "RequestID" => "1",
             "UserID" => $toPhoneNumber,
             "ReceiverID" => $toPhoneNumber,

@@ -22,7 +22,7 @@ use stdClass;
 
 class CustomerService
 {
-    public function sendOTP($data)
+    public function sendOTP($data): JsonResponse
     {
         try {
             //save customer data in session
