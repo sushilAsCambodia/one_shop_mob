@@ -172,7 +172,10 @@ class CustomerService
     public function forgetPassword(array $data): JsonResponse
     {
         try {
-            $otpData = sendOTP($data['idd'], $data['phone_number'], $data['lang_id'], 'forget_password');
+            if(isset($data['lang_id'])){
+                $langId = $data['lang_id'];
+            }
+            $otpData = sendOTP($data['idd'], $data['phone_number'], $langId, 'forget_password');
 
             if ($otpData) {
                 $result['message'] = 'otp_send_successfully';
