@@ -23,7 +23,7 @@ return [
     "In Transit" => "In Transit",
     "Delivered" => "Delivered",
     "Returned To Seller" => "Returned To Seller",
-    "Failed Delivery" => "Failed Delivery",
+    "Failed Delivery" => "Delivery Failure",
     "Cancelled" => "Cancelled",
     "complete" => "complete",
     "done" => "done",
@@ -57,13 +57,13 @@ return [
 
 
     "Winnings" => "Winnings",
-    "Deal Closure" => "Deal Closure",
+    // "Deal Closure" => "Deal Closure",
     "Delivery" => "Delivery",
-    "Failed Delivery" => "Delivery Failure",
+    // "Failed Delivery" => "Delivery Failure",
 
     "Shipment" => "Shipment",
     "Pending" => "Shipment",
-    "Cancelled" => "Cancelled",
+    // "Cancelled" => "Cancelled",
 
 
 ];
