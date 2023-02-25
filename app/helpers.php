@@ -212,7 +212,7 @@ if (!function_exists('getCustomerData')) {
 }
 
 if (!function_exists('sendOTP')) {
-    function sendOTP($idd = 0, $phoneNumber = 0, $langId, $type = 'register')
+    function sendOTP($idd = 0, $phoneNumber = 0, $langId = 1, $type = 'register')
     {
         $otpValue = rand(100000, 999999);
         // $otpValue = 123456;
