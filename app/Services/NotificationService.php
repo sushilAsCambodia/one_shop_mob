@@ -46,7 +46,7 @@ class NotificationService
                         if (!empty($item->data->data->winning_status)) {
                             $header = $item->data->data->winning_status ? trans('message.Winnings') : trans('message.Deal Closure');
                         } elseif (!empty($item->data->data->slug)) {
-                            $header = trans('message'.$item->data->data->slug);
+                            $header = trans('message.'.$item->data->data->slug);
                         } else {
                             $header = trans('message.Thank You For Participation');
                         }
