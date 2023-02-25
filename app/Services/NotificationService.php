@@ -51,7 +51,7 @@ class NotificationService
                             $header = trans('message.Thank You For Participation');
                         }
 
-                        $datas->header = $header;
+                        $datas->header = $header.':';
                         $datas->is_read = $item->read_at ? true : false;
                         $datas->message = $item->data->message;
                         $datas->date = Carbon::parse($item->created_at)->format('Y-m-d H:m:s');
