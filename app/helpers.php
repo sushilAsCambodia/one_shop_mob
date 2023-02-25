@@ -249,8 +249,6 @@ if (!function_exists('sendOTP')) {
         
         // $serviceID = 'MetfoneT';
 
-        $serviceID = 'One Shop';
-
         if ($langIds == "en") {
             $contentType = 0;
         } else {
@@ -265,7 +263,7 @@ if (!function_exists('sendOTP')) {
             "RequestID" => "1",
             "UserID" => $toPhoneNumber,
             "ReceiverID" => $toPhoneNumber,
-            "ServiceID" => $serviceID,
+            "ServiceID" => env('SMS_GATEWAY_SERVICEDID'),
             "CommandCode" => "bulksms",
             "Content" => $message,
             "ContentType" => $contentType
