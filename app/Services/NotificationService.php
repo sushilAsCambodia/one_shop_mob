@@ -48,7 +48,7 @@ class NotificationService
                         } elseif (!empty($item->data->data->slug)) {
                             $header = trans('message.'.$item->data->data->slug);
                         } else {
-                            $header = trans('message.Thank You For Participation');
+                            $header = trans('message.Deal Closure');
                         }
 
                         $datas->header = $header.':';

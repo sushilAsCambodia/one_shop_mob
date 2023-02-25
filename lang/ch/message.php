@@ -48,11 +48,21 @@ return [
     "Language Id Required" => "Language Id Required",
     "Shipping" => "Shipping",
     'Prize Claimed by' => "Prize Claimed by",
-    "You Won" => "You Won Sushil",
+    // "You Won" => "You Won Sushil",
 
     "firstOtpTextReg" => "",
     "secondOtpTextReg" => "是您的一次性密码，输入密码以完成注册",
 
     "firstOtpTextForgot" => "",
     "secondOtpTextRegForgot" => "是您的一次性密码，输入密码以重置密码。如果您没提出此请求，请通过 admin@the1shops.com 联系我们",
+
+    "Winnings" => "奖金",
+    // "Deal Closure" => "Deal Closure",
+    "Delivery" => "送货",
+    // "Failed Delivery" => "Delivery Failure",
+
+    "Shipment" => "运输",
+    "Pending" => "运输",
+    "Deal Closure" => "交易结束",
+
 ];

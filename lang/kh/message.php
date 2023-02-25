@@ -57,5 +57,13 @@ return [
     "firstOtpTextForgot" => "",
     "secondOtpTextRegForgot" => "是您的一次性密码，输入密码以完成注册",
 
+    "Winnings" => "ការឈ្នះ",
+    // "Deal Closure" => "Deal Closure",
+    "Delivery" => "ការដឹកជញ្ជូន",
+    // "Failed Delivery" => "Delivery Failure",
+
+    "Shipment" => "ការដឹកជញ្ជូន",
+    "Pending" => "ការដឹកជញ្ជូន",
+    "Deal Closure" => "ការបិទកិច្ចព្រមព្រៀង",
 
 ];

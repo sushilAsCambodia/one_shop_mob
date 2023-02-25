@@ -63,7 +63,7 @@ return [
 
     "Shipment" => "Shipment",
     "Pending" => "Shipment",
-    // "Cancelled" => "Cancelled",
+    "Deal Closure" => "Deal Closure",
 
 
 ];
