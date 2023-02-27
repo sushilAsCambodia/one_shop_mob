@@ -56,12 +56,12 @@ class DealService
             $status = [];
             if (array_key_exists('status', $data)) {
                 if ($data['status'] == 'completed') {
-                    $status = ['confirmed', 'winner', 'loser'];
+                    $status = ['completed','confirmed', 'winner', 'loser'];
                 } else {
                     array_push($status, $data['status']);
                 }
             } else {
-                $status = ['confirmed', 'winner', 'loser'];
+                $status = ['completed','confirmed', 'winner', 'loser'];
             }
             $orderProducts = OrderProduct::where('deal_id', $deal->id)->whereIn('status', $status)->where('customer_id', auth()->user()->id)->get();
             $orderIds = array();
