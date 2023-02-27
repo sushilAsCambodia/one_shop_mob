@@ -146,6 +146,7 @@ class PriceClaimService
 
     public function getTotalBookedSlots($data)
     {
+        return $data;
         $slotsCounts = SlotDeal::leftJoin('orders', 'orders.id', 'slot_deals.order_id')
             ->where('orders.customer_id', $data->customer_id)
             ->where('slot_deals.deal_id', $data->deal->id)
