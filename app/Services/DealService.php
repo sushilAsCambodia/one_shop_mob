@@ -72,9 +72,7 @@ class DealService
             }
 
             if (!$orderIds && empty($orderIds)) {
-                $result['message'] = 'data_not_found';
-                $result['statusCode'] = 400;
-                return getSuccessMessages($result, false);
+                return response()->json(['messages' => ['Data Not Found'],], 400);
             }
 
             $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id', $deal->id)->get();

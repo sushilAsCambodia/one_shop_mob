@@ -8,6 +8,7 @@ use App\Models\TimeInterval;
 use App\Services\OrderProductService;
 use App\Services\SlotDealService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class DemoController extends Controller
 {
@@ -135,4 +136,13 @@ class DemoController extends Controller
         $val = rand($min, $max);
         return date('Y-m-d H:i:s', $val);
     }
+
+    public function demoWorks(){
+    $response = Http::withToken('531|rpNkp2xfpBJT4yBL0NUmodIzjrseyIkpT02xC6HU')
+    ->get('https://the1shops.com:8090/index.php/api/customers/get-transactions?date_range=%20&transaction_type=&rowsPerPage=15&sortBy=&descending=true&page=1&status=');
+    
+    return $response;
+    die('ppppp');
+    }
+
 }
