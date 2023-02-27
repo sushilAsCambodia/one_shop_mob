@@ -24,7 +24,7 @@ class Shipping extends Model
 
     public function product()
     {
-        return $this->belongsToMany(Product::class,'order_product','order_id','product_id','order_id');
+        return $this->belongsToMany(Product::class,'order_product','order_id','product_id','order_id')->with(['image']); 
     }
 
     public function slotDeal()
