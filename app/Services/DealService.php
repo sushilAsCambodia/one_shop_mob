@@ -78,7 +78,7 @@ class DealService
             $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->where('deal_id', $deal->id)->get();
 
             $result['message'] = 'slotDeals_fetch_successfully';
-            $result['data'] = $slotDeals;
+            $result['data'] = count($slotDeals);
             $result['statusCode'] = 200;
             return getSuccessMessages($result);
         } catch (\Exception $e) {
