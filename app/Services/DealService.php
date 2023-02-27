@@ -63,6 +63,7 @@ class DealService
             } else {
                 $status = ['confirmed', 'winner', 'loser'];
             }
+            $status = ['confirmed', 'winner', 'loser'];
             $orderProducts = OrderProduct::where('deal_id', $deal->id)->whereIn('status', $status)->where('customer_id', auth()->user()->id)->get();
             $orderIds = array();
             if ($orderId == null) {
