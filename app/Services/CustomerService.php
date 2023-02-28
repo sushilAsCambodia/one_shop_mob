@@ -487,7 +487,7 @@ class CustomerService
                 $query->where('status', $request->status);
             });
             
-            $itemsPaginated = $query->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'))
+            $itemsPaginated = $query->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'), DB::raw("GROUP_CONCAT(transactions.id) as ids"))
                 ->groupBy('date')->with('image')->paginate($perPage, ['*'], 'page', $page);
 
 
