@@ -497,6 +497,7 @@ class CustomerService
                     return [
                         "date" => $item->date,
                         "views" => $item->views,
+                        "ids" => $item->ids,
                         "details" => $this->getTransactionData($item->date),
                         "image" => $item->image
                     ];
