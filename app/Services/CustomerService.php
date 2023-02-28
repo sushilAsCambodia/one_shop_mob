@@ -521,9 +521,10 @@ class CustomerService
 
 
 
-            //dd($results);
-
-            return response()->json($itemsTransformedAndPaginated, 200);
+            $results['message'] = 'fetch_transaction_data_successfully';
+            $results['data'] = $itemsTransformedAndPaginated;
+            $results['statusCode'] = 200;
+            return getSuccessMessages($results);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
