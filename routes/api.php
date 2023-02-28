@@ -32,6 +32,7 @@ use App\Http\Controllers\StateController;
 use App\Http\Controllers\CityController;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PayController;
@@ -168,7 +169,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('notifications/paginate/{params?}', 'paginate')->middleware('lang_id');
         Route::patch('notifications/{notification}', 'update'); //done 1
     });
-    
+
     // Shipping Routes
     Route::controller(ShippingController::class)->group(function () {
         Route::get('shipping/paginate/{params?}', 'paginate');
@@ -186,7 +187,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // Customer routes
 Route::controller(CustomerController::class)->group(function () {
     // Route::get('customers-earning', 'getCalculations');
-    Route::post('customers/send-otp', 'sendOTP'); 
+    Route::post('customers/send-otp', 'sendOTP');
     Route::post('customers/verify-otp', 'verifyOTP');
     Route::post('customers/register', 'register');
     Route::post('customers/login', 'login');
@@ -202,6 +203,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('customers/update-password', 'updatePassword');
         Route::get('customers/user-details', 'userDetails');
         // Route::post('customers/create-bot-customer', 'createBotCustomer');
+        Route::get('customers/get-transactions', 'getTransactions');
         Route::post('customers/logout', 'logout');
     }); //done 1
 
@@ -213,6 +215,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('edit-addresses/{address}', 'update')->where(['address' => '[0-9]+']);
         Route::post('delete-addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
     }); //done 1
+
+    // Bank Account Route
+    Route::controller(BankAccountController::class)->group(function () {
+        Route::get('bank-accounts/paginate/{params?}', 'paginate')->name('BankAccount: Views BankAccount');
+        Route::get('bank-accounts/all', 'all')->name('BankAccount: All BankAccount');
+        Route::post('bank-accounts', 'store')->name('BankAccount: Create BankAccount');
+        Route::patch('bank-accounts/{bankAccount}', 'update')->name('BankAccount: Edit/Update BankAccount');
+        Route::delete('bank-accounts/{bankAccount}', 'delete')->name('BankAccount: Delete BankAccount');
+    });
 });
 
 

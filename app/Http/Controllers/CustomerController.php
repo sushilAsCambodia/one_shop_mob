@@ -11,6 +11,7 @@ use App\Http\Requests\CustomerRegisterFormRequest;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerSendOTPFormRequest;
 use App\Http\Requests\CustomerVerifyOTFormRequest;
+use App\Http\Requests\CustomerGetTransactionRequest;
 use App\Jobs\CreateCustomer;
 use App\Services\CustomerService;
 use App\Models\Customer;
@@ -101,6 +102,11 @@ class CustomerController extends Controller
     public function getCalculationsCustomers(Request $request)
     {
         return $this->customerService->getCalculations($request->all(), Customer::whereId(auth()->user()->id)->first());
+    }
+
+    public function getTransactions(CustomerGetTransactionRequest $request)
+    {
+        return $this->customerService->getTransactions($request);
     }
 
 

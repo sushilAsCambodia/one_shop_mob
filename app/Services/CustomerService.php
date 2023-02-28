@@ -10,7 +10,9 @@ use App\Models\Notification;
 use App\Models\OntimePassword;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -448,6 +450,47 @@ class CustomerService
             $results['statusCode'] = 200;
             return getSuccessMessages($results);
         } catch (\Exception $e) {
+            return generalErrorResponse($e);
+        }
+    }
+
+    public function getTransactions($request): JsonResponse
+    {
+        try {
+            $perPage = $request->rowsPerPage ?: 15;
+            $page = $request->page ?: 1;
+            $sortBy = $request->sortBy ?: 'created_at';
+            $sortOrder = $request->descending == 'true' ? 'desc' : 'asc';
+            $query = (new Transaction())->newQuery()
+                ->whereMemberId(auth::id())
+                ->orderBy($sortBy, $sortOrder);
+
+            $query->when($request->transaction_type, function ($query) use ($request) {
+                $query->where('transaction_type', $request->transaction_type);
+            });
+            $query->when($request->date_range, function ($query) use ($request) {
+                $dates = explode(' - ', $request->date_range);
+                $dates[0] = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                $dates[1] = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                $query->whereBetween('created_at', [$dates[0], $dates[1]]);
+            });
+            $query->when($request->currency_id, function ($query) use ($request) {
+                $query->where('currency_id', $request->currency_id);
+            });
+            $query->when($request->transaction_ID, function ($query) use ($request) {
+                $query->where('transaction_ID', 'like', "%$request->transaction_ID%");
+            });
+            $query->when($request->amount, function ($query) use ($request) {
+                $query->where('amount', 'like', "%$request->amount%");
+            });
+            $query->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            });
+            $results = $query->select('transactions.*')->with('image')->paginate($perPage, ['*'], 'page', $page);
+
+            return response()->json($results, 200);
+        } catch (\Exception $e) {
+            \Log::debug($e);
             return generalErrorResponse($e);
         }
     }
