@@ -209,7 +209,7 @@ class CustomerService
     public function setNewPassword(array $data, $type = null): JsonResponse
     {
         try {
-            $otp = OntimePassword::whereIdd($data['idd'])->wherePhoneNumber($data['phone_number'])->whereType('forget_password')->first();
+            $otp = OntimePassword::whereIdd($data['idd'])->wherePhoneNumber($data['phone_number'])->whereType('forget_password')->orderBy('id', 'DESC')->first();
             if ($otp) {
                 if ($otp->is_verify) {
                     $customer = Customer::whereIdd($data['idd'])->wherePhoneNumber($data['phone_number'])->first();
