@@ -299,14 +299,14 @@ class CustomerService
         try {
             if ($request->current_password) {
                 if (Hash::check($request->new_password, Auth::user()->password)) {
-                    $result['message'] = 'password_confirmation_not_same';
+                    $result['message'] = 'new_password_same_as_current_password';
                     $result['statusCode'] = 201;
                     return getSuccessMessages($result, false);
                 }
                 if (Hash::check($request->current_password, Auth::user()->password)) {
                     $customerData['password'] = $request->new_password;
                 } else {
-                    $result['message'] = 'new_password_same_as_current_password';
+                    $result['message'] = 'current_password_not_correct';
                     $result['statusCode'] = 201;
                     return getSuccessMessages($result, false);
                 }
