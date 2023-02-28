@@ -528,7 +528,7 @@ class CustomerService
     }
 
 
-    public function getDealCustomer($date)
+    public function getTransactionData($date)
     {
        $result = Transaction::whereMemnerId(auth()->user()->id)->where(DB::Raw('created_at = DATE('.$date.')'));
 
