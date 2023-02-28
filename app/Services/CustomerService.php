@@ -487,13 +487,52 @@ class CustomerService
                 $query->where('status', $request->status);
             });
             
-            $results = $query->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'))
+            $itemsPaginated = $query->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'))
                 ->groupBy('date')->with('image')->paginate($perPage, ['*'], 'page', $page);
 
-            return response()->json($results, 200);
+
+            $itemsTransformed = $itemsPaginated
+                ->getCollection()
+                ->map(function ($item) {
+                    return [
+                        "date" => $item->date,
+                        "views" => $item->views,
+                        "details" => $this->getTransactionData($item->date),
+                        "image" => $item->image
+                    ];
+                })->toArray();
+
+            $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+                $itemsTransformed,
+                $itemsPaginated->total(),
+                $itemsPaginated->perPage(),
+                $itemsPaginated->currentPage(),
+                [
+                    'path' => \Request::url(),
+                    'query' => [
+                        'page' => $itemsPaginated->currentPage()
+                    ]
+                ]
+            );
+
+
+
+            //dd($results);
+
+            return response()->json($itemsTransformedAndPaginated, 200);
+
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
         }
     }
+
+
+    public function getDealCustomer($date)
+    {
+       $result = Transaction::whereMemnerId(auth()->user()->id)->where(DB::Raw('created_at = DATE('.$date.')'));
+
+        return !empty($result) ? $result : [];
+    }
+
 }
