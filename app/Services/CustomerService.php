@@ -108,12 +108,6 @@ class CustomerService
 
                     $result['message'] = 'registered_successfully';
 
-                    $result['data'] = [
-                        'customer' => $customer,
-                        'notifications' => null,
-                        'token' => $customer->createToken($customer->phone_number)->plainTextToken,
-                    ];
-
                     $result['data'] = 'registered_successfully';
                     $result['statusCode'] = 200;
 
