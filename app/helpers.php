@@ -293,7 +293,7 @@ if (!function_exists('sendOTP')) {
 if (!function_exists('verifyOTP')) {
     function verifyOTP($idd = 0, $phoneNumber = 0, $otpValue = 0, $type = 'register')
     {
-        $otp = OntimePassword::whereIdd($idd)->whereValue($otpValue)->wherePhoneNumber($phoneNumber)->whereType($type)->first();
+        $otp = OntimePassword::whereIdd($idd)->whereValue($otpValue)->wherePhoneNumber($phoneNumber)->whereType($type)->orderBy('id', 'DESC')->first();
 
         if ($otp) {
             if ($otp->expire_at && strtotime($otp->expire_at) < strtotime(now()))
