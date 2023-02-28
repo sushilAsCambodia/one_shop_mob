@@ -530,7 +530,7 @@ class CustomerService
 
     public function getTransactionData($date)
     {
-       $result = Transaction::whereMemnerId(auth()->user()->id)->where(DB::Raw('created_at = DATE('.$date.')'));
+       $result = Transaction::whereMemnerId(auth()->user()->id)->where(DB::Raw('created_at like DATE('.$date.')'));
 
         return !empty($result) ? $result : [];
     }
