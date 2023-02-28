@@ -536,7 +536,7 @@ class CustomerService
        $result = Transaction::whereMemnerId(auth::id())
        ->whereBetween('created_at', [$dates[0], $dates[1]]);
 
-        return !empty($result) ? $result : [];
+        return !empty($result) ? $dates : $dates;
     }
 
 }
