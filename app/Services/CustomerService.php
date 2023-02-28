@@ -534,9 +534,9 @@ class CustomerService
         $dates[1] = Carbon::parse($date)->endOfDay()->format('Y-m-d H:i:s');
                 
        $result = Transaction::whereMemnerId(auth::id())
-       ->whereBetween('created_at', [$dates[0], $dates[1]]);
+       ->whereBetween('created_at', [$dates[0], $dates[1]])->get();
 
-        return !empty($result) ? $dates : $dates;
+        return !empty($result) ? $result : [];
     }
 
 }
