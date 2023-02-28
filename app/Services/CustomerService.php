@@ -298,11 +298,16 @@ class CustomerService
     {
         try {
             if ($request->current_password) {
+                if (Hash::check($request->new_password, Auth::user()->password)) {
+                    $result['message'] = 'password_confirmation_not_same';
+                    $result['statusCode'] = 201;
+                    return getSuccessMessages($result, false);
+                }
                 if (Hash::check($request->current_password, Auth::user()->password)) {
                     $customerData['password'] = $request->new_password;
                 } else {
                     $result['message'] = 'current_password_not_correct';
-                    $result['statusCode'] = 200;
+                    $result['statusCode'] = 201;
                     return getSuccessMessages($result, false);
                 }
             }
@@ -486,7 +491,7 @@ class CustomerService
             $query->when($request->status, function ($query) use ($request) {
                 $query->where('status', $request->status);
             });
-            
+
             $itemsPaginated = $query->select(DB::raw('DATE(created_at) as date'))
                 ->groupBy('date')->with('image')->paginate($perPage, ['*'], 'page', $page);
 
@@ -519,7 +524,6 @@ class CustomerService
             //dd($results);
 
             return response()->json($itemsTransformedAndPaginated, 200);
-
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
@@ -531,11 +535,10 @@ class CustomerService
     {
         $dates[0] = Carbon::parse($date)->startOfDay()->format('Y-m-d H:i:s');
         $dates[1] = Carbon::parse($date)->endOfDay()->format('Y-m-d H:i:s');
-                
-       $result = Transaction::whereMemberId(auth::id())
-       ->whereBetween('created_at', [$dates[0], $dates[1]])->get();
+
+        $result = Transaction::whereMemberId(auth::id())
+            ->whereBetween('created_at', [$dates[0], $dates[1]])->get();
 
         return !empty($result) ? $result : [];
     }
-
 }
