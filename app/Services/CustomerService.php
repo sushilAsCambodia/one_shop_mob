@@ -112,6 +112,7 @@ class CustomerService
                     return getSuccessMessages($result);
                 } else {
                     $result['message'] = 'OTP_not_yet_verified';
+                    $result['data'] = $otp;
                     $result['statusCode'] = 400;
 
                     return getSuccessMessages($result, false);
