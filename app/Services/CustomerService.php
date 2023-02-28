@@ -486,7 +486,7 @@ class CustomerService
             $query->when($request->status, function ($query) use ($request) {
                 $query->where('status', $request->status);
             });
-            $results = $query->select('transactions.*')->with('image')->paginate($perPage, ['*'], 'page', $page);
+            $results = $query->select(DB::raw('DATE(created_at) as date'), 'transactions.*')->groupBy('date')->with('image')->paginate($perPage, ['*'], 'page', $page);
 
             return response()->json($results, 200);
         } catch (\Exception $e) {
