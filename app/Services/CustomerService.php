@@ -530,7 +530,11 @@ class CustomerService
 
     public function getTransactionData($date)
     {
-       $result = Transaction::whereMemnerId(auth()->user()->id)->where('created_at', Carbon::parse($date)->startOfDay()->format('Y-m-d'));
+        $dates[0] = Carbon::parse($date)->startOfDay()->format('Y-m-d H:i:s');
+        $dates[1] = Carbon::parse($date)->endOfDay()->format('Y-m-d H:i:s');
+                
+       $result = Transaction::whereMemnerId(auth()->user()->id)
+       ->whereBetween('created_at', [$dates[0], $dates[1]]);
 
         return !empty($result) ? $result : [];
     }
