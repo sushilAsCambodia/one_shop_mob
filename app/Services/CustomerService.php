@@ -26,13 +26,13 @@ class CustomerService
     {
         try {
             //save customer data in session
-            if (isset($data['lang_id'])) {
+            if(isset($data['lang_id'])){
                 $langId = $data['lang_id'];
-            } else {
+            }else{
                 $langId = 1;
             }
             $otpData = sendOTP($data['idd'], $data['phone_number'], $langId);
-
+            
             if ($otpData) {
                 $result['message'] = 'otp_send_successfully';
                 $result['statusCode'] = 200;
@@ -107,8 +107,6 @@ class CustomerService
                     $customer->assignRole('Customer');
 
                     $result['message'] = 'registered_successfully';
-
-                    $result['data'] = 'registered_successfully';
                     $result['statusCode'] = 200;
 
                     return getSuccessMessages($result);
@@ -176,9 +174,9 @@ class CustomerService
     public function forgetPassword(array $data): JsonResponse
     {
         try {
-            if (isset($data['lang_id'])) {
+            if(isset($data['lang_id'])){
                 $langId = $data['lang_id'];
-            } else {
+            }else{
                 $langId = 1;
             }
             $otpData = sendOTP($data['idd'], $data['phone_number'], $langId, 'forget_password');
