@@ -173,7 +173,7 @@ class Product extends Model implements Auditable
             $attributes['favourite'] = Favorite::where('product_id', $attributes['id'])->where('customer_id', $_GET['customer_id'])->exists();
         }
 
-        $attributes['translation'] = $translateData;
+        $attributes['translation'] = $translateData ? $translateData : null;
         return $attributes;
     }
 }
