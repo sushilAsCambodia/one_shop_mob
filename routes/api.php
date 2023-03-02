@@ -162,7 +162,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Add To Payment
     Route::controller(PaymentController::class)->group(function () {
         Route::post('payments/payment-response', 'paymentResponse');
-        Route::post('customer/order-payment', 'store'); //done 1
+        Route::post('customer/order-payment', 'storeHttp'); //done 1
     });
 
     Route::controller(NotificationController::class)->group(function () {
@@ -218,11 +218,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Bank Account Route
     Route::controller(BankAccountController::class)->group(function () {
-        Route::get('bank-accounts/paginate/{params?}', 'paginate')->name('BankAccount: Views BankAccount');
-        Route::get('bank-accounts/all', 'all')->name('BankAccount: All BankAccount');
-        Route::post('bank-accounts', 'store')->name('BankAccount: Create BankAccount');
-        Route::patch('bank-accounts/{bankAccount}', 'update')->name('BankAccount: Edit/Update BankAccount');
-        Route::delete('bank-accounts/{bankAccount}', 'delete')->name('BankAccount: Delete BankAccount');
+        Route::get('bank-accounts/paginate/{params?}', 'paginate');
+        Route::get('bank-accounts/all', 'all');
+        Route::post('bank-accounts', 'store');
+        Route::patch('bank-accounts/{bankAccount}', 'update');
+        Route::delete('bank-accounts/{bankAccount}', 'delete');
     });
 });
 
