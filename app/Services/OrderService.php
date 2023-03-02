@@ -91,7 +91,9 @@ class OrderService
                         ->groupBy('deal_id')
                         ->first();
 
-                    $orderId =  Order::whereId($opData->order_id)->first()->order_id;
+                    $orderId =  Order::whereId($opData->order_id)->first();
+                    
+                    $orderId = $orderId && $orderId->order_id ? $orderId->order_id : Null;
                     // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
                     $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
                     $ops[$key]->orderId = $orderId;
