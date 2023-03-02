@@ -364,6 +364,8 @@ class CustomerService
 
             $result['customer'] = Auth()->user();
 
+            $result['customer'] = Customer::with('wallets')->whereId(Auth()->id())->first();
+
             // notification start
             $sortBy = 'created_at';
             $sortOrder = 'desc';
