@@ -53,7 +53,7 @@ class Customer extends Authenticatable implements Auditable
         return $this->attributes['password'] = Hash::make($value);
     }
 
-    public function walletBalance()
+    public function wallet()
     {
         return $this->hasOne(Wallet::class, 'member_id', 'id');
     }
