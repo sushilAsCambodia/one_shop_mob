@@ -84,18 +84,20 @@ class OrderService
                 $deals = Deal::where('product_id', $opData->product_id)->get();
                 $dealIds = $deals->pluck('id');
                 // echo json_encode($dealIds);exit;
-                $dealsData = SlotDeal::select('slot_deals.*')->with('deal.slots')
-                    ->whereIn('deal_id', $dealIds)
-                    ->where('order_id', $opData->order_id)
-                    ->groupBy('deal_id')
-                    ->first();
+                if ($opData->order_id) {
+                    $dealsData = SlotDeal::select('slot_deals.*')->with('deal.slots')
+                        ->whereIn('deal_id', $dealIds)
+                        ->where('order_id', $opData->order_id)
+                        ->groupBy('deal_id')
+                        ->first();
 
-                $orderId =  Order::whereId($opData->order_id)->first()->order_id;
-                // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
-                $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
-                $ops[$key]->orderId = $orderId;
-                $ops[$key]->ids = explode(',', $opData->ids);
-                // $ops[$key]->slotDealsCount = $this->getTotalBookedSlots($dealsData);
+                    $orderId =  Order::whereId($opData->order_id)->first()->order_id;
+                    // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
+                    $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
+                    $ops[$key]->orderId = $orderId;
+                    $ops[$key]->ids = explode(',', $opData->ids);
+                    // $ops[$key]->slotDealsCount = $this->getTotalBookedSlots($dealsData);
+                }
             }
 
             $result['message'] = 'Orders_fetch_successfully';
