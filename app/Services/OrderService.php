@@ -92,7 +92,7 @@ class OrderService
                         ->first();
 
                     $orderId =  Order::whereId($opData->order_id)->first();
-                    
+
                     $orderId = $orderId && $orderId->order_id ? $orderId->order_id : Null;
                     // $slotDeals = SlotDeal::whereIn('order_id', $orderIds)->get();
                     $ops[$key]->deals = $dealsData->deal ? $dealsData->deal :  new stdClass();
@@ -345,6 +345,7 @@ class OrderService
                 if (in_array('completed', explode(',', $opData->all_status))) {
                     $opData->checked_status = 'completed';
                     $opData->winnerSlotId = $winnerNew->booking_id;
+                    $opData->priceClaimId = $winnerNew->id;
                 }
 
                 $orderId =  Order::whereId($opData->order_id)->first()->order_id;
