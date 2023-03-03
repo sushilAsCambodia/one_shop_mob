@@ -187,7 +187,7 @@ class PriceClaimService
                 ->where('id', '=', $request->claimId)
                 ->with(['product', 'order'])->first();
             
-            $results['price_claims']['slotDealsCount'] = $this->getTotalBookedSlots($results['price_claims']);
+            $results['price_claims']['slotDealsCount'] = $results['price_claims'];
 
             // foreach ($results as $key1 => $result) {
             //     // dd($result);
