@@ -221,8 +221,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('bank-accounts/paginate/{params?}', 'paginate');
         Route::get('bank-accounts/all', 'all');
         Route::post('bank-accounts', 'store');
-        Route::patch('bank-accounts/{bankAccount}', 'update');
-        Route::delete('bank-accounts/{bankAccount}', 'delete');
+        Route::post('bank-accounts-edit/{bankAccount}', 'update');
+        Route::post('bank-accounts-delete/{bankAccount}', 'delete');
     });
 });
 

@@ -52,9 +52,9 @@ class BankAccountService
                 $bankAccount = BankAccount::create($data);
             });
 
-            return response()->json([
-                'messages' => ['Bank Account created successfully'],
-            ], 201);
+            $result['message'] = 'Bank_Account_created_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
@@ -64,9 +64,10 @@ class BankAccountService
     {
         try {
             $bankAccount->update($data);
-            return response()->json([
-                'messages' => ['Bank Account updated successfully'],
-            ], 200);
+
+            $result['message'] = 'Bank_Account_updated_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
@@ -76,15 +77,16 @@ class BankAccountService
     {
         try {
             //check if bank account in use
-            if (sizeof($bankAccount->transactions) > 0)
-                return response()->json([
-                    'messages' => ['Bank Account already used, can not delete!'],
-                ], 400);
-            $bankAccount->delete();
+            if (sizeof($bankAccount->transactions) > 0) {
+                $result['message'] = 'Bank_Account_already_used_can_not_delete';
+                $result['statusCode'] = 201;
+                return getSuccessMessages($result);
+            }
 
-            return response()->json([
-                'messages' => ['Bank Account deleted successfully'],
-            ], 200);
+            $bankAccount->delete();
+            $result['message'] = 'Bank_Account_deleted_successfully';
+            $result['statusCode'] = 200;
+            return getSuccessMessages($result);
         } catch (\Exception $e) {
             return generalErrorResponse($e);
         }
