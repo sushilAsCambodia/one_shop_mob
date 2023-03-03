@@ -80,7 +80,7 @@ class BankAccountService
             if (sizeof($bankAccount->transactions) > 0) {
                 $result['message'] = 'Bank_Account_already_used_can_not_delete';
                 $result['statusCode'] = 201;
-                return getSuccessMessages($result);
+                return getSuccessMessages($result, false);
             }
 
             $bankAccount->delete();
