@@ -187,12 +187,8 @@ class PriceClaimService
                 ->where('id', '=', $request->claimId)
                 ->with(['product', 'order'])->first();
             
-            $results['price_claims']['slotDealsCount'] = $results['price_claims'];
-            
-            $result['message'] = 'fetch_price_claim_successfully';
-            $result['data'] = $results;
-            $result['statusCode'] = 200;
-            return getSuccessMessages($result);
+            $results['price_claims']['slotDealsCount'] = $this->getTotalBookedSlots($results['price_claims']);
+
             // foreach ($results as $key1 => $result) {
             //     // dd($result);
             //     $orderProductData = OrderProduct::with('product.deal', 'product.slotDeals')->where('order_id', $result->id)->where('status', $slug)
