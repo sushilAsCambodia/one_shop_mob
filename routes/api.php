@@ -224,6 +224,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('bank-accounts-edit/{bankAccount}', 'update');
         Route::post('bank-accounts-delete/{bankAccount}', 'delete');
     });
+
+    Route::controller(TransactionController::class)->group(function () {
+        Route::post('transactions/withdraw', 'withdraw');
+    });
 });
 
 

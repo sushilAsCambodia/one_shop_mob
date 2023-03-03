@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 const TRANSFER_IN  = 'transfer_in';
@@ -392,3 +393,86 @@ if (!function_exists('softDeleteRelations')) {
  * @date 08 Feb 2023
  * @author Suhsil Gupta
  */
+if (!function_exists('withDrawAmount')) {
+    function withDrawAmount(array $status = array('Review','Approve','Pending','Success'))
+    {
+        if ($status) 
+            return Auth::user()->transactions()->whereTransactionType('withdraw')->whereIn('status',$status)->sum('amount');
+        return Auth::user()->transactions()->whereTransactionType('withdraw')->sum('amount');
+    }
+}
+if (!function_exists('customerRemainAmount')) {
+    function customerRemainAmount($currencyId = 1)
+    {
+        $customerRemainAmount = 0;
+        $customer = Auth::user();
+        if(@$customer->wallets){
+            $customerRemainAmount = @$customer->wallets->where('currency_id', $currencyId)->first()->amount ?? 0;
+            $customerRemainAmount = $customerRemainAmount - withDrawAmount(['Approve','Review']);
+            if($customerRemainAmount < 0)
+                $customerRemainAmount = 0;
+        }
+
+        return $customerRemainAmount;
+
+    }
+}
+if (!function_exists('saveFiles')) {
+    function saveFiles(object $masterModel, $fileRelation, $newFiles, array $fileFilter = null)
+    {
+
+        if ($newFiles) {
+            if (!is_array($newFiles)) $newFiles = array($newFiles);
+            if (sizeof($newFiles) > 0) {
+                $files = $masterModel->{$fileRelation}();
+                if ($fileFilter)
+                    $files->where($fileFilter);
+
+                $files = $files->get();
+
+                if (sizeof($files) > 0) {
+                    foreach ($files as $key => $file) {
+                        $oldFile = $file->storage_path;
+                        if (Storage::exists($oldFile)) Storage::delete($oldFile);
+                        if (@$newFiles[$key]) {
+                            $path = Storage::putFile('public/' . $masterModel->getTable(), $newFiles[$key]);
+                            $file->update([
+                                'path' => $path,
+                                'type' => checkFileType($newFiles[$key])
+                            ]);
+                        }
+                    }
+                    //if old file less than new files
+                    for ($key; $key < sizeof($newFiles) - 1; $key++) {
+                        $path = Storage::putFile('public/' . $masterModel->getTable(), $newFiles[$key]);
+                        $masterModel->{$fileRelation}()->create(
+                            array_merge(
+                                [
+                                    'path' => $path,
+                                    'type' => checkFileType($newFiles[$key])
+                                ],
+                                $fileFilter
+                            )
+                        );
+                    }
+                } else {
+                    foreach ($newFiles as $key => $newFile) {
+                        $path = Storage::putFile('public/' . $masterModel->getTable(), $newFile);
+                        $masterModel->{$fileRelation}()->create(
+                            $fileFilter ? array_merge(
+                                [
+                                    'path' => $path,
+                                    'type' => checkFileType($newFile)
+                                ],
+                                $fileFilter
+                            ) : [
+                                'path' => $path,
+                                'type' => checkFileType($newFile)
+                            ]
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
