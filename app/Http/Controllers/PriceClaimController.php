@@ -36,6 +36,6 @@ class PriceClaimController extends Controller
 
     public function prizeClaimByClaimId(Request $request)
     {
-        return $this->priceClaimService->prizeClaimByClaimId($request->all());
+        return $this->priceClaimService->prizeClaimByClaimId($request);
     }
 }
