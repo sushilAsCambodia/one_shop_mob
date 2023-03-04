@@ -37,6 +37,7 @@ class BankAccountController extends Controller
 
     public function delete(BankAccount $bankAccount)
     {
+        print_r($bankAccount); die;
         return $this->bankAccountService->delete($bankAccount);
     }
 }
