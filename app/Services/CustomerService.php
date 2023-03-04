@@ -76,6 +76,7 @@ class CustomerService
     public function register($data): JsonResponse
     {
         try {
+            Session::flush();
             //checking if referral code exist
             if (!empty($data['referral_code'])) {
                 $customer = Customer::whereReferralCode($data['referral_code'])->first();
@@ -149,6 +150,7 @@ class CustomerService
         // dd($loginData);
         try {
             if (Auth::guard('customer')->attempt($data)) {
+                Session::flush();
                 $customer = Auth::guard('customer')->user();
                 $customer->tokens()->delete();
 
