@@ -108,9 +108,11 @@ class CustomerService
                     $customer = Customer::create($data);
                     $customer->assignRole('Customer');
 
+                    $customerData = Customer::find($customer->id);
+
                     $result['message'] = 'registered_successfully';
                     $result['data'] = [
-                        'customer' => $customer,
+                        'customer' => $customerData,
                         'notifications' => null,
                         'token' => $customer->createToken($customer->phone_number)->plainTextToken,
                     ];
