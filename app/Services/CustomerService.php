@@ -149,8 +149,8 @@ class CustomerService
         ];
         // dd($loginData);
         try {
+            Session::flush();
             if (Auth::guard('customer')->attempt($data)) {
-                Session::flush();
                 $customer = Auth::guard('customer')->user();
                 $customer->tokens()->delete();
 
