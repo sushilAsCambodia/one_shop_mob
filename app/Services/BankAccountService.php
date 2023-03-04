@@ -75,6 +75,10 @@ class BankAccountService
 
     public function delete($bankAccount): JsonResponse
     {
+        $result['message'] = 'Bank_Account_deleted_successfully';
+            $result['statusCode'] = 200;
+            $result['data'] = $bankAccount;
+            return getSuccessMessages($result);
         try {
             //check if bank account in use
             if (sizeof($bankAccount->transactions) > 0) {
