@@ -109,17 +109,38 @@ class CustomerService
                     $customer = Customer::create($data);
                     $customer->assignRole('Customer');
 
-                    $customerData = Customer::find($customer->id);
+                    // $customerData = Customer::find($customer->id);
 
-                    $result['message'] = 'registered_successfully';
-                    $result['data'] = [
-                        'customer' => $customerData,
-                        'notifications' => null,
-                        'token' => $customer->createToken($customer->phone_number)->plainTextToken,
+                    // $result['message'] = 'registered_successfully';
+                    // $result['data'] = [
+                    //     'customer' => $customerData,
+                    //     'notifications' => null,
+                    //     'token' => $customer->createToken($customer->phone_number)->plainTextToken,
+                    // ];
+                    // $result['statusCode'] = 200;
+
+                    // return getSuccessMessages($result);
+
+                    $loginData = [
+                        "phone_number" => $data['phone_number'],
+                        "idd" => $data['idd'],
+                        "password" => $data['password']
                     ];
-                    $result['statusCode'] = 200;
 
-                    return getSuccessMessages($result);
+                    if (Auth::guard('customer')->attempt($loginData)) {
+                        $customer = Auth::guard('customer')->user();
+                        $customer->tokens()->delete();
+        
+                        $result['message'] = 'registered_successfully';
+                        $result['statusCode'] = 200;
+                        $result['data'] = [
+                            'customer' => $customer,
+                            'notifications' => $customer->notifications(),
+                            'token' => $customer->createToken($customer->phone_number)->plainTextToken,
+                        ];
+        
+                        return getSuccessMessages($result);
+                    }
                 } else {
                     $result['message'] = 'OTP_not_yet_verified';
                     $result['data'] = $otp;
