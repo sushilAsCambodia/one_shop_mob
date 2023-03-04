@@ -169,9 +169,12 @@ class PriceClaimService
             //         ]);
             //     }
             // });
-
-            $query->where('status', '!=', 'completed');
-
+            if(isset($request->flag) && $request->flag == 'completed'){
+                $query->where('status', '=', 'completed');
+            }else{
+                $query->where('status', '!=', 'completed');
+            }
+            
             // $query->where('customer_id', auth()->user()->id);
 
             // $query->when($request->order_booking_id, function ($query) use ($request) {
