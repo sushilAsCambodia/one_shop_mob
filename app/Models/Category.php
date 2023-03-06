@@ -49,7 +49,7 @@ class Category extends Model implements Auditable
                 $translateData = $oneLanguageData;
 
         });
-        $attributes['translation'] = $translateData;
+        $attributes['translation'] = $translateData ? $translateData : null;
         return $attributes;
     }
 }

@@ -37,6 +37,10 @@ class Transaction extends Model implements Auditable
     {
         return $this->hasOne(BankAccount::class,'id','bank_account_id');
     }
+    public function orderId()
+    {
+        return $this->hasOne(Order::class,'id','order_id')->select('orders.order_id');
+    }
     public function getMessageAttribute($attribute){
         if($attribute){
             preg_match_all('/{{(.*?)}}/', $attribute, $matches);
