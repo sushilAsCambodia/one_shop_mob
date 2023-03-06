@@ -37,7 +37,7 @@ class Transaction extends Model implements Auditable
     {
         return $this->hasOne(BankAccount::class,'id','bank_account_id');
     }
-    public function orderId()
+    public function orders()
     {
         return $this->hasOne(Order::class,'id','order_id')->select('orders.order_id');
     }
