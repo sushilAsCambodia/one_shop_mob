@@ -565,7 +565,7 @@ class CustomerService
         $dates[1] = Carbon::parse($date)->endOfDay()->format('Y-m-d H:i:s');
 
         $result = Transaction::whereMemberId(auth::id())
-            ->whereBetween('created_at', [$dates[0], $dates[1]])
+            ->whereBetween('transactions.created_at', [$dates[0], $dates[1]])
             ->leftJoin('orders', 'orders.id', '=', 'transactions.user_id')
             ->select('transactions.*', 'orders.order_id as bd_order_id')
             ->get();
