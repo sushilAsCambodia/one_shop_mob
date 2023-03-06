@@ -38,8 +38,8 @@ class Banner extends Model
             if(sizeof($oneLanguageData) > 0)
                 $translateData = $oneLanguageData;
 
-        });
-        $attributes['translation'] = $translateData;
+        }); 
+        $attributes['translation'] = $translateData ? $translateData : null;
         return $attributes;
     }
 }
