@@ -584,8 +584,9 @@ class CustomerService
 
         $result = Transaction::whereMemberId(auth::id())
             ->whereBetween('transactions.created_at', [$dates[0], $dates[1]])
-            ->leftJoin('orders', 'orders.id', '=', 'transactions.order_id')
-            ->select('transactions.*', 'orders.order_id as bd_order_id')
+            // ->leftJoin('orders', 'orders.id', '=', 'transactions.order_id')
+            // ->select('transactions.*', 'orders.order_id as bd_order_id')
+            ->select('transactions.*')
             ->get();
 
         return !empty($result) ? $result : [];
