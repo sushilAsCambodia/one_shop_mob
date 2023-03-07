@@ -109,5 +109,10 @@ class CustomerController extends Controller
         return $this->customerService->getTransactions($request);
     }
 
+    public function userWallet()
+    {
+        return $this->customerService->userWallet();
+    }
 
+    
 }

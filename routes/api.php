@@ -202,6 +202,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('customers/update-account', 'updateAccount');
         Route::post('customers/update-password', 'updatePassword');
         Route::get('customers/user-details', 'userDetails');
+        Route::get('customers/user-wallet', 'userWallet');
+        
         // Route::post('customers/create-bot-customer', 'createBotCustomer');
         Route::get('customers/get-transactions', 'getTransactions');
         Route::post('customers/logout', 'logout');

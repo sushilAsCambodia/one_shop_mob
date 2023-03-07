@@ -411,6 +411,64 @@ class CustomerService
         }
     }
 
+    
+    public function userWallet(): JsonResponse
+    {
+        try {
+
+            $result['orderCount']   = Order::where('customer_id', Auth()->user()->id)
+                // ->where('status', 'confirmed')
+                ->count();
+
+            $result['notificationCount'] = Notification::where('notifiable_id', auth()->user()->id)->where(['read_at' => null])->get()->count();
+
+            $query =  (new Address())->newQuery();
+            $modelData = Auth::user();
+            $query->when($modelData, function ($query) use ($modelData) {
+                $query->whereAddressableType(Customer::class)
+                    ->whereAddressableId($modelData->id);
+            });
+            $result['addressCount'] = $query->count();
+
+            // $result['whishlistDetails'] = Favorite::where('customer_id', Auth()->user()->id)->get();
+            // $result['whishlistCount'] = Favorite::where('customer_id', Auth()->user()->id)->count();
+
+            $query2 = (new Favorite())->newQuery()->whereCustomerId(Auth::id());
+
+            $query2->select('favorites.*')
+                ->whereHas('products', function ($query2) {
+                    $query2->whereHas('deal', function ($query2) {
+                        $query2->whereNotIn('deals.status', ['settled', 'inactive']);
+                    });
+                })
+                ->with('products.deal.slots');
+
+            $result['whishlistCount'] = $query2->count();
+
+            $result['customer'] = Auth()->user();
+
+            $result['customer'] = Customer::with('wallet')->whereId(Auth()->id())->first();
+
+            // notification start
+            $sortBy = 'created_at';
+            $sortOrder = 'desc';
+            $query = (new Notification())->newQuery()->orderBy($sortBy, $sortOrder);
+
+            $result['latest_notification'] = $query->where(['notifiable_id' => auth()->user()->id])
+                ->select('id', 'type', 'read_at', 'notifiable_id', 'data')
+                ->first();
+
+            $results['message'] = 'fetch_user_details_successfully';
+            $results['data'] = $result;
+            $results['statusCode'] = 200;
+
+            return getSuccessMessages($results);
+        } catch (\Exception $e) {
+            // \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
+
     public function getCalculations($request, $customer): JsonResponse
     {
         try {
