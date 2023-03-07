@@ -57,4 +57,9 @@ class Customer extends Authenticatable implements Auditable
     {
         return $this->hasOne(Wallet::class, 'member_id', 'id');
     }
+
+    public function walletAmounts()
+    {
+        return $this->hasOne(Wallet::class, 'member_id', 'id');
+    }
 }

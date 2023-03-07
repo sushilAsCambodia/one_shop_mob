@@ -416,7 +416,7 @@ class CustomerService
     {
         try {
 
-            $result['wallet'] = Customer::with('wallet')->whereId(Auth()->id())->first();
+            $result['wallet'] = Customer::with('walletAmounts')->whereId(Auth()->id())->first();
 
             $results['message'] = 'fetch_user_wallet_successfully';
             $results['data'] = $result;
