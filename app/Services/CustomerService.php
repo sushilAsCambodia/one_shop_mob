@@ -130,7 +130,7 @@ class CustomerService
                     if (Auth::guard('customer')->attempt($loginData)) {
                         $customer = Auth::guard('customer')->user();
                         $customer->tokens()->delete();
-        
+
                         $result['message'] = 'registered_successfully';
                         $result['statusCode'] = 200;
                         $result['data'] = [
@@ -138,7 +138,7 @@ class CustomerService
                             'notifications' => $customer->notifications(),
                             'token' => $customer->createToken($customer->phone_number)->plainTextToken,
                         ];
-        
+
                         return getSuccessMessages($result);
                     }
                 } else {
@@ -411,7 +411,7 @@ class CustomerService
         }
     }
 
-    
+
     public function userWallet(): JsonResponse
     {
         try {
@@ -543,10 +543,10 @@ class CustomerService
 
             $itemsTransformed = $itemsPaginated
                 ->getCollection()
-                ->map(function ($item, $sortBy, $sortOrder) {
+                ->map(function ($item) {
                     return [
                         "date" => $item->date,
-                        "details" => $this->getTransactionData($item->date, $sortBy, $sortOrder),
+                        "details" => $this->getTransactionData($item->date),
                         "image" => $item->image
                     ];
                 })->toArray();
@@ -577,10 +577,13 @@ class CustomerService
     }
 
 
-    public function getTransactionData($date,$sortBy, $sortOrder)
+    public function getTransactionData($date)
     {
         $dates[0] = Carbon::parse($date)->startOfDay()->format('Y-m-d H:i:s');
         $dates[1] = Carbon::parse($date)->endOfDay()->format('Y-m-d H:i:s');
+
+        $sortBy = 'created_at';
+        $sortOrder = 'desc';
 
         $result = Transaction::whereMemberId(auth::id())
             ->whereBetween('transactions.created_at', [$dates[0], $dates[1]])
