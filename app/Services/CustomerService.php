@@ -543,10 +543,10 @@ class CustomerService
 
             $itemsTransformed = $itemsPaginated
                 ->getCollection()
-                ->map(function ($item) {
+                ->map(function ($item, $sortBy, $sortOrder) {
                     return [
                         "date" => $item->date,
-                        "details" => $this->getTransactionData($item->date),
+                        "details" => $this->getTransactionData($item->date, $sortBy, $sortOrder),
                         "image" => $item->image
                     ];
                 })->toArray();
@@ -577,7 +577,7 @@ class CustomerService
     }
 
 
-    public function getTransactionData($date)
+    public function getTransactionData($date,$sortBy, $sortOrder)
     {
         $dates[0] = Carbon::parse($date)->startOfDay()->format('Y-m-d H:i:s');
         $dates[1] = Carbon::parse($date)->endOfDay()->format('Y-m-d H:i:s');
@@ -586,6 +586,7 @@ class CustomerService
             ->whereBetween('transactions.created_at', [$dates[0], $dates[1]])
             ->leftJoin('orders', 'orders.id', '=', 'transactions.order_id')
             ->select('transactions.*', 'orders.order_id as bd_order_id')
+            ->orderBy($sortBy, $sortOrder)
             ->get();
 
         return !empty($result) ? $result : [];
