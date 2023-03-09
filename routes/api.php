@@ -40,6 +40,7 @@ use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PriceClaimController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WinningController;
 
 /*
