@@ -312,7 +312,7 @@ class HomepageService
                 'categories' => Category::all(),
                 'promotional' => $data,
                 'user_data' => $userData,
-                'is_enabled' => true,
+                'is_enabled' => false,
             ];
             $result['statusCode'] = 200;
 
