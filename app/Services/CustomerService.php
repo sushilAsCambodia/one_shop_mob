@@ -601,21 +601,38 @@ class CustomerService
         try {
             $customer = Customer::find(auth()->id());
 
-            if(!$customer)
-                return response()->json(['message' => 'Customer not found'], 400);
+            if(!$customer){
+                $results['message'] = 'customer_not_found';
+                $results['statusCode'] = 201;
+                return getSuccessMessages($results, false);
+            }
+            
+                // return response()->json(['message' => 'Customer not found'], 400);
 
             //check if the customer has pending orders
             $remainingOrder = OrderProduct::whereCustomerId(auth('customer')->id())->where('status','!=','confirmed')->get();
-            if(sizeof($remainingOrder))
-                return response()->json(['message' => 'Customer still remaining pending order'], 400);
+            if(sizeof($remainingOrder)){
+                $results['message'] = 'customer_still_remaining_pending_order';
+                $results['statusCode'] = 201;
+                return getSuccessMessages($results, false);
+            }
+                // return response()->json(['message' => 'Customer still remaining pending order'], 400);
 
             //check if the customer has pending orders
             $remainingPendingWithdraw = withDrawAmount('Review','Approve','Pending');
-            if ( $remainingPendingWithdraw > 0)
-                return response()->json(['message' => 'Customer still remaining pending withdraw request'], 400);
+            if ( $remainingPendingWithdraw > 0){
+                $results['message'] = 'customer_still_remaining_pending_withdraw_request';
+                $results['statusCode'] = 201;
+                return getSuccessMessages($results, false);
+            }
+                // return response()->json(['message' => 'Customer still remaining pending withdraw request'], 400);
 
             $customer->delete();
-            return response()->json(['message' => 'Deleted own account successfully'], 200);
+            
+            $results['message'] = 'deleted_own_account_successfully';
+            $results['statusCode'] = 200;
+            return getSuccessMessages($results);
+            // return response()->json(['message' => 'Deleted own account successfully'], 200);
         } catch (\Exception $e) {
             \Log::debug($e);
             return generalErrorResponse($e);
