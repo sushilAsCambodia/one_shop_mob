@@ -114,5 +114,10 @@ class CustomerController extends Controller
         return $this->customerService->userWallet();
     }
 
+    public function deleteOwnAccount(Request $request)
+    {
+        return $this->customerService->deleteOwnAccount($request->all());
+    }
+
     
 }

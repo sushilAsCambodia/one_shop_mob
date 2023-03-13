@@ -394,11 +394,11 @@ if (!function_exists('softDeleteRelations')) {
  * @author Suhsil Gupta
  */
 if (!function_exists('withDrawAmount')) {
-    function withDrawAmount(array $status = array('Review','Approve','Pending','Success'))
+    function withDrawAmount( $status = array('All','Review','Approve','Pending','Success'))
     {
-        if ($status) 
-            return Auth::user()->transactions()->whereTransactionType('withdraw')->whereIn('status',$status)->sum('amount');
-        return Auth::user()->transactions()->whereTransactionType('withdraw')->sum('amount');
+        if ($status == 'All') 
+            return Auth::user()->transactions()->whereTransactionType('withdraw')->sum('amount');
+        return Auth::user()->transactions()->whereTransactionType('withdraw')->whereStatus($status)->sum('amount');
     }
 }
 if (!function_exists('customerRemainAmount')) {

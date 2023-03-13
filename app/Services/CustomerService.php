@@ -594,4 +594,31 @@ class CustomerService
 
         return !empty($result) ? $result : [];
     }
+
+    
+    public function deleteOwnAccount($data): JsonResponse
+    {
+        try {
+            $customer = Customer::find(auth()->id());
+
+            if(!$customer)
+                return response()->json(['message' => 'Customer not found'], 400);
+
+            //check if the customer has pending orders
+            $remainingOrder = OrderProduct::whereCustomerId(auth('customer')->id())->where('status','!=','confirmed')->get();
+            if(sizeof($remainingOrder))
+                return response()->json(['message' => 'Customer still remaining pending order'], 400);
+
+            //check if the customer has pending orders
+            $remainingPendingWithdraw = withDrawAmount('Review','Approve','Pending');
+            if ( $remainingPendingWithdraw > 0)
+                return response()->json(['message' => 'Customer still remaining pending withdraw request'], 400);
+
+            $customer->delete();
+            return response()->json(['message' => 'Deleted own account successfully'], 200);
+        } catch (\Exception $e) {
+            \Log::debug($e);
+            return generalErrorResponse($e);
+        }
+    }
 }

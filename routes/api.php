@@ -231,6 +231,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(TransactionController::class)->group(function () {
         Route::post('transactions/withdraw', 'withdraw');
     });
+
+    // Bank Account Route
+    Route::controller(CustomerController::class)->group(function () {
+        Route::delete('customers/delete-account', 'deleteOwnAccount');
+    });
 });
 
 
