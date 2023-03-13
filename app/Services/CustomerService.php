@@ -619,7 +619,7 @@ class CustomerService
                 // return response()->json(['message' => 'Customer still remaining pending order'], 400);
 
             //check if the customer has pending orders
-            $remainingPendingWithdraw = withDrawAmount('Review','Approve','Pending');
+            $remainingPendingWithdraw = withDrawAmount(['Review','Approve','Pending']);
             if ( $remainingPendingWithdraw > 0){
                 $results['message'] = 'customer_still_remaining_pending_withdraw_request';
                 $results['statusCode'] = 201;
