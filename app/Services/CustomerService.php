@@ -432,7 +432,7 @@ class CustomerService
     public function getCalculations($request, $customer): JsonResponse
     {
         try {
-            if(!Configure::where('type', 'MLM')->select('data')->first()->data){
+            if(!Configure::where('type', 'MLM')->select('data')->first()){
                 $result['message'] = 'Please_set_the_Configuration';
                 $result['statusCode'] = 400;
                 return getSuccessMessages($result, false);
