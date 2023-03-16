@@ -31,7 +31,7 @@ class AddressFormRequest extends FormRequest
             'country_id' => $this->method() === 'POST' ? 'required|exists:countries,id' : 'exists:countries,id',
             'state_id' => $this->method() === 'POST' ? 'required|exists:states,id' : "exists:states,id",
             'city_id' => $this->method() === 'POST' ? 'required|exists:cities,id' : "exists:cities,id",
-            'pincode' => $this->method() === 'POST' ? 'required' : "",
+            // 'pincode' => $this->method() === 'POST' ? 'required' : "",
         ];
     }
 
@@ -45,7 +45,7 @@ class AddressFormRequest extends FormRequest
             'state_id.exists' => 'state_not_exists',
             'city_id.required' => 'city_required',
             'city_id.exists' => 'city_not_exists',
-            'pincode.required' => 'pincode_required',
+            // 'pincode.required' => 'pincode_required',
         ];
     }
 }
