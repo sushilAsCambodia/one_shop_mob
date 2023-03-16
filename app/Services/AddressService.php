@@ -49,6 +49,7 @@ class AddressService
     {
         try {
             $data['type'] = 'shipping';
+            $data['pincode'] = ' ';
             DB::transaction(function () use ($data) {
                 $address = new Address($data);
 
@@ -66,6 +67,7 @@ class AddressService
     public function update($address, array $data): JsonResponse
     {
         try {
+            $data['pincode'] = ' ';
             DB::transaction(function () use (&$address, $data) {
                 $address->update($data);
             });
