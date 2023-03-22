@@ -306,13 +306,19 @@ class HomepageService
             }
 
             $result['message'] = 'fetch_all_homePage_successfully';
+            $version = $request->v;
+            $vDetails = DB::table('versions')->where('name',$version)->first();
+            $checkFlag =  false;
+            if($vDetails && $vDetails->status =='Review'){
+                $checkFlag = true;
+            }
             $result['data'] = [
                 'languages' => Language::all(),
                 'banners' => Banner::where('type', 'homePage')->get(),
                 'categories' => Category::all(),
                 'promotional' => $data,
                 'user_data' => $userData,
-                'is_enabled' => false,
+                'is_enabled' => $checkFlag,
             ];
             $result['statusCode'] = 200;
 
