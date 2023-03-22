@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use stdClass;
+use Stevebauman\Location\Facades\Location;
 
 class HomepageService
 {
@@ -309,7 +310,12 @@ class HomepageService
             $version = $request->v;
             $vDetails = DB::table('versions')->where('name',$version)->first();
             $checkFlag =  false;
-            if($vDetails && $vDetails->status =='Review'){
+            $ip = $request->ip();
+            $region = null;
+            $location = Location::get($ip);
+        
+            $region = @$location->countryName;
+            if($region != 'Cambodia' && $vDetails && $vDetails->status =='Review'){
                 $checkFlag = true;
             }
             $result['data'] = [

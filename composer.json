@@ -21,7 +21,8 @@
         "psr/simple-cache": "^2.0",
         "rakutentech/laravel-request-docs": "^1.30",
         "spatie/laravel-permission": "^5.5",
-        "staudenmeir/eloquent-has-many-deep": "*"
+        "staudenmeir/eloquent-has-many-deep": "*",
+        "stevebauman/location": "^6.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
