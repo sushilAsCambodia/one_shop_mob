@@ -315,8 +315,10 @@ class HomepageService
             $location = Location::get($ip);
         
             $region = @$location->countryName;
-            if($region != 'Cambodia' && $vDetails && $vDetails->status =='Review'){
+            if( $vDetails && $vDetails->status =='Review'){
                 $checkFlag = true;
+            }else if($region != 'Cambodia'){
+                $checkFlag = true; 
             }
             $result['data'] = [
                 'languages' => Language::all(),
