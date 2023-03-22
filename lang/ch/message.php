@@ -65,5 +65,6 @@ return [
     "Pending" => "运输",
     "Deal Closure" => "交易结束",
     "Lose" => "交易结束",
+    "Fail" => "失败",
 
 ];

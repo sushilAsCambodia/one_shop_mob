@@ -596,7 +596,11 @@ class CustomerService
             ->select('transactions.*', 'orders.order_id as bd_order_id')
             ->orderBy($sortBy, $sortOrder)
             ->get();
-
+        foreach ($result as $key => $val) {
+            if ($val->status == 'Fail') {
+                $result[$key]->status = trans('message.Fail');
+            }
+        }
         return !empty($result) ? $result : [];
     }
 

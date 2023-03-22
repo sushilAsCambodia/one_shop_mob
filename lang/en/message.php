@@ -65,5 +65,6 @@ return [
     "Pending" => "Shipment",
     "Deal Closure" => "Deal Closure",
     "Lose" => "Deal Closure",
+    "Fail" => "Fail",
 
 ];
