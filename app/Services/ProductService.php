@@ -135,6 +135,7 @@ class ProductService
             });
             
             $data = $query->first();
+            $data->shareUrl = 'https://the1shops.com/details/'.$data->slug;
 
             $result['message'] = 'product_fetch_successfully';
             $result['data'] = $data;
