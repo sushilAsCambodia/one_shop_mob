@@ -391,6 +391,8 @@ class CustomerService
 
             $result['customer'] = Customer::with('wallet')->whereId(Auth()->id())->first();
 
+            $result['ReferralUrl'] = 'https://the1shops.com/register?ref_code='.Auth()->user()->referral_code ?? '';
+
             // notification start
             $sortBy = 'created_at';
             $sortOrder = 'desc';
