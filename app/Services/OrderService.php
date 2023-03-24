@@ -67,6 +67,7 @@ class OrderService
                     DB::raw("SUM(order_product.amount) as amounts"),
                     DB::raw("GROUP_CONCAT(order_product.id) as ids")
                 )
+                ->whereHas('order')
                 ->where('customer_id', Auth()->user()->id)
                 ->with(['product'])
                 ->orderBy('order_product.id', 'desc')

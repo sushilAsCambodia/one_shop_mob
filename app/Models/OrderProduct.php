@@ -33,6 +33,10 @@ class OrderProduct extends Model
     // {
     //     return $this->hasOne(SlotDeal::class, 'order_id')->distinct('slot_deals.deal_id');
     // }
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 
     public function toArray()
     {
