@@ -175,13 +175,15 @@ class CustomerService
                 $customer = Auth::guard('customer')->user();
                 $customer->tokens()->delete();
 
-                $customerData = [
-                    'source_type' => $data['source_type'],
-                    'device_id' => $data['device_id'],
-                    'device_info' => $data['device_info']
-                ];
-                // Auth::user()->update($customerData);
-                $customer->update($customerData);
+                if (isset($data['source_type']) && $data['device_id'] && $data['device_info']) {
+                    $customerData = [
+                        'source_type' => $data['source_type'],
+                        'device_id' => $data['device_id'],
+                        'device_info' => $data['device_info']
+                    ];
+                    // Auth::user()->update($customerData);
+                    $customer->update($customerData);
+                }
 
                 $result['message'] = 'login_successfully';
                 $result['statusCode'] = 200;
