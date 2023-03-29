@@ -171,9 +171,17 @@ class CustomerService
         // dd($loginData);
         try {
             Session::flush();
-            if (Auth::guard('customer')->attempt($data)) {
+            if (Auth::guard('customer')->attempt($loginData)) {
                 $customer = Auth::guard('customer')->user();
                 $customer->tokens()->delete();
+
+                $customerData = [
+                    'source_type' => $data['source_type'],
+                    'device_id' => $data['device_id'],
+                    'device_info' => $data['device_info']
+                ];
+                // Auth::user()->update($customerData);
+                $customer->update($customerData);
 
                 $result['message'] = 'login_successfully';
                 $result['statusCode'] = 200;
@@ -391,7 +399,7 @@ class CustomerService
 
             $result['customer'] = Customer::with('wallet')->whereId(Auth()->id())->first();
 
-            $result['ReferralUrl'] = 'https://the1shops.com/register?ref_code='.Auth()->user()->referral_code ?? '';
+            $result['ReferralUrl'] = 'https://the1shops.com/register?ref_code=' . Auth()->user()->referral_code ?? '';
 
             // notification start
             $sortBy = 'created_at';
