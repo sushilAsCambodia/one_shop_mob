@@ -157,8 +157,7 @@ class DemoController extends Controller
 
     public function demoPushNoti()
     {
-
-dd('sushil');
+        
         $customer = Customer::whereNotNull('device_id')->get();
 
         $broadcast = Broadcast::where('status', 'active')->get();
