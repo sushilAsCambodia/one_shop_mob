@@ -163,7 +163,7 @@ class DemoController extends Controller
 
         $broadcast = Broadcast::where('status', 'active')->get();
         $result['message'] = 'Orders_fetch_successfully';
-            $result['data'] = $broadcast[0]->translations[0]->language->id;
+            $result['data'] = $broadcast[0]->translations;
             $result['statusCode'] = 200;
 
         return getSuccessMessages($result);
@@ -176,6 +176,10 @@ class DemoController extends Controller
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
+
+
+
+
             foreach ($customer as $item) {
 
                 $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
