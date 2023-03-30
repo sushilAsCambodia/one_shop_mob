@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Broadcast;
+use App\Models\Customer;
 use App\Models\Deal;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\TimeInterval;
 use App\Services\OrderProductService;
@@ -154,15 +157,28 @@ class DemoController extends Controller
 
     public function demoPushNoti()
     {
-       // get a user to get the fcm_token that already sent.               from mobile apps 
-    //    $user = User::findOrFail($id);
 
-       return FCMService::send(
-           'cMkSbFBLpkpQtWAfm0UrY0:APA91bFKrZ-sUYBQlT9aLPOvJe1uGU2WABD6UCr8p1es_iJyCWpjiAKwxdgLrZcn_Pjr_UXwVnz-ODZcwBBI0zVYzkkhI2xrnzQlCwSlfz0UqebOQeysTMW1a59AEZTkClSeiEqdMByU',
-           [
-               'title' => 'your title Sushil SA',
-               'body' => 'your body Sushil SA',
-           ]
-       );
+
+        $customer = Customer::where('device_id', '!=', null)->get();
+
+        $broadcast = Broadcast::where('status', 'active')->get();
+        dd($broadcast);
+        foreach ($broadcast as $item) {
+
+            foreach ($customer as $item) {
+
+                $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
+
+                $this->hitPushNotification($item->device_id, $message);
+            }
+        }
+    }
+
+    public function hitPushNotification($token, $message)
+    {
+        return FCMService::send(
+            $token,
+            $message
+        );
     }
 }
