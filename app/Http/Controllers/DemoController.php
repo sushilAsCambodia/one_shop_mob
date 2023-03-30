@@ -166,8 +166,9 @@ class DemoController extends Controller
             $result['data'] = $broadcast;
             $result['statusCode'] = 200;
 
-            return getSuccessMessages($result);
+            // return getSuccessMessages($result);
         foreach ($broadcast as $broadcastItem) {
+            dd($broadcastItem->translations);
 
             foreach ($customer as $item) {
 
