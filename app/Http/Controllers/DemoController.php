@@ -7,8 +7,12 @@ use App\Models\Order;
 use App\Models\TimeInterval;
 use App\Services\OrderProductService;
 use App\Services\SlotDealService;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+
+use App\Services\FCMService;
 
 class DemoController extends Controller
 {
@@ -137,12 +141,28 @@ class DemoController extends Controller
         return date('Y-m-d H:i:s', $val);
     }
 
-    public function demoWorks(){
-    $response = Http::withToken('531|rpNkp2xfpBJT4yBL0NUmodIzjrseyIkpT02xC6HU')
-    ->get('https://the1shops.com:8090/index.php/api/customers/get-transactions?date_range=%20&transaction_type=&rowsPerPage=15&sortBy=&descending=true&page=1&status=');
-    
-    return $response;
-    die('ppppp');
+    public function demoWorks()
+    {
+        $response = Http::withToken('531|rpNkp2xfpBJT4yBL0NUmodIzjrseyIkpT02xC6HU')
+            ->get('https://the1shops.com:8090/index.php/api/customers/get-transactions?date_range=%20&transaction_type=&rowsPerPage=15&sortBy=&descending=true&page=1&status=');
+
+        return $response;
+        die('ppppp');
     }
 
+
+
+    public function demoPushNoti()
+    {
+       // get a user to get the fcm_token that already sent.               from mobile apps 
+    //    $user = User::findOrFail($id);
+
+       return FCMService::send(
+           'cMkSbFBLpkpQtWAfm0UrY0:APA91bFKrZ-sUYBQlT9aLPOvJe1uGU2WABD6UCr8p1es_iJyCWpjiAKwxdgLrZcn_Pjr_UXwVnz-ODZcwBBI0zVYzkkhI2xrnzQlCwSlfz0UqebOQeysTMW1a59AEZTkClSeiEqdMByU',
+           [
+               'title' => 'your title Sushil SA',
+               'body' => 'your body Sushil SA',
+           ]
+       );
+    }
 }

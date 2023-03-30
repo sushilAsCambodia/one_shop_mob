@@ -16,6 +16,7 @@ use App\Http\Controllers\StateController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PriceClaimController;
@@ -159,4 +160,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(CustomerController::class)->group(function () {
         Route::delete('customers/delete-account', 'deleteOwnAccount');
     });
+});
+
+
+// demo push notification
+Route::controller(DemoController::class)->group(function () {
+    Route::get('demoPushNoti', 'demoPushNoti');
 });
