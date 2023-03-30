@@ -22,7 +22,19 @@ class Category extends Model implements Auditable
     }
     
     public function cateProducts(){
-        return $this->hasMany(Product::class)->where('sub_category_id', '=', null);
+        $query = $this->hasMany(Product::class)->where('sub_category_id', '=', null)->with([
+            'image',
+            'translation',
+            'tags',
+            'deal.slots',
+            'favouriteCount',
+        ]);
+
+        $query = $query->whereHas('deal', function ($query) {
+            $query->whereIn('status', ['expired', 'active']);
+        });
+
+        return $query;
     }
 
     public function subCategories(){
