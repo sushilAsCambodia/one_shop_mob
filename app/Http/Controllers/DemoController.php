@@ -162,11 +162,11 @@ class DemoController extends Controller
         $customer = Customer::whereNotNull('device_id')->get();
 
         $broadcast = Broadcast::where('status', 'active')->get();
-        // $result['message'] = 'Orders_fetch_successfully';
-        //     $result['data'] = $broadcast;
-        //     $result['statusCode'] = 200;
+        $result['message'] = 'Orders_fetch_successfully';
+            $result['data'] = $broadcast;
+            $result['statusCode'] = 200;
 
-        // return getSuccessMessages($result);
+        return getSuccessMessages($result);
         foreach ($broadcast as $broadcastItem) {
 
             // dd($broadcastItem->translations);
