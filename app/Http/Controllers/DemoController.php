@@ -163,7 +163,7 @@ class DemoController extends Controller
 
         $broadcast = Broadcast::where('status', 'active')->get();
         $result['message'] = 'Orders_fetch_successfully';
-            $result['data'] = $broadcast['en'];
+            $result['data'] = $broadcast->en;
             $result['statusCode'] = 200;
 
         return getSuccessMessages($result);
