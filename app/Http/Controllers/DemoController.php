@@ -159,19 +159,19 @@ class DemoController extends Controller
     {
 
 
-        $customer = Customer::whereNotNull('device_id')->get();
+        // $customer = Customer::whereNotNull('device_id')->get();
 
         $broadcast = Broadcast::where('status', 'active')->get();
         dd($broadcast);
-        foreach ($broadcast as $item) {
+        // foreach ($broadcast as $item) {
 
-            foreach ($customer as $item) {
+        //     foreach ($customer as $item) {
 
-                $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
+        //         $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
 
-                $this->hitPushNotification($item->device_id, $message);
-            }
-        }
+        //         $this->hitPushNotification($item->device_id, $message);
+        //     }
+        // }
     }
 
     public function hitPushNotification($token, $message)
