@@ -159,7 +159,7 @@ class DemoController extends Controller
     {
 
 
-        $customer = Customer::where('device_id', '!=', null)->get();
+        $customer = Customer::whereNotNull('device_id')->get();
 
         $broadcast = Broadcast::where('status', 'active')->get();
         dd($broadcast);
