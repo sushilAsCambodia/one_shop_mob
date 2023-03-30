@@ -172,7 +172,7 @@ class DemoController extends Controller
             // dd($broadcastItem->translations);
 
             $result['message'] = 'Orders_fetch_successfully';
-            $result['data'] = $broadcastItem->translations;
+            $result['data'] = $broadcastItem;
             $result['statusCode'] = 200;
 
             return getSuccessMessages($result);
