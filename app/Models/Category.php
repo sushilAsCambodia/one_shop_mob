@@ -20,6 +20,10 @@ class Category extends Model implements Auditable
     public function products(){
         return $this->hasMany(Product::class);
     }
+    
+    public function cateProducts(){
+        return $this->hasMany(Product::class)->where('sub_category_id', '=', null);
+    }
 
     public function subCategories(){
         return $this->hasMany(SubCategory::class);
