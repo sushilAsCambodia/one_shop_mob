@@ -162,8 +162,12 @@ class DemoController extends Controller
         $customer = Customer::whereNotNull('device_id')->get();
 
         $broadcast = Broadcast::where('status', 'active')->get();
-        dd($broadcast);
-        foreach ($broadcast as $item) {
+        $result['message'] = 'Orders_fetch_successfully';
+            $result['data'] = $broadcast;
+            $result['statusCode'] = 200;
+
+            return getSuccessMessages($result);
+        foreach ($broadcast as $broadcastItem) {
 
             foreach ($customer as $item) {
 
@@ -171,6 +175,8 @@ class DemoController extends Controller
 
                 $this->hitPushNotification($item->device_id, $message);
             }
+
+            Broadcast::where()->update(['status' => 'inactive'])->get();
         }
     }
 
