@@ -322,6 +322,7 @@ class HomepageService
             } else if ($region != 'Cambodia') {
                 $checkFlag = true;
             }
+            
             $result['data'] = [
                 'languages' => Language::all(),
                 'banners' => Banner::where('type', 'homePage')->where('status', 'active')->get(),
