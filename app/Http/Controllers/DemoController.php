@@ -169,9 +169,9 @@ class DemoController extends Controller
         $lang = 2;
         $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
 
-        return $data ;
+        // return $data ;
 
-        $ids = Arr::pluck(json_decode($data, true), 'status');
+        $ids = Arr::pluck(json_decode($data, true), 'translation');
 
         return $ids;
 
