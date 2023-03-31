@@ -171,14 +171,6 @@ class DemoController extends Controller
         foreach ($data as $item) {
             return $item;
         }
-
-        // return $data;
-        // $collection = collect($data);
-
-        // $plucked = $collection->pluck('status');
-        //  return $collection;
-        // return $plucked->all();
-
     }
 
     public function callDemoPushNoti()
