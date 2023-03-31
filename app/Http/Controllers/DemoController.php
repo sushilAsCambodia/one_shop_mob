@@ -165,7 +165,6 @@ class DemoController extends Controller
             if ($item->default_lang_id) {
                 $lang = $item->default_lang_id;
             }
-            die;
             $data = Http::acceptJson()->get(url('api/callDemoPushNoti?lang_id=') . $lang);
             return $data;
             $dataItem = Arr::pluck(json_decode($data, true), 'translation');
