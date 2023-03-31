@@ -167,24 +167,24 @@ class DemoController extends Controller
         // }
         $lang = 2;
         $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
+
+        foreach ($data as $item) {
+            return $item;
+        }
+
         // return $data;
-        $collection = collect($data);
-         
-        $plucked = $collection->pluck('status');
-         return $collection;
-        return $plucked->all();
+        // $collection = collect($data);
+
+        // $plucked = $collection->pluck('status');
+        //  return $collection;
+        // return $plucked->all();
 
     }
 
-    public function callDemoPushNoti(): JsonResponse
+    public function callDemoPushNoti()
     {
         $broadcast = Broadcast::where('status', 'active')->get();
-        return response()->json($broadcast);
-        $result['message'] = 'Orders_fetch_successfully';
-        return  $broadcast;
-        $result['statusCode'] = 200;
-
-        return getSuccessMessages($result);
+        return $broadcast;
 
 
 
