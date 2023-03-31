@@ -68,4 +68,7 @@ return [
     'Current Account' => "活期账户",
     'Checking Account' => "支票账户",
 
+    'has been failed to deliver for Deal ID' => 'has been failed to deliver for Deal ID',
+    'Please contact for further clarification' => '. Please contact '. config('app.contact_mail','admin@the1shops.com').' for further​ clarification.'
+    
 ];

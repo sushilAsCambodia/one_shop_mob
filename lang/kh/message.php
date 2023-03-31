@@ -66,4 +66,9 @@ return [
     "Current Account" => "គណនីបច្ចុប្បន្ន",
     "Checking Account" => "គណនីត្រួតពិនិត្យ",
     
+
+    'has been failed to deliver for Deal ID' => 'បានបរាជ័យក្នុងការដឹកជញ្ជូនសំរាប់លេខសំគាល់កិច្ចព្រមព្រៀង',
+    'Please contact for further clarification' => '។ សូមទាក់ទងទៅ '. config('app.contact_mail','admin@the1shops.com').' ការបញ្ជាក់បន្ថែម។',
+    
+    "Payment transaction" => "ប្រតិបត្តិការបង់ប្រាក់",
 ];
