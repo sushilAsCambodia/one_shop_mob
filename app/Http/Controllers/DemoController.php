@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 use App\Services\FCMService;
+use Illuminate\Http\JsonResponse;
 
 class DemoController extends Controller
 {
@@ -157,42 +158,51 @@ class DemoController extends Controller
 
     public function demoPushNoti()
     {
-        return Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=1');
+        // $customer = Customer::whereNotNull('device_id')->get();
+        // foreach ($customer as $item) {
+
+        //     $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
+
+        //     $this->hitPushNotification($item->device_id, $message);
+        // }
+        $lang = 2;
+        return Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
     }
 
-    public function callDemoPushNoti()
+    public function callDemoPushNoti(): JsonResponse
     {
-        $customer = Customer::whereNotNull('device_id')->get();
-
         $broadcast = Broadcast::where('status', 'active')->get();
 
         $result['message'] = 'Orders_fetch_successfully';
-            $result['data'] = $broadcast;
-            $result['statusCode'] = 200;
+        return  $broadcast;
+        $result['statusCode'] = 200;
 
         return getSuccessMessages($result);
-        foreach ($broadcast as $broadcastItem) {
-
-            // dd($broadcastItem->translations);
-
-            $result['message'] = 'Orders_fetch_successfully';
-            $result['data'] = $broadcastItem['translations'];
-            $result['statusCode'] = 200;
-
-            return getSuccessMessages($broadcastItem['translations']);
 
 
 
+        // foreach ($broadcast as $broadcastItem) {
 
-            foreach ($customer as $item) {
+        //     // dd($broadcastItem->translations);
 
-                $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
+        //     $result['message'] = 'Orders_fetch_successfully';
+        //     $result['data'] = $broadcastItem['translations'];
+        //     $result['statusCode'] = 200;
 
-                $this->hitPushNotification($item->device_id, $message);
-            }
+        //     return getSuccessMessages($broadcastItem['translations']);
 
-            Broadcast::where()->update(['status' => 'inactive'])->get();
-        }
+
+
+
+        //     foreach ($customer as $item) {
+
+        //         $message = ['title' => 'your title Sushil SA', 'body' => 'your body Sushil SA',];
+
+        //         $this->hitPushNotification($item->device_id, $message);
+        //     }
+
+        //     Broadcast::where()->update(['status' => 'inactive'])->get();
+        // }
     }
 
     public function hitPushNotification($token, $message)
