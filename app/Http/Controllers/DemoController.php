@@ -158,7 +158,6 @@ class DemoController extends Controller
     public function demoPushNoti()
     {
         $customer = Customer::whereNotNull('device_id')->get();
-
         // echo 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang;
         foreach ($customer as $item) {
             $lang = 1;
@@ -167,10 +166,11 @@ class DemoController extends Controller
             }
             $data = Http::acceptJson()->get(url('api/callDemoPushNoti?lang_id=') . $lang);
             $dataItem = Arr::pluck(json_decode($data, true), 'translation');
-            return count($dataItem);
-            foreach ($dataItem as $val) {
-                $message = ['title' => $val['title'], 'body' => $val['description'],];
-                $this->hitPushNotification($item->device_id, $message);
+            if (count($dataItem) != 0) {
+                foreach ($dataItem as $val) {
+                    $message = ['title' => $val['title'], 'body' => $val['description'],];
+                    $this->hitPushNotification($item->device_id, $message);
+                }
             }
         }
     }
