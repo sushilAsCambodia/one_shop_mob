@@ -66,5 +66,6 @@ return [
     "Deal Closure" => "Deal Closure",
     "Lose" => "Deal Closure",
     "Fail" => "Fail",
+    "Payment transaction" => "Payment transaction",
 
 ];

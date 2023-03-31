@@ -66,5 +66,6 @@ return [
     "Deal Closure" => "交易结束",
     "Lose" => "交易结束",
     "Fail" => "失败",
+    "Payment transaction" => "支付交易",
 
 ];
