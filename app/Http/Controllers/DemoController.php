@@ -162,7 +162,11 @@ class DemoController extends Controller
         // 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id
         foreach ($customer as $item) {
             // return $item->default_lang_id ?? 1;
-            echo 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id ?? 1;
+            $lang = 1;
+            if($item->default_lang_id){
+                $lang = $item->default_lang_id;
+            }
+            echo 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang;
             die;
             $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id ?? 1);
             return $data;
