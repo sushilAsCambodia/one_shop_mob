@@ -169,7 +169,7 @@ class DemoController extends Controller
         return Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
     }
 
-    public function callDemoPushNoti(): JsonResponse
+    public function callDemoPushNoti()
     {
         $broadcast = Broadcast::where('status', 'active')->get();
 
