@@ -9,7 +9,7 @@ return [
     |
     | The following language lines are used during authentication for various
     | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | these language lines according to your application"s requirements.
     |
     */
 
@@ -43,29 +43,29 @@ return [
     "completed" => "已完成",
     "Deal ID" => "开彩编号",
     "has been claimed prize for Deal ID" => "已领取奖品，开彩 ID是",
-
-    'updated for Deal ID' => 'updated for Deal ID',
-    "Language Id Required" => "Language Id Required",
-    "Shipping" => "Shipping",
-    'Prize Claimed by' => "Prize Claimed by",
-    // "You Won" => "You Won Sushil",
-
+    'updated for Deal ID' => '已更新交易 ID',
+    "Language Id Required" => "需要语言 ID",
+    "Shipping" => "船运",
+    'Prize Claimed by' => "获奖者",
+    "You Won" => "你赢了",
     "firstOtpTextReg" => "",
     "secondOtpTextReg" => "是您的一次性密码，输入密码以完成注册",
-
     "firstOtpTextForgot" => "",
     "secondOtpTextRegForgot" => "是您的一次性密码，输入密码以重置密码。如果您没提出此请求，请通过 admin@the1shops.com 联系我们",
-
     "Winnings" => "奖金",
     // "Deal Closure" => "Deal Closure",
     "Delivery" => "送货",
     // "Failed Delivery" => "Delivery Failure",
-
     "Shipment" => "运输",
     "Pending" => "运输",
     "Deal Closure" => "交易结束",
     "Lose" => "交易结束",
     "Fail" => "失败",
+    "active" => "活跃",
+    "Customer withdrawed Amount" => "客户取款金额",
     "Payment transaction" => "支付交易",
+    'Saving Account' => "储蓄账户",
+    'Current Account' => "活期账户",
+    'Checking Account' => "支票账户",
 
 ];

@@ -324,7 +324,7 @@ class HomepageService
             }
             $result['data'] = [
                 'languages' => Language::all(),
-                'banners' => Banner::where('type', 'homePage')->get(),
+                'banners' => Banner::where('type', 'homePage')->where('status', 'active')->get(),
                 'categories' => Category::all(),
                 'promotional' => $data,
                 'user_data' => $userData,
