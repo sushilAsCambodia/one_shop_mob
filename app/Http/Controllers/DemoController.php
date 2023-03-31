@@ -166,7 +166,7 @@ class DemoController extends Controller
         //     $this->hitPushNotification($item->device_id, $message);
         // }
         $lang = 2;
-        $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
+        $data = Http::get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
 
         foreach ($data as $item) {
             return $item;
