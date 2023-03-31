@@ -167,7 +167,7 @@ class DemoController extends Controller
             }
             $data = Http::acceptJson()->get(url('api/callDemoPushNoti?lang_id=') . $lang);
             $dataItem = Arr::pluck(json_decode($data, true), 'translation');
-            return $dataItem;
+            return count($dataItem);
             foreach ($dataItem as $val) {
                 $message = ['title' => $val['title'], 'body' => $val['description'],];
                 $this->hitPushNotification($item->device_id, $message);
