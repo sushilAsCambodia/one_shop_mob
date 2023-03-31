@@ -173,6 +173,9 @@ class DemoController extends Controller
                 }
             }
         }
+        $result['message'] = 'notification_push_successfully';
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
     }
 
     public function callDemoPushNoti(): JsonResponse
