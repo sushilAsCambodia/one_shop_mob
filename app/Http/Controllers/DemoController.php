@@ -157,11 +157,15 @@ class DemoController extends Controller
 
     public function demoPushNoti()
     {
+        return Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=1');
+    }
 
-
+    public function callDemoPushNoti()
+    {
         $customer = Customer::whereNotNull('device_id')->get();
 
         $broadcast = Broadcast::where('status', 'active')->get();
+
         $result['message'] = 'Orders_fetch_successfully';
             $result['data'] = $broadcast;
             $result['statusCode'] = 200;

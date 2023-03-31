@@ -166,4 +166,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // demo push notification
 Route::controller(DemoController::class)->group(function () {
     Route::get('demoPushNoti', 'demoPushNoti');
+    Route::get('callDemoPushNoti', 'callDemoPushNoti');
 });
