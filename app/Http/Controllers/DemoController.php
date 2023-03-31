@@ -171,7 +171,7 @@ class DemoController extends Controller
         $collection = collect($data);
          
         $plucked = $collection->pluck('status');
-         return $plucked;
+         return $collection;
         return $plucked->all();
 
     }
