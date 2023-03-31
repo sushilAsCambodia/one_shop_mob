@@ -12,7 +12,7 @@ class Broadcast extends Model
 
     public function translations()
     {
-        return $this->morphMany(Translation::class, 'translationable');
+        return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
     }
     public function toArray()
     {
