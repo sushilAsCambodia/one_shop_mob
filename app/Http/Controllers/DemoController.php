@@ -171,7 +171,7 @@ class DemoController extends Controller
 
 
 
-        $ids = Arr::pluck(json_decode($data, true), 'translations');
+        $ids = Arr::pluck(json_decode($data, true), 'status');
 
         return $ids;
 
