@@ -174,7 +174,7 @@ class DemoController extends Controller
         $dataItem = Arr::pluck(json_decode($data, true), 'translation');
 
         foreach ($dataItem as $val) {
-            return $val->title;
+            return $val['title'];
         }
 
         // foreach ($data as $item){
