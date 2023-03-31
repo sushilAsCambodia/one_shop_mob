@@ -1,47 +1,27 @@
 <?php
 
-use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SubCategoryController;
-use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomepageController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SlotController;
 use App\Http\Controllers\DealController;
-use App\Http\Controllers\SlotDealController;
-use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
-
 use App\Http\Controllers\AddressController;
-
-use App\Http\Middleware\LanguageCurrencyMiddleware;
-
-use App\Http\Controllers\AddToCartController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CityController;
-
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PayController;
-use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PriceClaimController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\WinningController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,44 +35,37 @@ use App\Http\Controllers\WinningController;
  */
 
 // Language Routes
-
 Route::group(['middleware' => ['lang_id']], function () {
     // Homepage
     Route::controller(HomepageController::class)->group(function () {
-        // Route::get('homepage', 'index');
-        Route::get('search', 'getSearchResult');   //done
-        Route::get('get/homePageData', 'getHomePageData');   //done
-        Route::get('get/promotional', 'getPromotional');  //done
+        Route::get('search', 'getSearchResult');
+        Route::get('get/homePageData', 'getHomePageData');
+        Route::get('get/promotional', 'getPromotional');
     });
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('categories/all', 'all');  //done
-        Route::get('categories/treeView', 'treeView'); //done
+        Route::get('categories/all', 'all');
+        Route::get('categories/treeView', 'treeView');
     });
     Route::controller(SubCategoryController::class)->group(function () {
-        Route::get('subCategories', 'subCategoriesId'); //done
+        Route::get('subCategories', 'subCategoriesId');
     });
 
     Route::controller(ProductController::class)->group(function () {
-        // Route::get('products/paginate/{params?}', 'paginate');
-        Route::get('products/view-all', 'index');  //done
-        Route::get('products/{product}', 'get')->where(['product' => '[0-9]+']);  //done
-        // Route::get('products/get-by-category-slug/{slug}', 'getByCategorySlug');
+        Route::get('products/view-all', 'index');
+        Route::get('products/{product}', 'get')->where(['product' => '[0-9]+']);
     });
 
     Route::controller(LanguageController::class)->group(function () {
         Route::get('languages/all', 'all')->name('Language: View Language');
     });
-
     // Country Routes
     Route::controller(CountryController::class)->group(function () {
         Route::get('countries/all', 'all');
     });
-
     // State Routes
     Route::controller(StateController::class)->group(function () {
         Route::get('states/getById/{counteyId}', 'getById');
     });
-
     // City Routes
     Route::controller(CityController::class)->group(function () {
         Route::get('cities/getById/{stateId}', 'all');
@@ -103,100 +76,58 @@ Route::group(['middleware' => ['lang_id']], function () {
     });
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::controller(HomepageController::class)->group(function () {
-        // Route::get('homepage', 'index');
-        Route::get('get/newHomePageData', 'getHomePageData')->middleware('lang_id');    //done
+        Route::get('get/newHomePageData', 'getHomePageData')->middleware('lang_id');
     });
-
-    // Add To cart
-    Route::controller(AddToCartController::class)->group(function () {
-        // Route::post('add-to-cart', 'addToCart');
-    });
-
     // Add To Dorder
     Route::controller(OrderController::class)->group(function () {
-        Route::get('orders/paginate/{params?}', 'paginate')->middleware('lang_id');  //done
-        Route::post('customer/orders', 'store');   //done 1
-        // Route::post('customer/orders-cancel', 'cancelOrder');
-        Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id'); // done
-        Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');  //done
+        Route::get('orders/paginate/{params?}', 'paginate')->middleware('lang_id');
+        Route::post('customer/orders', 'store');
+        Route::get('customer/checkout/{slug}', 'order')->middleware('lang_id');
+        Route::get('customer/order-details/{orderId}', 'orderGetById')->middleware('lang_id');
         Route::get('customer/order/completed', 'orderCompleted')->middleware('lang_id');
-        // Route::patch('orders/{orders}', 'update');
-        // Route::delete('orders/{orders}', 'delete');
     });
-
     //Price Claim Route
     Route::controller(PriceClaimController::class)->group(function () {
-        Route::get('prize-claim/paginate/{params?}', 'paginate')->middleware('lang_id');  //done
-        // Route::get('prize-claim/all', 'all');
-        Route::get('prize-claim-byClaimId', 'prizeClaimByClaimId')->middleware('lang_id');  //done
-        Route::post('prize-claim/{priceClaim}', 'update'); //done 1
-        // Route::get('prize-claim/{priceClaim}', 'get');
+        Route::get('prize-claim/paginate/{params?}', 'paginate')->middleware('lang_id');
+        Route::get('prize-claim-byClaimId', 'prizeClaimByClaimId')->middleware('lang_id');
+        Route::post('prize-claim/{priceClaim}', 'update');
     });
-
     // Deals Routes
     Route::controller(DealController::class)->group(function () {
-        Route::get('slot-deals/{deals}/{orderId?}', 'getSlotDeals');  //done
+        Route::get('slot-deals/{deals}/{orderId?}', 'getSlotDeals');
     });
-
     // Add To favorites
     Route::controller(FavoriteController::class)->group(function () {
-        Route::post('favorites/add-to-favorites', 'addToFavorites');  //done 1
-        Route::post('favorites/remove-from-favorites', 'removeFromFavorites'); //done 1
+        Route::post('favorites/add-to-favorites', 'addToFavorites');
+        Route::post('favorites/remove-from-favorites', 'removeFromFavorites');
         Route::get('favorites/list', 'list')->middleware('lang_id');
-    });
-
-    Route::controller(OrderController::class)->group(function () {
-        // Route::get('customer/get-dashboard-counts', 'getDashboardCounts');
-    });
-
-    Route::controller(ReferralController::class)->group(function () {
-        // Route::get('customer/getReferral', 'getReferral');
-    });
-
-    Route::controller(WinningController::class)->group(function () {
-        // Route::get('winner-list', 'paginate');
     });
     // Add To Payment
     Route::controller(PaymentController::class)->group(function () {
         Route::post('payments/payment-response', 'paymentResponse');
-        Route::post('customer/order-payment', 'storeHttp'); //done 1
+        Route::post('customer/order-payment', 'storeHttp');
     });
-
     Route::controller(NotificationController::class)->group(function () {
         Route::get('notifications/paginate/{params?}', 'paginate')->middleware('lang_id');
-        Route::patch('notifications/{notification}', 'update'); //done 1
+        Route::patch('notifications/{notification}', 'update');
     });
-
     // Shipping Routes
     Route::controller(ShippingController::class)->group(function () {
         Route::get('shipping/paginate/{params?}', 'paginate');
-        // Route::get('shipping/all', 'all')->name('Shipping: View Shipping');
-        // Route::post('shipping', 'store')->name('Shipping: Create Shipping');
-        // Route::patch('shipping/{shippings}', 'update')->name('Shipping: Edit/Update Shipping')->where(['shippings' => '[0-9]+']);
-        // Route::patch('shipping/update-status/{shippings}', 'updateShippingStatus')->name('Shipping: Update Shipping Status')->where(['shippings' => '[0-9]+']);
-        // Route::patch('shipping/update-carrier/{shippings}', 'updateShippingCarrier')->name('Shipping: Update Shipping Carrier')->where(['shippings' => '[0-9]+']);
-        // Route::delete('shipping/{shippings}', 'delete')->name('Shipping: Delete Shipping')->where(['shippings' => '[0-9]+']);
-        // Route::get('shipping/status/{trackingId}', 'getShippingStatus')->name('Shipping: get ShippingStatus Shipping')->where(['shippings' => '[0-9]+']);
     });
 });
-
-// login creadation
-// Customer routes
+// login creadation // Customer routes
 Route::controller(CustomerController::class)->group(function () {
-    // Route::get('customers-earning', 'getCalculations');
     Route::post('customers/send-otp', 'sendOTP');
     Route::post('customers/verify-otp', 'verifyOTP');
     Route::post('customers/register', 'register');
     Route::post('customers/login', 'login');
-    // Route::get('customers/{customer}', 'get')->where(['customer' => '[0-9]+']);
     Route::post('customers/forget-password', 'forgetPassword');
     Route::post('customers/set-new-password', 'setNewPassword');
-}); //done 1
-
+});
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(CustomerController::class)->group(function () {
         Route::get('customers/mlm-earning', 'getCalculationsCustomers');
@@ -204,21 +135,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('customers/update-password', 'updatePassword');
         Route::get('customers/user-details', 'userDetails');
         Route::get('customers/user-wallet', 'userWallet');
-        
-        // Route::post('customers/create-bot-customer', 'createBotCustomer');
         Route::get('customers/get-transactions', 'getTransactions');
         Route::post('customers/logout', 'logout');
-    }); //done 1
-
+    });
     // Address routes
     Route::controller(AddressController::class)->group(function () {
         Route::get('addresses/all', 'all');
-        // Route::get('addresses/{address}', 'get')->where(['address' => '[0-9]+']);
         Route::post('add-addresses', 'store');
         Route::post('edit-addresses/{address}', 'update')->where(['address' => '[0-9]+']);
         Route::post('delete-addresses/{address}', 'delete')->where(['address' => '[0-9]+']);
-    }); //done 1
-
+    });
     // Bank Account Route
     Route::controller(BankAccountController::class)->group(function () {
         Route::get('bank-accounts/paginate/{params?}', 'paginate');
@@ -227,11 +153,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('bank-accounts-edit/{bankAccount}', 'update');
         Route::post('bank-accounts-delete/{bankAccount}', 'delete');
     });
-
     Route::controller(TransactionController::class)->group(function () {
         Route::post('transactions/withdraw', 'withdraw');
     });
-
     // Bank Account Route
     Route::controller(CustomerController::class)->group(function () {
         Route::delete('customers/delete-account', 'deleteOwnAccount');
@@ -239,6 +163,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 
-Route::controller(App\Http\Controllers\DemoController::class)->group(function () {
-    Route::get('demo-work', 'demoWorks');
+// demo push notification
+Route::controller(DemoController::class)->group(function () {
+    Route::get('demoPushNoti', 'demoPushNoti');
+    Route::get('callDemoPushNoti', 'callDemoPushNoti');
 });

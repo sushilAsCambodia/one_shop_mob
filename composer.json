@@ -9,7 +9,7 @@
         "bacon/bacon-qr-code": "^2.0",
         "doctrine/dbal": "2.*",
         "fruitcake/laravel-cors": "^3.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.5",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
@@ -20,6 +20,7 @@
         "pragmarx/google2fa-laravel": "^2.0",
         "psr/simple-cache": "^2.0",
         "rakutentech/laravel-request-docs": "^1.30",
+        "sngrl/php-firebase-cloud-messaging": "dev-master",
         "spatie/laravel-permission": "^5.5",
         "staudenmeir/eloquent-has-many-deep": "*",
         "stevebauman/location": "^6.6"

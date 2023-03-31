@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Broadcast;
+use App\Models\Customer;
 use App\Models\Deal;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\TimeInterval;
 use App\Services\OrderProductService;
 use App\Services\SlotDealService;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+
+use App\Services\FCMService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 
 class DemoController extends Controller
 {
@@ -137,12 +146,49 @@ class DemoController extends Controller
         return date('Y-m-d H:i:s', $val);
     }
 
-    public function demoWorks(){
-    $response = Http::withToken('531|rpNkp2xfpBJT4yBL0NUmodIzjrseyIkpT02xC6HU')
-    ->get('https://the1shops.com:8090/index.php/api/customers/get-transactions?date_range=%20&transaction_type=&rowsPerPage=15&sortBy=&descending=true&page=1&status=');
-    
-    return $response;
-    die('ppppp');
+    public function demoWorks()
+    {
+        $response = Http::withToken('531|rpNkp2xfpBJT4yBL0NUmodIzjrseyIkpT02xC6HU')
+            ->get('https://the1shops.com:8090/index.php/api/customers/get-transactions?date_range=%20&transaction_type=&rowsPerPage=15&sortBy=&descending=true&page=1&status=');
+
+        return $response;
+        die('ppppp');
     }
 
+    public function demoPushNoti()
+    {
+        $customer = Customer::whereNotNull('device_id')->get();
+        // echo 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang;
+        foreach ($customer as $item) {
+            $lang = 1;
+            if ($item->default_lang_id) {
+                $lang = $item->default_lang_id;
+            }
+            $data = Http::acceptJson()->get(url('api/callDemoPushNoti?lang_id=') . $lang);
+            $dataItem = Arr::pluck(json_decode($data, true), 'translation');
+            if (count($dataItem) != 0) {
+                foreach ($dataItem as $val) {
+                    $message = ['title' => $val['title'], 'body' => $val['description'],];
+                    $this->hitPushNotification($item->device_id, $message);
+                }
+            }
+        }
+        $result['message'] = 'notification_push_successfully';
+        $result['statusCode'] = 200;
+        return getSuccessMessages($result);
+    }
+
+    public function callDemoPushNoti(): JsonResponse
+    {
+        $broadcast = Broadcast::where('status', 'active')->get();
+        return response()->json($broadcast);
+    }
+
+    public function hitPushNotification($token, $message)
+    {
+        return FCMService::send(
+            $token,
+            $message
+        );
+    }
 }

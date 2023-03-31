@@ -66,6 +66,7 @@ return [
     "Deal Closure" => "Deal Closure",
     "Lose" => "Deal Closure",
     "Fail" => "Fail",
+    "Payment transaction" => "Payment transaction",
 
     'has been failed to deliver for Deal ID' => 'has been failed to deliver for Deal ID',
     'Please contact for further clarification' => '. Please contact '. config('app.contact_mail','admin@the1shops.com').' for further​ clarification.'

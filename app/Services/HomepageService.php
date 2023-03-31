@@ -12,6 +12,7 @@ use App\Models\Promotion;
 use App\Models\SubCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -304,21 +305,22 @@ class HomepageService
             if (Auth() && Auth()->user() && Auth()->user()->id) {
                 $response = $this->customerService->userDetails();
                 $userData = $response->original['data'];
+                Auth::user()->update(['default_lang_id' => $request->lang_id ?? 1]);
             }
 
             $result['message'] = 'fetch_all_homePage_successfully';
             $version = $request->v;
-            $vDetails = DB::table('versions')->where('name',$version)->first();
+            $vDetails = DB::table('versions')->where('name', $version)->first();
             $checkFlag =  false;
             $ip = $request->ip();
             $region = null;
             $location = Location::get($ip);
-        
+
             $region = @$location->countryName;
-            if( $vDetails && $vDetails->status =='Review'){
+            if ($vDetails && $vDetails->status == 'Review') {
                 $checkFlag = true;
-            }else if($region != 'Cambodia'){
-                $checkFlag = true; 
+            } else if ($region != 'Cambodia') {
+                $checkFlag = true;
             }
             $result['data'] = [
                 'languages' => Language::all(),

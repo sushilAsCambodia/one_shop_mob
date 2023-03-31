@@ -52,14 +52,14 @@ class ProductService
             //         break;
             // }
             if($request->tag){
-                if($request->tag == 'latest'){
-                    $query = Product::orderBy('created_at', 'desc');
+                // if($request->tag == 'latest'){
+                //     $query = Product::orderBy('created_at', 'desc');
                     
-                }else{
-                    $query->whereHas('promotion', function ($query) use ($request) {
-                        $query->where('promotions.slug',$request->tag);
-                    });
-                }
+                // }else{
+                $query->whereHas('promotion', function ($query) use ($request) {
+                    $query->where('promotions.slug',$request->tag);
+                });
+                // }
             }
             if(in_array($sortBy, ['created_at', 'price','most_view','popular','latest'])){
             
@@ -135,6 +135,7 @@ class ProductService
             });
             
             $data = $query->first();
+            $data->shareUrl = 'https://the1shops.com/details/'.$data->slug;
 
             $result['message'] = 'product_fetch_successfully';
             $result['data'] = $data;
