@@ -171,9 +171,11 @@ class DemoController extends Controller
 
         // return $data ;
 
-        $ids = Arr::pluck(json_decode($data, true), 'translation');
+        $dataItem = Arr::pluck(json_decode($data, true), 'translation');
 
-        return $ids;
+        foreach ($dataItem as $val) {
+            return $val;
+        }
 
         // foreach ($data as $item){
         //     return $item;
@@ -181,7 +183,7 @@ class DemoController extends Controller
 
         // return $data;
         // $collection = collect($data);
-         
+
         // $plucked = $collection->pluck('status');
         //  return $collection;
         // return $plucked->all();
