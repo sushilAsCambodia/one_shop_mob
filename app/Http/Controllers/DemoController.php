@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Http;
 
 use App\Services\FCMService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 
 class DemoController extends Controller
 {
@@ -168,7 +169,7 @@ class DemoController extends Controller
         $lang = 2;
         $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
 
-        $ids = array_pluck(json_decode($data, true), 'id');
+        $ids = Arr::pluck(json_decode($data, true), 'id');
 
         // foreach ($data as $item){
         //     return $item;
