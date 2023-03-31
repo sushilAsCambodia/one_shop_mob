@@ -155,14 +155,14 @@ class DemoController extends Controller
         die('ppppp');
     }
 
-
-
     public function demoPushNoti()
     {
         $customer = Customer::whereNotNull('device_id')->get();
+        // 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id
         foreach ($customer as $item) {
-            $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id);
+            $data = Http::acceptJson()->get(url('api/callDemoPushNoti?lang_id=' . $item->default_lang_id));
             $dataItem = Arr::pluck(json_decode($data, true), 'translation');
+            return $dataItem;
             foreach ($dataItem as $val) {
                 $message = ['title' => $val['title'], 'body' => $val['description'],];
                 $this->hitPushNotification($item->device_id, $message);
