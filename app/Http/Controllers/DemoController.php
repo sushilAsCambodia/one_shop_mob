@@ -158,11 +158,13 @@ class DemoController extends Controller
     public function demoPushNoti()
     {
         $customer = Customer::whereNotNull('device_id')->get();
-        
+
         // 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id
         foreach ($customer as $item) {
             // return $item->default_lang_id ?? 1;
-            $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=1');
+            echo 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id ?? 1;
+            die;
+            $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $item->default_lang_id ?? 1);
             return $data;
             $dataItem = Arr::pluck(json_decode($data, true), 'translation');
             return $dataItem;
