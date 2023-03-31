@@ -167,11 +167,11 @@ class DemoController extends Controller
         // }
         $lang = 2;
         $data = Http::acceptJson()->get('http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang);
-        return $data;
+        // return $data;
         $collection = collect($data);
          
         $plucked = $collection->pluck('status');
-         
+         return $plucked;
         return $plucked->all();
 
     }
