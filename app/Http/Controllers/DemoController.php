@@ -171,7 +171,7 @@ class DemoController extends Controller
 
     public function callDemoPushNoti()
     {
-        $broadcast = Broadcast::where('status', 'active')->pluck('translation')->get();
+        $broadcast = Broadcast::where('status', 'active')->get();
 
         $result['message'] = 'Orders_fetch_successfully';
         return  $broadcast;
