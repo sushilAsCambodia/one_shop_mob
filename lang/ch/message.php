@@ -67,4 +67,7 @@ return [
     "Lose" => "交易结束",
     "Fail" => "失败",
 
+    'has been failed to deliver for Deal ID' => 'has been failed to deliver for Deal ID',
+    'Please contact for further clarification' => '. Please contact '. config('app.contact_mail','admin@the1shops.com').' for further​ clarification.'
+    
 ];

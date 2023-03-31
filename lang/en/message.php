@@ -42,7 +42,7 @@ return [
     "pending" => "pending",
     "completed" => "completed",
     "Deal ID" => "Deal ID",
-    "has been claimed prize for Deal ID" => "has been claimed prize for Deal ID",
+    "has been claimed prize for Deal ID" => "has been created against your prize claim for Deal ID",
     'updated for Deal ID' => 'updated for Deal ID',
     "Language Id Required" => "Language Id Required",
     "Shipping" => "Shipping",
@@ -66,5 +66,9 @@ return [
     "Deal Closure" => "Deal Closure",
     "Lose" => "Deal Closure",
     "Fail" => "Fail",
+
+    'has been failed to deliver for Deal ID' => 'has been failed to deliver for Deal ID',
+    'Please contact for further clarification' => '. Please contact '. config('app.contact_mail','admin@the1shops.com').' for further​ clarification.'
+    
 
 ];
