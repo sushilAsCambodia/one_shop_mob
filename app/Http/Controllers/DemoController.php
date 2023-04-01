@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Http;
 use App\Services\FCMService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class DemoController extends Controller
 {
@@ -173,8 +174,8 @@ class DemoController extends Controller
             }
         }
         // Broadcast::query()->update(['status' => 'inactive']);
-        Broadcast::where('status', 'active')->update(['status' => 'inactive']);
-
+        DB::table('broadcasts')->update(array('status' => 'inactive'));
+        
         $result['message'] = 'notification_push_successfully';
         $result['statusCode'] = 200;
         return getSuccessMessages($result);
