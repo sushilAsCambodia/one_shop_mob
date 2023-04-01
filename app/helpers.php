@@ -228,7 +228,7 @@ if (!function_exists('sendOTP')) {
             if ($langIds == "ch") {
                 $message = $otpValue . ' 是您的一次性密码，输入密码以完成注册';
             } elseif ($langIds == "kh") {
-                $message = 'អតិថិជនជាទីគោរព លេខ ' . $otpValue . ' គឺជា OTP ដើម្បីចុះឈ្មោះរបស់អ្នកសម្រាប់ OneShop ។ សូមកុំបង្ហាញនរណា, ក្រុមការងារ OneShop មិនដែលសុំ OTP ទេ។';
+                $message = 'អតិថិជនជាទីគោរព, '.$otpValue.' ជាលេខកូដ OPT សម្រាប់ចុះឈ្មោះនៅក្នុង One Shop ។ សូមកុំបង្ហាញវាទៅកាន់អ្នកណាម្នាក់ឲ្យសោះ, ព្រោះក្រុមការងាររបស់ One Shop មិនមានការស្នើសុំ OTP ពីសំណាក់អតិថិជនឡើយ។';
             } else {
                 $message = 'Dear Customer, ' . $otpValue . ' is the OTP to complete your registration for OneShop. DO NOT disclose it to anyone, OneShop team never asks for OTP.';
             }
