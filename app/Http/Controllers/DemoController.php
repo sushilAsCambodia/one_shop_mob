@@ -24,7 +24,7 @@ class DemoController extends Controller
 
     public function demoWork()
     {
-        dd('Sushil');
+        dd('test');
         $orderProductService = new OrderProductService();
         $dealsData = Deal::where('status', 'active')
             ->join('slots', 'slots.id', '=', 'deals.slot_id')
@@ -158,7 +158,6 @@ class DemoController extends Controller
     public function demoPushNoti()
     {
         $customer = Customer::whereNotNull('device_id')->get();
-        // echo 'http://one-shop-mob.kk-lotto.com:8080/api/callDemoPushNoti?lang_id=' . $lang;
         foreach ($customer as $item) {
             $lang = 1;
             if ($item->default_lang_id) {
@@ -173,6 +172,9 @@ class DemoController extends Controller
                 }
             }
         }
+        // Broadcast::query()->update(['status' => 'inactive']);
+        Broadcast::where('status', 'active')->update(['status' => 'inactive']);
+
         $result['message'] = 'notification_push_successfully';
         $result['statusCode'] = 200;
         return getSuccessMessages($result);

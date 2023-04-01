@@ -9,7 +9,7 @@ return [
     |
     | The following language lines are used during authentication for various
     | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | these language lines according to your application"s requirements.
     |
     */
 
@@ -46,27 +46,27 @@ return [
     'updated for Deal ID' => 'updated for Deal ID',
     "Language Id Required" => "Language Id Required",
     "Shipping" => "Shipping",
-    'Prize Claimed by' => "Prize Claimed by",
-    "You Won" => "You Won Sushil",
-
+    "Prize Claimed by" => "Prize Claimed by",
+    "You Won" => "You Won",
     "firstOtpTextReg" => "Dear Customer,",
     "secondOtpTextReg" => "is the OTP to complete your registration for OneShop. DO NOT disclose it to anyone, OneShop team never asks for OTP.",
-
     "firstOtpTextForgot" => "Use",
     "secondOtpTextRegForgot" => "as your OTP to reset your OneShop Password. If you did not make this request, please alert us at admin@the1shops.com",
-
-
     "Winnings" => "Winnings",
     // "Deal Closure" => "Deal Closure",
     "Delivery" => "Delivery",
     // "Failed Delivery" => "Delivery Failure",
-
     "Shipment" => "Shipment",
     "Pending" => "Shipment",
     "Deal Closure" => "Deal Closure",
     "Lose" => "Deal Closure",
     "Fail" => "Fail",
+    "Failed Delivery" => "Failed Delivery",
+    "Customer withdrawed Amount" => "Customer withdrawed Amount",
     "Payment transaction" => "Payment transaction",
+    "Saving Account" => "Saving Account",
+    "Current Account" => "Current Account",
+    "Checking Account" => "Checking Account",
 
     'has been failed to deliver for Deal ID' => 'has been failed to deliver for Deal ID',
     'Please contact for further clarification' => '. Please contact '. config('app.contact_mail','admin@the1shops.com').' for further​ clarification.'
