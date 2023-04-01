@@ -172,9 +172,8 @@ class DemoController extends Controller
                 }
             }
         }
-        Broadcast::query()->update(['status' => 'inactive']);
-        // Broadcast::where('status', 'active')->update(['status' => 'inactive']);
-
+        // Broadcast::query()->update(['status' => 'inactive']);
+        Broadcast::where('status', 'active')->update(['status' => 'inactive']);
 
         $result['message'] = 'notification_push_successfully';
         $result['statusCode'] = 200;
