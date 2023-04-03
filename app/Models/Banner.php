@@ -15,9 +15,19 @@ class Banner extends Model
     protected $with = ['image'];
     //protected $hidden = ['created_at','updated_at','deleted_at'];
 
+    // public function image()
+    // {
+    //     return $this->morphOne(File::class, 'fileable');
+    // }
     public function image()
     {
-        return $this->morphOne(File::class, 'fileable');
+        $languageId = 1;
+        $language = Language::find(request('lang_id'));
+        $language? $languageId = $language->id:'';
+        if($languageId == 1 || $language->local_web == 'en')
+            return $this->morphOne(File::class, 'fileable')->wherePurpose($languageId)->orWhere('purpose',0);
+        return $this->morphOne(File::class, 'fileable')->wherePurpose($languageId);
+
     }
     
     public function translation()
