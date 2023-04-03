@@ -29,10 +29,10 @@ class Banner extends Model
         return $this->morphOne(File::class, 'fileable')->wherePurpose($languageId);
 
     }
-    
+
     public function translation()
     {
-        return $this->morphMany(Translation::class, 'translationable');
+        return $this->morphMany(Translation::class, 'translationable')->where('language_id', request()->lang_id);
     }
 
     public function toArray()
